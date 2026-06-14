@@ -535,7 +535,8 @@ MELOMAN<span>звук</span>
 
 <script>
 const VK_TOKEN = 'vk1.a.8hGr612bwmdcseLwhf8Lqe_KACJ0UTrrx_bQHNkI1plS8k1l_Lf1jGD8_oiWGd7SGRRQgb7HciBBK55SfoMp7rEICQbzdFyD5D6H-O1VFMF9PwMyjg0oT-4FdhGvaaBSX1TPk-OqfR3Fvajy3WHTfm7ul2nYHYBFrolo3VPB9qlib8UIee1Q9sC8hOgYR-Ic-3kyrUtV__VeuP_LGvz2pw';
-const VK_GROUP_ID = 'clubmeloman_sound';
+const VK_GROUP_ID = '147915819';
+const VK_USER_ID = '453729652';
 
 const today = new Date().toISOString().split('T')[0];
 document.getElementById('bookingDate').setAttribute('min', today);
@@ -555,22 +556,6 @@ document.getElementById('errorMsg').style.display = 'none';
 document.getElementById('bookingModal').addEventListener('click', function(e) {
 if (e.target === this) closeModal();
 });
-
-// Сначала получим числовой ID сообщества
-function getGroupId(callback) {
-fetch('https://api.vk.com/method/groups.getById?group_id=' + VK_GROUP_ID + '&access_token=' + VK_TOKEN + '&v=5.199')
-.then(function(r) { return r.json(); })
-.then(function(data) {
-if (data.response && data.response[0]) {
-callback(data.response[0].id);
-} else {
-callback(null);
-}
-})
-.catch(function() {
-callback(null);
-});
-}
 
 function sendBooking(e) {
 e.preventDefault();
@@ -593,25 +578,19 @@ submitBtn.disabled = true;
 submitBtn.textContent = 'Отправляю...';
 
 const message = '🎙️ Новая заявка Меломан Саунд\n\n👤 Имя: ' + name + '\n📞 Телефон: ' + phone + '\n📅 Дата: ' + date + '\n⏰ Время: ' + time;
+const randomId = Math.floor(Math.random() * 99999999);
 
-getGroupId(function(groupId) {
-if (!groupId) {
-// Если не получилось получить ID, пробуем отправить в Telegram
-sendViaTelegram(name, phone, date, time, submitBtn);
-return;
-}
+// Отправка лично тебе
+const url = 'https://api.vk.com/method/messages.send?user_id=' + VK_USER_ID + '&message=' + encodeURIComponent(message) + '&access_token=' + VK_TOKEN + '&v=5.199&random_id=' + randomId;
 
-// Отправляем сообщение в ВК
-fetch('https://api.vk.com/method/messages.send?group_id=' + groupId + '&message=' + encodeURIComponent(message) + '&access_token=' + VK_TOKEN + '&v=5.199&random_id=' + Math.floor(Math.random() * 999999))
+fetch(url)
 .then(function(r) { return r.json(); })
 .then(function(data) {
 if (data.response) {
 successMsg.style.display = 'block';
 document.getElementById('bookingForm').reset();
 } else if (data.error) {
-// Если ВК не сработал, пробуем Telegram
-sendViaTelegram(name, phone, date, time, submitBtn);
-return;
+errorMsg.style.display = 'block';
 }
 submitBtn.disabled = false;
 submitBtn.textContent = 'Отправить заявку';
@@ -620,54 +599,10 @@ setTimeout(function() { closeModal(); }, 2500);
 }
 })
 .catch(function() {
-sendViaTelegram(name, phone, date, time, submitBtn);
-});
-});
-}
-
-function sendViaTelegram(name, phone, date, time, submitBtn) {
-const TELEGRAM_BOT_TOKEN = '8438188364:AAE4251bkdhzWEnsRW2owDTkgmVRAYHiGVA';
-const TELEGRAM_CHAT_ID = '581535353';
-const message = '🎙️ Новая заявка Меломан Саунд\n\n👤 Имя: ' + name + '\n📞 Телефон: ' + phone + '\n📅 Дата: ' + date + '\n⏰ Время: ' + time;
-
-const urls = [
-'https://api.telegram-bot.com/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
-'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage'
-];
-
-function tryTelegram(index) {
-if (index >= urls.length) {
-document.getElementById('errorMsg').style.display = 'block';
-submitBtn.disabled = false;
-submitBtn.textContent = 'Отправить заявку';
-return;
-}
-
-fetch(urls[index], {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
-})
-.then(function(r) { return r.json(); })
-.then(function(data) {
-if (data.ok) {
-document.getElementById('successMsg').style.display = 'block';
-document.getElementById('bookingForm').reset();
-setTimeout(function() { closeModal(); }, 2500);
-} else {
-tryTelegram(index + 1);
-}
-submitBtn.disabled = false;
-submitBtn.textContent = 'Отправить заявку';
-})
-.catch(function() {
-tryTelegram(index + 1);
+errorMsg.style.display = 'block';
 submitBtn.disabled = false;
 submitBtn.textContent = 'Отправить заявку';
 });
-}
-
-tryTelegram(0);
 }
 </script>
 
