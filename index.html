@@ -395,7 +395,7 @@ font-size: 28px;
 
 <nav>
 <div class="logo">
-MELOMAN<span>sound</span>
+MELOMAN<span>звук</span>
 </div>
 <button class="header-btn" onclick="openModal()">Запись</button>
 </nav>
@@ -414,7 +414,7 @@ MELOMAN<span>sound</span>
 <div class="service-icon-box">🎤</div>
 <div>
 <div class="service-name">Запись вокала</div>
-<div class="service-desc">Ламповые микрофоны, чистый тракт</div>
+<div class="service-desc">Чистый звук, профессиональный микрофон</div>
 </div>
 </div>
 <div class="service-price">от 500 ₽/ч</div>
@@ -424,7 +424,7 @@ MELOMAN<span>sound</span>
 <div class="service-icon-box">🎧</div>
 <div>
 <div class="service-name">Сведение</div>
-<div class="service-desc">Объём, детализация, баланс</div>
+<div class="service-desc">Обработка голоса, громкость, чистота</div>
 </div>
 </div>
 <div class="service-price">от 1000 ₽</div>
@@ -434,7 +434,7 @@ MELOMAN<span>sound</span>
 <div class="service-icon-box">💿</div>
 <div>
 <div class="service-name">Мастеринг</div>
-<div class="service-desc">Готовность к площадкам</div>
+<div class="service-desc">Финальная обработка трека</div>
 </div>
 </div>
 <div class="service-price">от 500 ₽</div>
@@ -443,18 +443,18 @@ MELOMAN<span>sound</span>
 
 <div class="section-header">Оборудование</div>
 <div class="card">
-<div class="gear-category">🎤 Микрофоны</div>
+<div class="gear-category">🎤 Микрофон</div>
 <div class="gear-grid" style="margin-bottom: 16px;">
-<span class="gear-chip">Rode NT1-A</span>
+<span class="gear-chip">Роде НТ1-А (студийный)</span>
 </div>
-<div class="gear-category">🔊 Мониторы</div>
+<div class="gear-category">🔊 Колонки</div>
 <div class="gear-grid" style="margin-bottom: 16px;">
-<span class="gear-chip">JBL</span>
-<span class="gear-chip">EURO SOUND</span>
+<span class="gear-chip">ДжиБиЭль</span>
+<span class="gear-chip">ЕвроСаунд</span>
 </div>
-<div class="gear-category">💻 Софт</div>
+<div class="gear-category">💻 Программа</div>
 <div class="gear-grid">
-<span class="gear-chip">Cubase 12 Pro</span>
+<span class="gear-chip">Кубейс 12 Про</span>
 </div>
 </div>
 
@@ -473,7 +473,7 @@ MELOMAN<span>sound</span>
 <span class="contact-value">info@meloman-sound.ru</span>
 </a>
 <a href="https://t.me/KONTINGENT38" class="contact-link">
-<span class="contact-label">📱 Telegram</span>
+<span class="contact-label">📱 Телеграм</span>
 <span class="contact-value">@KONTINGENT38</span>
 </a>
 <div class="map-placeholder">
@@ -481,22 +481,21 @@ MELOMAN<span>sound</span>
 </div>
 </div>
 
-<button class="action-btn" onclick="openModal()">Забронировать сессию</button>
+<button class="action-btn" onclick="openModal()">Забронировать запись</button>
 
 <footer>
-© 2026 Meloman Sound. Иркутск, Румянцева 5/1.
+Меломан Саунд. Иркутск, Румянцева 5/1. 2026 год.
 </footer>
 </div>
 
-<!-- Модальное окно бронирования -->
 <div class="modal-overlay" id="bookingModal">
 <div class="modal">
 <button class="close-modal" onclick="closeModal()">✕</button>
-<h2>Забронировать сессию</h2>
-<p class="subhead">Выбери дату и время, я подтвержу запись</p>
+<h2>Записаться на студию</h2>
+<p class="subhead">Выбери удобное время — я позвоню подтвердить</p>
 
-<div class="success-msg" id="successMsg">✅ Заявка отправлена! Скоро свяжусь с тобой.</div>
-<div class="error-msg" id="errorMsg">❌ Ошибка отправки. Позвони мне: +7 (993) 942-41-02</div>
+<div class="success-msg" id="successMsg">✅ Заявка отправлена! Скоро свяжусь.</div>
+<div class="error-msg" id="errorMsg">❌ Не отправилось. Позвони: +7 (993) 942-41-02</div>
 
 <form id="bookingForm" onsubmit="sendBooking(event)">
 <div class="form-group">
@@ -508,11 +507,11 @@ MELOMAN<span>sound</span>
 <input type="tel" class="form-input" id="clientPhone" placeholder="+7 (999) 123-45-67" required>
 </div>
 <div class="form-group">
-<div class="form-label">Дата</div>
+<div class="form-label">Дата записи</div>
 <input type="date" class="form-input" id="bookingDate" required>
 </div>
 <div class="form-group">
-<div class="form-label">Время</div>
+<div class="form-label">Время записи</div>
 <select class="form-input" id="bookingTime" required>
 <option value="">Выбери время</option>
 <option value="10:00">10:00</option>
@@ -536,7 +535,7 @@ MELOMAN<span>sound</span>
 
 <script>
 const TELEGRAM_BOT_TOKEN = '8438188364:AAE4251bkdhzWEnsRW2owDTkgmVRAYHiGVA';
-const TELEGRAM_CHAT_ID = '581535353';
+const TELEGRAM_CHAT_ID = '453729652';
 
 const today = new Date().toISOString().split('T')[0];
 document.getElementById('bookingDate').setAttribute('min', today);
@@ -577,26 +576,31 @@ if (!name || !phone || !date || !time) return;
 submitBtn.disabled = true;
 submitBtn.textContent = 'Отправляю...';
 
-const message = `🎙️ *Новая заявка Meloman Sound*%0A%0A👤 *Имя:* ${name}%0A📞 *Телефон:* ${phone}%0A📅 *Дата:* ${date}%0A⏰ *Время:* ${time}%0A%0AСвяжись с клиентом для подтверждения!`;
+const message = `🎙️ Новая заявка Меломан Саунд\n\n👤 Имя: ${name}\n📞 Телефон: ${phone}\n📅 Дата: ${date}\n⏰ Время: ${time}\n\nСвяжись с клиентом!`;
 
-const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${message}&parse_mode=Markdown`;
+const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
 try {
-const response = await fetch(url);
+const response = await fetch(url, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({
+chat_id: TELEGRAM_CHAT_ID,
+text: message
+})
+});
+
 const data = await response.json();
 
 if (data.ok) {
 successMsg.style.display = 'block';
 document.getElementById('bookingForm').reset();
-setTimeout(() => {
-closeModal();
-}, 2500);
+setTimeout(() => { closeModal(); }, 2500);
 } else {
-throw new Error('Ошибка Telegram API');
+errorMsg.style.display = 'block';
 }
 } catch (error) {
 errorMsg.style.display = 'block';
-console.error('Ошибка:', error);
 }
 
 submitBtn.disabled = false;
