@@ -535,7 +535,7 @@ MELOMAN<span>звук</span>
 
 <script>
 const TELEGRAM_BOT_TOKEN = '8438188364:AAE4251bkdhzWEnsRW2owDTkgmVRAYHiGVA';
-const TELEGRAM_CHAT_ID = '453729652';
+const TELEGRAM_CHAT_ID = '581535353';
 
 const today = new Date().toISOString().split('T')[0];
 document.getElementById('bookingDate').setAttribute('min', today);
@@ -556,7 +556,7 @@ document.getElementById('bookingModal').addEventListener('click', function(e) {
 if (e.target === this) closeModal();
 });
 
-async function sendBooking(e) {
+function sendBooking(e) {
 e.preventDefault();
 
 const submitBtn = document.getElementById('submitBtn');
@@ -576,35 +576,30 @@ if (!name || !phone || !date || !time) return;
 submitBtn.disabled = true;
 submitBtn.textContent = 'Отправляю...';
 
-const message = `🎙️ Новая заявка Меломан Саунд\n\n👤 Имя: ${name}\n📞 Телефон: ${phone}\n📅 Дата: ${date}\n⏰ Время: ${time}\n\nСвяжись с клиентом!`;
+const message = `🎙️ Новая заявка Меломан Саунд\n\n👤 Имя: ${name}\n📞 Телефон: ${phone}\n📅 Дата: ${date}\n⏰ Время: ${time}`;
 
-const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}`;
 
-try {
-const response = await fetch(url, {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({
-chat_id: TELEGRAM_CHAT_ID,
-text: message
-})
-});
-
-const data = await response.json();
-
+fetch(url)
+.then(function(response) { return response.json(); })
+.then(function(data) {
 if (data.ok) {
 successMsg.style.display = 'block';
 document.getElementById('bookingForm').reset();
-setTimeout(() => { closeModal(); }, 2500);
-} else {
-errorMsg.style.display = 'block';
-}
-} catch (error) {
-errorMsg.style.display = 'block';
-}
-
 submitBtn.disabled = false;
 submitBtn.textContent = 'Отправить заявку';
+setTimeout(function() { closeModal(); }, 2500);
+} else {
+errorMsg.style.display = 'block';
+submitBtn.disabled = false;
+submitBtn.textContent = 'Отправить заявку';
+}
+})
+.catch(function() {
+errorMsg.style.display = 'block';
+submitBtn.disabled = false;
+submitBtn.textContent = 'Отправить заявку';
+});
 }
 </script>
 
