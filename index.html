@@ -114,6 +114,8 @@
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            border: 0.5px solid rgba(0,0,0,0.04);
         }
 
         .section-header {
@@ -216,16 +218,23 @@
             font-weight: 400;
         }
 
-        .map-placeholder {
-            background: #E5E5EA;
-            border-radius: 12px;
-            height: 150px;
+        .map-link {
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--ios-secondary);
+            background: #E5E5EA;
+            border-radius: 12px;
+            height: 150px;
+            color: var(--ios-accent);
             font-size: 15px;
+            font-weight: 600;
             margin-top: 16px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .map-link:active {
+            opacity: 0.7;
         }
 
         .action-btn {
@@ -283,6 +292,7 @@
             background: #F9F9F9;
             color: var(--ios-text);
             -webkit-appearance: none;
+            appearance: none;
             transition: 0.2s;
         }
 
@@ -393,7 +403,7 @@
 
     <nav>
         <div class="logo">
-            MELOMAN<span>звук</span>
+            MELOMAN<span>sound</span>
         </div>
         <button class="header-btn" onclick="openModal()">Запись</button>
     </nav>
@@ -443,16 +453,16 @@
         <div class="card">
             <div class="gear-category">🎤 Микрофон</div>
             <div class="gear-grid" style="margin-bottom: 16px;">
-                <span class="gear-chip">Роде НТ1-А (студийный)</span>
+                <span class="gear-chip">Rode NT1-A</span>
             </div>
-            <div class="gear-category">🔊 Колонки</div>
+            <div class="gear-category">🔊 Мониторы</div>
             <div class="gear-grid" style="margin-bottom: 16px;">
-                <span class="gear-chip">ДжиБиЭль</span>
-                <span class="gear-chip">ЕвроСаунд</span>
+                <span class="gear-chip">JBL</span>
+                <span class="gear-chip">EURO SOUND</span>
             </div>
-            <div class="gear-category">💻 Программа</div>
+            <div class="gear-category">💻 Софт</div>
             <div class="gear-grid">
-                <span class="gear-chip">Кубейс 12 Про</span>
+                <span class="gear-chip">Cubase 12 Pro</span>
             </div>
         </div>
 
@@ -474,15 +484,15 @@
                 <span class="contact-label">📱 ВКонтакте</span>
                 <span class="contact-value">@clubmeloman_sound</span>
             </a>
-            <div class="map-placeholder">
-                🗺️ Иркутск, ул. Румянцева, 5/1
-            </div>
+            <a href="https://2gis.ru/irkutsk/geo/70030076149064818%2C104.302619%2C52.286785?m=104.302619%2C52.286785%2F16" target="_blank" class="map-link">
+                🗺️ Открыть в 2ГИС — ул. Румянцева, 5/1
+            </a>
         </div>
 
         <button class="action-btn" onclick="openModal()">Забронировать запись</button>
 
         <footer>
-            Меломан Саунд. Иркутск, Румянцева 5/1. 2026 год.
+            Meloman Sound. Иркутск, Румянцева 5/1. 2026 год.
         </footer>
     </div>
 
@@ -578,7 +588,7 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Отправляю...';
 
-            const message = '🎙️ Новая заявка Меломан Саунд\n\n👤 Имя: ' + name + '\n📞 Телефон: ' + phone + '\n📅 Дата: ' + date + '\n⏰ Время: ' + time;
+            const message = '🎙️ Новая заявка Meloman Sound\n\n👤 Имя: ' + name + '\n📞 Телефон: ' + phone + '\n📅 Дата: ' + date + '\n⏰ Время: ' + time;
 
             const urls = [
                 'https://api.telegram-bot.com/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
@@ -587,7 +597,6 @@
 
             function trySend(index) {
                 if (index >= urls.length) {
-                    // Если ни одно зеркало не сработало — показываем контакты
                     errorMsg.style.display = 'block';
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Отправить заявку';
