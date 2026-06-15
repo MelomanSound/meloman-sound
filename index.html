@@ -156,13 +156,15 @@
             if(!name||!phone||!date||!time)return;
             if(bookedDates.indexOf(date)!==-1){dateInput.classList.add('booked-date');warning.classList.add('show');return}
             submitBtn.disabled=true;submitBtn.textContent='Отправляю...';
-            bookedDates.push(date);
             fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}}).then(r=>r.json()).then(data=>{
                 const record=data.record||{};
+                const dates=record.dates||[];
                 const bookings=record.bookings||[];
+                if(dates.indexOf(date)===-1) dates.push(date);
                 bookings.push({name:name,phone:phone,date:date,time:time,new:true});
-                return fetch(JSONBIN_URL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY},body:JSON.stringify({dates:bookedDates,bookings:bookings})})
+                return fetch(JSONBIN_URL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY},body:JSON.stringify({dates:dates,bookings:bookings})})
             }).then(()=>{
+                bookedDates.push(date);
                 successMsg.style.display='block';document.getElementById('bookingForm').reset();
                 dateInput.classList.remove('booked-date');warning.classList.remove('show');
                 submitBtn.disabled=false;submitBtn.textContent='Отправить заявку';
