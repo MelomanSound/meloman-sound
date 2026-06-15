@@ -2,71 +2,50 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙️</text></svg>">
     <title>Meloman Sound | Админ-панель</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙️</text></svg>">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #F2F2F7; padding: 20px; }
-        h1 { margin-bottom: 8px; color: #1C1C1E; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #F2F2F7; padding: 20px; padding-bottom: 100px; }
+        h1 { margin-bottom: 8px; color: #1C1C1E; font-size: 24px; }
         .booking-card { background: #FFFFFF; border-radius: 16px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .booking-info strong { color: #007AFF; }
+        .booking-info strong { color: #007AFF; font-size: 16px; }
         .booking-info .date { font-size: 14px; color: #636366; margin-top: 4px; }
         .new-badge { background: #FF3B30; color: #FFFFFF; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 700; margin-left: 8px; animation: pulse 1s infinite; }
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-        .refresh-btn { background: #007AFF; color: #FFFFFF; border: none; padding: 12px 24px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; margin-bottom: 20px; }
-        .sound-btn { color: #FFFFFF; border: none; padding: 12px 24px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; margin-bottom: 20px; margin-left: 8px; }
+        .top-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .refresh-btn { background: #007AFF; color: #FFFFFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; }
+        .sound-btn { color: #FFFFFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; }
         .sound-on { background: #34C759; }
         .sound-off { background: #8E8E93; }
+        .notify-btn { color: #FFFFFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; background: #FF9500; }
         .empty { text-align: center; color: #8E8E93; padding: 40px; font-size: 16px; }
-        .counter { background: #007AFF; color: #FFFFFF; padding: 4px 10px; border-radius: 100px; font-size: 13px; font-weight: 700; margin-left: 8px; }
+        .counter { background: #FF3B30; color: #FFFFFF; padding: 4px 10px; border-radius: 100px; font-size: 13px; font-weight: 700; margin-left: 8px; }
         .status { font-size: 13px; margin-bottom: 16px; font-weight: 600; }
-
-        /* Всплывающее уведомление по центру */
-        .popup-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-        }
+        .popup-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center; }
         .popup-overlay.show { display: flex; }
-        .popup-box {
-            background: #FFFFFF;
-            border-radius: 24px;
-            padding: 30px 24px;
-            text-align: center;
-            max-width: 350px;
-            width: 90%;
-            animation: popIn 0.4s ease;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        @keyframes popIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            70% { transform: scale(1.05); }
-            100% { transform: scale(1); opacity: 1; }
-        }
+        .popup-box { background: #FFFFFF; border-radius: 24px; padding: 30px 24px; text-align: center; max-width: 350px; width: 90%; animation: popIn 0.4s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 70% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }
         .popup-icon { font-size: 60px; margin-bottom: 12px; }
         .popup-title { font-size: 22px; font-weight: 800; color: #1C1C1E; margin-bottom: 6px; }
         .popup-name { font-size: 18px; color: #007AFF; font-weight: 700; margin-bottom: 4px; }
         .popup-detail { font-size: 14px; color: #636366; margin-bottom: 2px; }
-        .popup-close {
-            background: #007AFF; color: #FFFFFF; border: none;
-            padding: 14px 40px; border-radius: 100px; font-weight: 700;
-            font-size: 16px; cursor: pointer; margin-top: 16px;
-        }
+        .popup-close { background: #007AFF; color: #FFFFFF; border: none; padding: 14px 40px; border-radius: 100px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 16px; }
     </style>
 </head>
 <body>
     <h1>🎙️ Заявки Meloman Sound <span class="counter" id="counter">0</span></h1>
     <p class="status" id="status">🟢 Отслеживание...</p>
-    <button class="refresh-btn" onclick="loadBookings()">🔄 Обновить</button>
-    <button class="sound-btn sound-on" id="soundBtn" onclick="toggleSound()">🔊 Звук ВКЛ</button>
+    <div class="top-bar">
+        <button class="refresh-btn" onclick="loadBookings()">🔄 Обновить</button>
+        <button class="sound-btn sound-on" id="soundBtn" onclick="toggleSound()">🔊 Звук ВКЛ</button>
+        <button class="notify-btn" onclick="requestNotification()">🔔 Уведомления</button>
+    </div>
     <div id="bookingsList"></div>
 
-    <!-- Всплывающее уведомление -->
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-box">
             <div class="popup-icon">🔔</div>
@@ -115,11 +94,28 @@
             }catch(e){}
         }
 
+        function requestNotification(){
+            if('Notification' in window){
+                Notification.requestPermission().then(perm => {
+                    if(perm === 'granted'){
+                        alert('✅ Уведомления включены! Теперь ты будешь получать их даже когда телефон заблокирован.');
+                        new Notification('Готово!',{body:'Уведомления работают 🔔', icon:'🎙️'});
+                    } else {
+                        alert('❌ Уведомления отклонены. Зайди в настройки браузера и разреши уведомления.');
+                    }
+                });
+            } else {
+                alert('Твой браузер не поддерживает уведомления. Добавь сайт на главный экран как приложение.');
+            }
+        }
+
         function showPopup(name, phone, date, time){
             document.getElementById('popupName').textContent = '👤 ' + name;
             document.getElementById('popupPhone').textContent = '📞 ' + phone;
             document.getElementById('popupDate').textContent = '📅 ' + date + ' в ' + time;
             document.getElementById('popupOverlay').classList.add('show');
+            // Вибрация если поддерживается
+            if('vibrate' in navigator) navigator.vibrate([200,100,200]);
         }
 
         function closePopup(){
@@ -147,7 +143,18 @@
                     beep();
                     showPopup(last.name, last.phone, last.date, last.time);
                     if('Notification' in window && Notification.permission === 'granted'){
-                        new Notification('Новая заявка!',{body: last.name + ' — ' + last.date + ' в ' + last.time, icon:'🎙️', tag:'booking'});
+                        navigator.serviceWorker.ready.then(reg => {
+                            reg.showNotification('Новая заявка!', {
+                                body: last.name + ' — ' + last.date + ' в ' + last.time,
+                                icon: '🎙️',
+                                badge: '🎙️',
+                                tag: 'booking',
+                                vibrate: [200,100,200],
+                                requireInteraction: true
+                            });
+                        }).catch(()=>{
+                            new Notification('Новая заявка!',{body: last.name + ' — ' + last.date + ' в ' + last.time, icon:'🎙️', tag:'booking'});
+                        });
                     }
                 }
                 lastCount = count;
@@ -169,12 +176,6 @@
                 document.getElementById('status').textContent = '🔴 Ошибка соединения';
             });
         }
-
-        document.body.addEventListener('click', function(){
-            if('Notification' in window && Notification.permission === 'default'){
-                Notification.requestPermission();
-            }
-        }, {once: true});
 
         setInterval(loadBookings, 10000);
         loadBookings();
