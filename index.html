@@ -29,6 +29,7 @@
             color: var(--ios-text);
             line-height: 1.4;
             -webkit-font-smoothing: antialiased;
+            padding-bottom: 160px;
         }
 
         nav {
@@ -412,57 +413,67 @@
             color: var(--ios-secondary);
         }
 
+        /* Календарь закреплён внизу по центру */
         .mini-calendar {
             position: fixed;
-            bottom: 90px;
-            left: 10px;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             background: #FFFFFF;
             border-radius: 16px;
-            padding: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 12px 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
             z-index: 150;
-            width: 170px;
+            width: auto;
+            max-width: 95vw;
             font-size: 11px;
+            display: inline-block;
         }
 
         .mini-calendar h4 {
             text-align: center;
             margin-bottom: 6px;
-            font-size: 12px;
+            font-size: 13px;
             color: var(--ios-text);
+            white-space: nowrap;
         }
 
         .mini-calendar .month-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            gap: 12px;
         }
 
         .mini-calendar .month-nav button {
             background: none;
             border: none;
-            font-size: 14px;
+            font-size: 16px;
             cursor: pointer;
             color: var(--ios-accent);
+            padding: 4px;
         }
 
         .mini-calendar .month-nav span {
-            font-size: 11px;
+            font-size: 12px;
+            white-space: nowrap;
+            font-weight: 600;
         }
 
         .mini-calendar .days {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 1px;
+            gap: 3px;
             text-align: center;
         }
 
         .mini-calendar .day {
-            padding: 3px;
-            border-radius: 4px;
+            padding: 5px 6px;
+            border-radius: 6px;
             cursor: default;
-            font-size: 10px;
+            font-size: 12px;
+            min-width: 22px;
         }
 
         .mini-calendar .day.booked {
@@ -472,18 +483,28 @@
         }
 
         .mini-calendar .day.today {
-            border: 1px solid var(--ios-accent);
+            border: 2px solid var(--ios-accent);
+            font-weight: 700;
         }
 
         .mini-calendar .day-name {
-            font-size: 9px;
+            font-size: 10px;
             color: var(--ios-secondary);
-            padding: 1px;
+            padding: 3px 0;
+            font-weight: 600;
         }
 
         @media (max-width: 380px) {
             .hero h1 {
                 font-size: 28px;
+            }
+            .mini-calendar {
+                padding: 10px 12px;
+            }
+            .mini-calendar .day {
+                padding: 4px 5px;
+                font-size: 11px;
+                min-width: 18px;
             }
         }
     </style>
@@ -585,7 +606,7 @@
         </footer>
     </div>
 
-    <!-- Мини-календарь -->
+    <!-- Мини-календарь закреплён внизу -->
     <div class="mini-calendar" id="miniCalendar">
         <h4>📅 Занятые даты</h4>
         <div class="month-nav">
