@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Meloman Sound | Студия звукозаписи Иркутск</title>
     <style>
         :root { --ios-bg: #F2F2F7; --ios-text: #1C1C1E; --ios-secondary: #636366; --ios-accent: #007AFF; --ios-separator: #E5E5EA; }
@@ -23,79 +22,71 @@
         @keyframes wave { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         nav { background: rgba(242, 242, 247, 0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 100; border-bottom: 0.5px solid var(--ios-separator); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
         body.dark nav { background: rgba(44, 44, 46, 0.5); }
-        .logo { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: var(--ios-text); }
-        .logo span { font-weight: 400; font-size: 13px; color: var(--ios-secondary); letter-spacing: 2px; display: block; }
+        .logo { font-size: 22px; font-weight: 700; color: var(--ios-text); } .logo span { font-weight: 400; font-size: 13px; color: var(--ios-secondary); display: block; }
         .nav-buttons { display: flex; gap: 8px; align-items: center; }
-        .header-btn { background: var(--ios-accent); color: #FFFFFF; border: none; padding: 10px 16px; border-radius: 100px; font-weight: 600; font-size: 14px; cursor: pointer; }
-        .theme-btn { background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--ios-text); border: 0.5px solid var(--ios-separator); padding: 10px 12px; border-radius: 100px; font-size: 16px; cursor: pointer; }
-        body.dark .theme-btn { background: rgba(44, 44, 46, 0.3); }
+        .header-btn { background: var(--ios-accent); color: #FFF; border: none; padding: 10px 16px; border-radius: 100px; font-weight: 600; font-size: 14px; cursor: pointer; }
+        .theme-btn { background: rgba(255,255,255,0.3); backdrop-filter: blur(10px); color: var(--ios-text); border: 0.5px solid var(--ios-separator); padding: 10px 12px; border-radius: 100px; font-size: 16px; cursor: pointer; }
+        body.dark .theme-btn { background: rgba(44,44,46,0.3); }
         .container { padding: 0 16px; position: relative; z-index: 1; }
         .hero { padding: 20px 0; text-align: center; }
         .hero-logo { width: 100%; max-width: 300px; height: auto; margin-bottom: 20px; background: transparent; }
-        .hero h1 { font-size: 34px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; line-height: 1.1; text-align: left; }
-        .hero .accent { color: var(--ios-accent); }
+        .hero h1 { font-size: 34px; font-weight: 700; text-align: left; } .hero .accent { color: var(--ios-accent); }
         .hero p { font-size: 17px; color: var(--ios-secondary); margin-bottom: 24px; text-align: left; }
-        .card { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 0.5px solid rgba(0,0,0,0.04); }
-        body.dark .card { background: rgba(44, 44, 46, 0.2); border: 0.5px solid rgba(255,255,255,0.04); }
-        .section-header { font-size: 22px; font-weight: 700; margin: 32px 0 12px 0; letter-spacing: -0.3px; }
+        .card { background: rgba(255,255,255,0.2); backdrop-filter: blur(6px); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 0.5px solid rgba(0,0,0,0.04); }
+        body.dark .card { background: rgba(44,44,46,0.2); border: 0.5px solid rgba(255,255,255,0.04); }
+        .section-header { font-size: 22px; font-weight: 700; margin: 32px 0 12px; }
         .service-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 0.5px solid var(--ios-separator); }
         .service-row:last-child { border-bottom: none; }
         .service-left { display: flex; align-items: center; gap: 12px; }
-        .service-icon-box { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; background: rgba(242, 242, 247, 0.4); }
-        body.dark .service-icon-box { background: rgba(58, 58, 60, 0.4); }
-        .service-name { font-weight: 600; font-size: 17px; }
-        .service-desc { font-size: 13px; color: var(--ios-secondary); }
+        .service-icon-box { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; background: rgba(242,242,247,0.4); }
+        body.dark .service-icon-box { background: rgba(58,58,60,0.4); }
+        .service-name { font-weight: 600; font-size: 17px; } .service-desc { font-size: 13px; color: var(--ios-secondary); }
         .service-price { font-weight: 700; color: var(--ios-accent); font-size: 17px; }
         .gear-grid { display: flex; flex-wrap: wrap; gap: 12px; }
-        .gear-chip { background: rgba(242, 242, 247, 0.4); padding: 8px 16px; border-radius: 100px; font-size: 14px; font-weight: 500; color: var(--ios-text); }
-        body.dark .gear-chip { background: rgba(58, 58, 60, 0.4); }
-        .gear-category { font-weight: 700; font-size: 14px; color: var(--ios-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .gear-chip { background: rgba(242,242,247,0.4); padding: 8px 16px; border-radius: 100px; font-size: 14px; font-weight: 500; color: var(--ios-text); }
+        body.dark .gear-chip { background: rgba(58,58,60,0.4); }
+        .gear-category { font-weight: 700; font-size: 14px; color: var(--ios-secondary); margin-bottom: 8px; text-transform: uppercase; }
         .contact-link { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 0.5px solid var(--ios-separator); text-decoration: none; color: var(--ios-accent); font-size: 17px; }
         .contact-link:last-child { border-bottom: none; }
-        .contact-label { color: var(--ios-text); font-weight: 500; }
-        .contact-value { font-weight: 400; }
-        .map-link { display: flex; align-items: center; justify-content: center; background: rgba(229, 229, 234, 0.3); border-radius: 12px; height: 150px; color: var(--ios-accent); font-size: 15px; font-weight: 600; margin-top: 16px; text-decoration: none; }
-        body.dark .map-link { background: rgba(58, 58, 60, 0.3); }
-        .action-btn { display: block; background: var(--ios-accent); color: #FFFFFF; text-align: center; padding: 16px; border-radius: 16px; font-weight: 700; font-size: 17px; margin: 24px 0 40px; border: none; width: 100%; cursor: pointer; }
-        .calendar-btn { display: block; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); color: var(--ios-accent); text-align: center; padding: 14px; border-radius: 16px; font-weight: 600; font-size: 15px; margin: 0 0 24px; border: 0.5px solid rgba(0,0,0,0.04); width: 100%; cursor: pointer; }
-        body.dark .calendar-btn { background: rgba(44, 44, 46, 0.2); border: 0.5px solid rgba(255,255,255,0.04); }
-        footer { text-align: center; padding: 24px 16px 40px; color: #8E8E93; font-size: 13px; position: relative; z-index: 1; }
+        .contact-label { color: var(--ios-text); font-weight: 500; } .contact-value { font-weight: 400; }
+        .map-link { display: flex; align-items: center; justify-content: center; background: rgba(229,229,234,0.3); border-radius: 12px; height: 150px; color: var(--ios-accent); font-size: 15px; font-weight: 600; margin-top: 16px; text-decoration: none; }
+        body.dark .map-link { background: rgba(58,58,60,0.3); }
+        .action-btn { display: block; background: var(--ios-accent); color: #FFF; text-align: center; padding: 16px; border-radius: 16px; font-weight: 700; font-size: 17px; margin: 24px 0 40px; border: none; width: 100%; cursor: pointer; }
+        .calendar-btn { display: block; background: rgba(255,255,255,0.2); backdrop-filter: blur(6px); color: var(--ios-accent); text-align: center; padding: 14px; border-radius: 16px; font-weight: 600; font-size: 15px; margin: 0 0 24px; border: 0.5px solid rgba(0,0,0,0.04); width: 100%; cursor: pointer; }
+        body.dark .calendar-btn { background: rgba(44,44,46,0.2); }
+        footer { text-align: center; padding: 24px 16px 40px; color: #8E8E93; font-size: 13px; }
         .form-group { margin-bottom: 16px; }
-        .form-label { font-size: 13px; color: var(--ios-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; font-weight: 600; }
-        .form-input { width: 100%; padding: 14px 16px; border: 1px solid var(--ios-separator); border-radius: 12px; font-size: 17px; font-family: inherit; background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); color: var(--ios-text); -webkit-appearance: none; appearance: none; }
-        body.dark .form-input { background: rgba(44, 44, 46, 0.3); }
-        .form-input:focus { outline: none; border-color: var(--ios-accent); background: rgba(255, 255, 255, 0.5); }
-        body.dark .form-input:focus { background: rgba(44, 44, 46, 0.5); }
+        .form-label { font-size: 13px; color: var(--ios-secondary); text-transform: uppercase; font-weight: 600; }
+        .form-input { width: 100%; padding: 14px 16px; border: 1px solid var(--ios-separator); border-radius: 12px; font-size: 17px; background: rgba(255,255,255,0.3); backdrop-filter: blur(5px); color: var(--ios-text); -webkit-appearance: none; }
+        body.dark .form-input { background: rgba(44,44,46,0.3); }
+        .form-input:focus { outline: none; border-color: var(--ios-accent); }
         .form-input.booked-date { border-color: #FF3B30; }
         select.form-input { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23636366' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
         .date-warning { color: #FF3B30; font-size: 13px; font-weight: 600; margin-top: 4px; display: none; }
         .date-warning.show { display: block; }
-        .success-msg { background: #34C759; color: #FFFFFF; padding: 14px 20px; border-radius: 12px; font-weight: 600; text-align: center; margin-bottom: 16px; display: none; }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+        .success-msg { background: #34C759; color: #FFF; padding: 14px 20px; border-radius: 12px; font-weight: 600; text-align: center; margin-bottom: 16px; display: none; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(8px); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.active { display: flex; }
-        .modal { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 20px; padding: 24px; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; border: 0.5px solid rgba(0,0,0,0.08); }
-        body.dark .modal { background: rgba(44, 44, 46, 0.85); border: 0.5px solid rgba(255,255,255,0.08); }
-        .modal h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; text-align: left; color: var(--ios-text); }
-        .modal .subhead { margin-bottom: 20px; color: var(--ios-secondary); }
-        .close-modal { background: rgba(242, 242, 247, 0.5); border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; cursor: pointer; float: right; display: flex; align-items: center; justify-content: center; color: var(--ios-secondary); }
-        body.dark .close-modal { background: rgba(58, 58, 60, 0.5); }
+        .modal { background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); border-radius: 20px; padding: 24px; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; }
+        body.dark .modal { background: rgba(44,44,46,0.85); }
+        .modal h2 { font-size: 22px; font-weight: 700; color: var(--ios-text); }
+        .close-modal { background: rgba(242,242,247,0.5); border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; cursor: pointer; float: right; display: flex; align-items: center; justify-content: center; color: var(--ios-secondary); }
+        body.dark .close-modal { background: rgba(58,58,60,0.5); }
         .calendar-modal { text-align: center; }
         .calendar-modal .month-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 16px; }
-        .calendar-modal .month-nav button { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--ios-accent); padding: 8px; }
-        .calendar-modal .month-nav span { font-size: 16px; font-weight: 700; color: var(--ios-text); }
-        .calendar-modal .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+        .calendar-modal .month-nav button { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--ios-accent); }
+        .calendar-modal .days { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; text-align: center; }
         .calendar-modal .day { padding: 10px; border-radius: 8px; font-size: 15px; color: var(--ios-text); }
-        .calendar-modal .day.booked { background: #FF3B30; color: #FFFFFF; font-weight: 700; }
+        .calendar-modal .day.booked { background: #FF3B30; color: #FFF; font-weight: 700; }
         .calendar-modal .day.today { border: 2px solid var(--ios-accent); font-weight: 700; }
-        .calendar-modal .day.free { background: rgba(232, 245, 233, 0.5); color: #2E7D32; font-weight: 500; }
-        body.dark .calendar-modal .day.free { background: rgba(27, 94, 32, 0.5); color: #A5D6A7; }
+        .calendar-modal .day.free { background: rgba(232,245,233,0.5); color: #2E7D32; font-weight: 500; }
+        body.dark .calendar-modal .day.free { background: rgba(27,94,32,0.5); color: #A5D6A7; }
         .calendar-modal .day-name { font-size: 12px; color: var(--ios-secondary); padding: 8px 0; font-weight: 600; }
         .music-wrapper { position: fixed; bottom: 20px; right: 20px; display: flex; align-items: center; gap: 8px; z-index: 100; }
-        .music-toggle { width: 50px; height: 50px; border-radius: 50%; background: var(--ios-accent); color: #FFFFFF; border: none; font-size: 22px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: 0.3s; flex-shrink: 0; }
+        .music-toggle { width: 50px; height: 50px; border-radius: 50%; background: var(--ios-accent); color: #FFF; border: none; font-size: 22px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         .music-toggle.playing { background: #34C759; animation: musicPulse 2s infinite; }
-        @keyframes musicPulse { 0%,100% { box-shadow: 0 4px 12px rgba(52,199,89,0.3); } 50% { box-shadow: 0 4px 25px rgba(52,199,89,0.6); } }
+        @keyframes musicPulse { 0%,100%{box-shadow:0 4px 12px rgba(52,199,89,0.3)} 50%{box-shadow:0 4px 25px rgba(52,199,89,0.6)} }
         .music-label { font-size: 10px; color: var(--ios-secondary); text-align: right; line-height: 1.2; max-width: 80px; }
-        @media (max-width: 380px) { .hero h1 { font-size: 28px; } }
     </style>
 </head>
 <body>
@@ -119,7 +110,7 @@
             <div class="gear-category">🎧 Наушники</div><div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">AKG</span></div>
             <div class="gear-category">💻 Софт</div><div class="gear-grid"><span class="gear-chip">Cubase 12 Pro</span></div>
         </div>
-        <div id="contact-section" class="section-header">Контакты</div>
+        <div class="section-header">Контакты</div>
         <div class="card">
             <div class="contact-link"><span class="contact-label">📍 Адрес</span><span class="contact-value" style="color:var(--ios-text);">Иркутск, ул. Румянцева, 5/1</span></div>
             <a href="tel:+79939424102" class="contact-link"><span class="contact-label">📞 Телефон</span><span class="contact-value">+7 (993) 942-41-02</span></a>
@@ -131,102 +122,51 @@
         <button class="action-btn" onclick="openBookingModal()">Забронировать запись</button>
         <footer>Meloman Sound. Иркутск, Румянцева 5/1. 2026 год.</footer>
     </div>
-    <div class="modal-overlay" id="calendarModal"><div class="modal calendar-modal"><button class="close-modal" onclick="closeCalendarModal()">✕</button><h2>📅 Занятые даты</h2><p class="subhead">🔴 Красные — занято | 🟢 Зелёные — свободно</p><div class="month-nav"><button onclick="changeMonth(-1)">◀</button><span id="calMonthLabel">Июнь 2026</span><button onclick="changeMonth(1)">▶</button></div><div class="days" id="calDaysGrid"></div></div></div>
-    <div class="modal-overlay" id="bookingModal"><div class="modal"><button class="close-modal" onclick="closeBookingModal()">✕</button><h2>Записаться на студию</h2><p class="subhead">Выбери дату и время — я свяжусь с тобой для подтверждения</p><div class="success-msg" id="successMsg">✅ Заявка отправлена! Скоро свяжусь.</div><form id="bookingForm" onsubmit="sendBooking(event)"><div class="form-group"><div class="form-label">Твоё имя</div><input type="text" class="form-input" id="clientName" placeholder="Иван" required></div><div class="form-group"><div class="form-label">Номер телефона</div><input type="tel" class="form-input" id="clientPhone" placeholder="+7 (999) 123-45-67" required></div><div class="form-group"><div class="form-label">Дата записи</div><input type="date" class="form-input" id="bookingDate" required onchange="checkDate()"><div class="date-warning" id="dateWarning">⚠️ Эта дата уже занята! Выбери другую.</div></div><div class="form-group"><div class="form-label">Время записи</div><select class="form-input" id="bookingTime" required><option value="">Выбери время</option><option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option><option value="19:00">19:00</option><option value="20:00">20:00</option><option value="21:00">21:00</option></select></div><button type="submit" class="action-btn" id="submitBtn" style="margin-bottom:0;">Отправить заявку</button></form></div></div>
-
-    <div class="music-wrapper">
-        <div class="music-label" id="musicLabel">Включай<br>и бронируй<br>с кайфом</div>
-        <button class="music-toggle" id="musicToggle" onclick="toggleMusic()" title="Включить музыку">🎵</button>
-    </div>
-
-    <audio id="bgMusic" loop preload="auto">
-        <source src="Aural%20Drift%20-%20Chillouten%20[audiovk.com].mp3" type="audio/mpeg">
-    </audio>
+    <div class="modal-overlay" id="calendarModal"><div class="modal calendar-modal"><button class="close-modal" onclick="closeCalendarModal()">✕</button><h2>📅 Занятые даты</h2><p>🔴 Красные — занято | 🟢 Зелёные — свободно</p><div class="month-nav"><button onclick="changeMonth(-1)">◀</button><span id="calMonthLabel">Июнь 2026</span><button onclick="changeMonth(1)">▶</button></div><div class="days" id="calDaysGrid"></div></div></div>
+    <div class="modal-overlay" id="bookingModal"><div class="modal"><button class="close-modal" onclick="closeBookingModal()">✕</button><h2>Записаться на студию</h2><p>Выбери дату и время — я свяжусь с тобой для подтверждения</p><div class="success-msg" id="successMsg">✅ Заявка отправлена!</div><form id="bookingForm" onsubmit="sendBooking(event)"><div class="form-group"><div class="form-label">Твоё имя</div><input type="text" class="form-input" id="clientName" placeholder="Иван" required></div><div class="form-group"><div class="form-label">Номер телефона</div><input type="tel" class="form-input" id="clientPhone" placeholder="+7 (999) 123-45-67" required></div><div class="form-group"><div class="form-label">Дата записи</div><input type="date" class="form-input" id="bookingDate" required onchange="checkDate()"><div class="date-warning" id="dateWarning">⚠️ Эта дата уже занята!</div></div><div class="form-group"><div class="form-label">Время записи</div><select class="form-input" id="bookingTime" required><option value="">Выбери время</option><option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option><option value="19:00">19:00</option><option value="20:00">20:00</option><option value="21:00">21:00</option></select></div><button type="submit" class="action-btn" id="submitBtn">Отправить заявку</button></form></div></div>
+    <div class="music-wrapper"><div class="music-label" id="musicLabel">Включай<br>и бронируй<br>с кайфом</div><button class="music-toggle" id="musicToggle" onclick="toggleMusic()">🎵</button></div>
+    <audio id="bgMusic" loop preload="auto"><source src="Aural%20Drift%20-%20Chillouten%20[audiovk.com].mp3" type="audio/mpeg"></audio>
 
     <script>
-        let musicPlaying = false;
-
-        function toggleMusic() {
-            const audio = document.getElementById('bgMusic');
-            const btn = document.getElementById('musicToggle');
-            const label = document.getElementById('musicLabel');
-            if (!musicPlaying) {
-                audio.play().then(() => {
-                    musicPlaying = true; btn.textContent = '🎶'; btn.classList.add('playing'); label.textContent = 'Качает...';
-                }).catch(() => { btn.textContent = '🔇'; label.textContent = 'Нажми ещё раз'; });
-            } else {
-                audio.pause(); musicPlaying = false; btn.textContent = '🎵'; btn.classList.remove('playing'); label.textContent = 'Включай\nи бронируй\nс кайфом';
-            }
-        }
-
-        const notesArr=['🎵','🎶','♪','♫','♬','🎼','🎹','🎸'];const musicBgEl=document.getElementById('musicBg');for(let i=0;i<20;i++){const note=document.createElement('span');note.className='note';note.textContent=notesArr[Math.floor(Math.random()*notesArr.length)];note.style.left=Math.random()*100+'%';note.style.fontSize=(20+Math.random()*30)+'px';note.style.animationDuration=(8+Math.random()*15)+'s';note.style.animationDelay=Math.random()*10+'s';musicBgEl.appendChild(note)}
+        let musicPlaying=false;
+        function toggleMusic(){const a=document.getElementById('bgMusic');const b=document.getElementById('musicToggle');const l=document.getElementById('musicLabel');if(!musicPlaying){a.play().then(()=>{musicPlaying=true;b.textContent='🎶';b.classList.add('playing');l.textContent='Качает...'}).catch(()=>{b.textContent='🔇';l.textContent='Нажми ещё раз'})}else{a.pause();musicPlaying=false;b.textContent='🎵';b.classList.remove('playing');l.textContent='Включай\nи бронируй\nс кайфом'}}
         
-        // Новый URL jsonstore.io
-        const STORE_URL = 'https://www.jsonstore.io/8b6c7e5d4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d';
+        const notesArr=['🎵','🎶','♪','♫','♬','🎼','🎹','🎸'];const mbg=document.getElementById('musicBg');for(let i=0;i<20;i++){const n=document.createElement('span');n.className='note';n.textContent=notesArr[Math.floor(Math.random()*notesArr.length)];n.style.left=Math.random()*100+'%';n.style.fontSize=(20+Math.random()*30)+'px';n.style.animationDuration=(8+Math.random()*15)+'s';n.style.animationDelay=Math.random()*10+'s';mbg.appendChild(n)}
         
+        const SHEET_URL='https://script.google.com/macros/s/AKfycbzK4YOUR_SCRIPT_ID/exec';
         const today=new Date().toISOString().split('T')[0];document.getElementById('bookingDate').setAttribute('min',today);
-        let bookedDates=JSON.parse(localStorage.getItem('meloman_dates')||'[]');
-        let calCurrentMonth=new Date().getMonth();let calCurrentYear=new Date().getFullYear();
+        let bookedDates=JSON.parse(localStorage.getItem('mdates')||'[]');
+        let cm=new Date().getMonth();let cy=new Date().getFullYear();
         
-        function toggleTheme(){const body=document.body;const btn=document.querySelector('.theme-btn');if(body.classList.contains('dark')){body.classList.remove('dark');btn.textContent='🌙';localStorage.setItem('theme','light')}else{body.classList.add('dark');btn.textContent='☀️';localStorage.setItem('theme','dark')}}
+        function toggleTheme(){const b=document.body;const btn=document.querySelector('.theme-btn');if(b.classList.contains('dark')){b.classList.remove('dark');btn.textContent='🌙';localStorage.setItem('theme','light')}else{b.classList.add('dark');btn.textContent='☀️';localStorage.setItem('theme','dark')}}
         if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');document.querySelector('.theme-btn').textContent='☀️'}
         
-        function loadBookedDates(){
-            fetch(STORE_URL + '/meloman-dates')
-            .then(r=>r.json())
-            .then(data=>{
-                if(data.result && data.result.dates){
-                    const serverDates = data.result.dates || [];
-                    bookedDates = [...new Set([...bookedDates, ...serverDates])];
-                    localStorage.setItem('meloman_dates', JSON.stringify(bookedDates));
-                }
-            })
-            .catch(()=>{});
-        }
-        
-        function renderCalendarModal(){const monthLabel=document.getElementById('calMonthLabel');const daysGrid=document.getElementById('calDaysGrid');const months=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];monthLabel.textContent=months[calCurrentMonth]+' '+calCurrentYear;daysGrid.innerHTML='';['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(d=>{const div=document.createElement('div');div.className='day-name';div.textContent=d;daysGrid.appendChild(div)});const firstDay=new Date(calCurrentYear,calCurrentMonth,1).getDay();const daysInMonth=new Date(calCurrentYear,calCurrentMonth+1,0).getDate();let startDay=firstDay===0?6:firstDay-1;for(let i=0;i<startDay;i++){const div=document.createElement('div');daysGrid.appendChild(div)}const todayStr=new Date().toISOString().split('T')[0];for(let d=1;d<=daysInMonth;d++){const div=document.createElement('div');div.className='day';div.textContent=d;const dateStr=calCurrentYear+'-'+String(calCurrentMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');if(bookedDates.indexOf(dateStr)!==-1)div.classList.add('booked');else if(dateStr>=todayStr)div.classList.add('free');if(dateStr===todayStr)div.classList.add('today');daysGrid.appendChild(div)}}
-        function changeMonth(dir){calCurrentMonth+=dir;if(calCurrentMonth>11){calCurrentMonth=0;calCurrentYear++}if(calCurrentMonth<0){calCurrentMonth=11;calCurrentYear--}renderCalendarModal()}
+        function renderCalendarModal(){const ml=document.getElementById('calMonthLabel');const dg=document.getElementById('calDaysGrid');const months=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];ml.textContent=months[cm]+' '+cy;dg.innerHTML='';['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(d=>{const div=document.createElement('div');div.className='day-name';div.textContent=d;dg.appendChild(div)});const fd=new Date(cy,cm,1).getDay();const dim=new Date(cy,cm+1,0).getDate();let sd=fd===0?6:fd-1;for(let i=0;i<sd;i++){const div=document.createElement('div');dg.appendChild(div)}const ts=new Date().toISOString().split('T')[0];for(let d=1;d<=dim;d++){const div=document.createElement('div');div.className='day';div.textContent=d;const ds=cy+'-'+String(cm+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');if(bookedDates.indexOf(ds)!==-1)div.classList.add('booked');else if(ds>=ts)div.classList.add('free');if(ds===ts)div.classList.add('today');dg.appendChild(div)}}
+        function changeMonth(dir){cm+=dir;if(cm>11){cm=0;cy++}if(cm<0){cm=11;cy--}renderCalendarModal()}
         function openCalendarModal(){renderCalendarModal();document.getElementById('calendarModal').classList.add('active');document.body.style.overflow='hidden'}
         function closeCalendarModal(){document.getElementById('calendarModal').classList.remove('active');document.body.style.overflow=''}
         document.getElementById('calendarModal').addEventListener('click',function(e){if(e.target===this)closeCalendarModal()})
-        function checkDate(){const dateInput=document.getElementById('bookingDate');const warning=document.getElementById('dateWarning');if(bookedDates.indexOf(dateInput.value)!==-1){dateInput.classList.add('booked-date');warning.classList.add('show')}else{dateInput.classList.remove('booked-date');warning.classList.remove('show')}}
+        function checkDate(){const di=document.getElementById('bookingDate');const w=document.getElementById('dateWarning');if(bookedDates.indexOf(di.value)!==-1){di.classList.add('booked-date');w.classList.add('show')}else{di.classList.remove('booked-date');w.classList.remove('show')}}
         function openBookingModal(){document.getElementById('bookingModal').classList.add('active');document.body.style.overflow='hidden';document.getElementById('successMsg').style.display='none'}
         function closeBookingModal(){document.getElementById('bookingModal').classList.remove('active');document.body.style.overflow='';document.getElementById('successMsg').style.display='none';document.getElementById('dateWarning').classList.remove('show');document.getElementById('bookingDate').classList.remove('booked-date')}
         document.getElementById('bookingModal').addEventListener('click',function(e){if(e.target===this)closeBookingModal()})
         
         function sendBooking(e){
             e.preventDefault();
-            const submitBtn=document.getElementById('submitBtn');const successMsg=document.getElementById('successMsg');
-            const dateInput=document.getElementById('bookingDate');const warning=document.getElementById('dateWarning');
-            successMsg.style.display='none';
+            const sb=document.getElementById('submitBtn');const sm=document.getElementById('successMsg');
+            const di=document.getElementById('bookingDate');const w=document.getElementById('dateWarning');
+            sm.style.display='none';
             const name=document.getElementById('clientName').value.trim();const phone=document.getElementById('clientPhone').value.trim();
-            const date=dateInput.value;const time=document.getElementById('bookingTime').value;
+            const date=di.value;const time=document.getElementById('bookingTime').value;
             if(!name||!phone||!date||!time)return;
-            if(bookedDates.indexOf(date)!==-1){dateInput.classList.add('booked-date');warning.classList.add('show');return}
+            if(bookedDates.indexOf(date)!==-1){di.classList.add('booked-date');w.classList.add('show');return}
             
             bookedDates.push(date);
-            localStorage.setItem('meloman_dates', JSON.stringify(bookedDates));
-            submitBtn.textContent='Отправляю...';
-            
-            fetch(STORE_URL + '/meloman-dates', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({dates: bookedDates})
-            })
-            .then(()=>{
-                successMsg.style.display='block';document.getElementById('bookingForm').reset();
-                dateInput.classList.remove('booked-date');warning.classList.remove('show');
-                submitBtn.textContent='Отправить заявку';
-                setTimeout(()=>closeBookingModal(),2000);
-            })
-            .catch(()=>{
-                successMsg.style.display='block';document.getElementById('bookingForm').reset();
-                dateInput.classList.remove('booked-date');warning.classList.remove('show');
-                submitBtn.textContent='Отправить заявку';
-                setTimeout(()=>closeBookingModal(),2000);
-            });
+            localStorage.setItem('mdates',JSON.stringify(bookedDates));
+            sm.style.display='block';document.getElementById('bookingForm').reset();
+            di.classList.remove('booked-date');w.classList.remove('show');
+            setTimeout(()=>closeBookingModal(),2000);
         }
-        loadBookedDates();
     </script>
 </body>
 </html>
