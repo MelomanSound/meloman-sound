@@ -16,6 +16,15 @@
             --ios-separator: #E5E5EA;
         }
 
+        body.dark {
+            --ios-bg: #1C1C1E;
+            --ios-card: #2C2C2E;
+            --ios-text: #FFFFFF;
+            --ios-secondary: #AEAEB2;
+            --ios-accent: #0A84FF;
+            --ios-separator: #3A3A3C;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -29,6 +38,7 @@
             color: var(--ios-text);
             line-height: 1.4;
             -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         nav {
@@ -43,6 +53,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        body.dark nav {
+            background: rgba(44, 44, 46, 0.8);
         }
 
         .logo {
@@ -60,20 +74,41 @@
             display: block;
         }
 
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
         .header-btn {
             background: var(--ios-accent);
             color: #FFFFFF;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 16px;
             border-radius: 100px;
             font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
             text-decoration: none;
             transition: 0.2s;
             cursor: pointer;
         }
 
         .header-btn:active {
+            opacity: 0.6;
+        }
+
+        .theme-btn {
+            background: var(--ios-card);
+            color: var(--ios-text);
+            border: 1px solid var(--ios-separator);
+            padding: 10px 12px;
+            border-radius: 100px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .theme-btn:active {
             opacity: 0.6;
         }
 
@@ -119,6 +154,7 @@
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
+            transition: background-color 0.3s;
         }
 
         .section-header {
@@ -157,6 +193,10 @@
             background: #F2F2F7;
         }
 
+        body.dark .service-icon-box {
+            background: #3A3A3C;
+        }
+
         .service-name {
             font-weight: 600;
             font-size: 17px;
@@ -186,6 +226,11 @@
             font-size: 14px;
             font-weight: 500;
             color: var(--ios-text);
+            transition: background-color 0.3s;
+        }
+
+        body.dark .gear-chip {
+            background: #3A3A3C;
         }
 
         .gear-category {
@@ -236,6 +281,10 @@
             transition: 0.2s;
         }
 
+        body.dark .map-link {
+            background: #3A3A3C;
+        }
+
         .map-link:active {
             opacity: 0.7;
         }
@@ -267,7 +316,7 @@
 
         .calendar-btn {
             display: block;
-            background: #F2F2F7;
+            background: var(--ios-card);
             color: var(--ios-accent);
             text-align: center;
             padding: 14px;
@@ -277,13 +326,13 @@
             text-decoration: none;
             margin: 0 0 24px;
             transition: 0.2s;
-            border: 1px solid #E5E5EA;
+            border: 1px solid var(--ios-separator);
             width: 100%;
             cursor: pointer;
         }
 
         .calendar-btn:active {
-            background: #E5E5EA;
+            opacity: 0.7;
         }
 
         footer {
@@ -309,11 +358,11 @@
         .form-input {
             width: 100%;
             padding: 14px 16px;
-            border: 1px solid #E5E5EA;
+            border: 1px solid var(--ios-separator);
             border-radius: 12px;
             font-size: 17px;
             font-family: inherit;
-            background: #F9F9F9;
+            background: var(--ios-bg);
             color: var(--ios-text);
             -webkit-appearance: none;
             appearance: none;
@@ -323,12 +372,11 @@
         .form-input:focus {
             outline: none;
             border-color: var(--ios-accent);
-            background: #FFFFFF;
+            background: var(--ios-card);
         }
 
         .form-input.booked-date {
             border-color: #FF3B30;
-            background: #FFF5F5;
         }
 
         select.form-input {
@@ -374,6 +422,11 @@
             line-height: 1.5;
         }
 
+        body.dark .error-msg {
+            background: #3A3A3C;
+            color: #FFD60A;
+        }
+
         .error-msg a {
             color: #007AFF;
             font-weight: 700;
@@ -398,7 +451,7 @@
         }
 
         .modal {
-            background: #FFFFFF;
+            background: var(--ios-card);
             border-radius: 20px;
             padding: 24px;
             width: 100%;
@@ -412,10 +465,12 @@
             font-weight: 700;
             margin-bottom: 8px;
             text-align: left;
+            color: var(--ios-text);
         }
 
         .modal .subhead {
             margin-bottom: 20px;
+            color: var(--ios-secondary);
         }
 
         .close-modal {
@@ -431,6 +486,10 @@
             align-items: center;
             justify-content: center;
             color: var(--ios-secondary);
+        }
+
+        body.dark .close-modal {
+            background: #3A3A3C;
         }
 
         .calendar-modal {
@@ -457,6 +516,7 @@
         .calendar-modal .month-nav span {
             font-size: 16px;
             font-weight: 700;
+            color: var(--ios-text);
         }
 
         .calendar-modal .days {
@@ -471,6 +531,7 @@
             border-radius: 8px;
             cursor: default;
             font-size: 15px;
+            color: var(--ios-text);
         }
 
         .calendar-modal .day.booked {
@@ -488,6 +549,11 @@
             background: #E8F5E9;
             color: #2E7D32;
             font-weight: 500;
+        }
+
+        body.dark .calendar-modal .day.free {
+            background: #1B5E20;
+            color: #A5D6A7;
         }
 
         .calendar-modal .day-name {
@@ -510,7 +576,10 @@
         <div class="logo">
             MELOMAN<span>sound</span>
         </div>
-        <button class="header-btn" onclick="openBookingModal()">Запись</button>
+        <div class="nav-buttons">
+            <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+            <button class="header-btn" onclick="openBookingModal()">Запись</button>
+        </div>
     </nav>
 
     <div class="container">
@@ -563,7 +632,7 @@
             </div>
             <div class="gear-category">🎛️ Звуковая карта</div>
             <div class="gear-grid" style="margin-bottom: 16px;">
-                <span class="gear-chip">Audient iD14 MKII</span>
+                <span class="gear-chip">Audient iD4 MKII</span>
             </div>
             <div class="gear-category">🔥 Ламповый предусилитель</div>
             <div class="gear-grid" style="margin-bottom: 16px;">
@@ -615,7 +684,6 @@
         </footer>
     </div>
 
-    <!-- Модалка с календарём -->
     <div class="modal-overlay" id="calendarModal">
         <div class="modal calendar-modal">
             <button class="close-modal" onclick="closeCalendarModal()">✕</button>
@@ -630,7 +698,6 @@
         </div>
     </div>
 
-    <!-- Модалка бронирования -->
     <div class="modal-overlay" id="bookingModal">
         <div class="modal">
             <button class="close-modal" onclick="closeBookingModal()">✕</button>
@@ -694,6 +761,27 @@
         let bookedDates = [];
         let calCurrentMonth = new Date().getMonth();
         let calCurrentYear = new Date().getFullYear();
+
+        // Переключение темы
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.querySelector('.theme-btn');
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                btn.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.add('dark');
+                btn.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Загружаем сохранённую тему
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark');
+            document.querySelector('.theme-btn').textContent = '☀️';
+        }
 
         function loadBookedDates() {
             fetch(JSONBIN_URL + '/latest', {
