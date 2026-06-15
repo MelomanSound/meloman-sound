@@ -28,73 +28,61 @@
         .booking-info strong { color: #007AFF; }
         .booking-info .date { font-size: 14px; color: #636366; margin-top: 4px; }
         .new-badge {
-            background: #FF3B30;
-            color: #FFFFFF;
-            padding: 4px 10px;
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 700;
-            margin-left: 8px;
+            background: #FF3B30; color: #FFFFFF; padding: 4px 10px;
+            border-radius: 100px; font-size: 12px; font-weight: 700; margin-left: 8px;
         }
         .delete-btn {
-            background: #FF3B30;
-            color: #FFFFFF;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 100px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 14px;
+            background: #FF3B30; color: #FFFFFF; border: none;
+            padding: 10px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 14px;
         }
-        .delete-btn:active { opacity: 0.7; }
         .refresh-btn {
-            background: #007AFF;
-            color: #FFFFFF;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 100px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 15px;
-            margin-bottom: 20px;
+            background: #007AFF; color: #FFFFFF; border: none;
+            padding: 12px 24px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; margin-bottom: 20px;
         }
-        .empty {
-            text-align: center;
-            color: #8E8E93;
-            padding: 40px;
-            font-size: 16px;
-        }
+        .empty { text-align: center; color: #8E8E93; padding: 40px; font-size: 16px; }
         .counter {
-            background: #007AFF;
-            color: #FFFFFF;
-            padding: 4px 10px;
-            border-radius: 100px;
-            font-size: 13px;
-            font-weight: 700;
-            margin-left: 8px;
+            background: #007AFF; color: #FFFFFF; padding: 4px 10px;
+            border-radius: 100px; font-size: 13px; font-weight: 700; margin-left: 8px;
         }
     </style>
 </head>
 <body>
 
     <h1>🎙️ Заявки Meloman Sound <span class="counter" id="counter">0</span></h1>
-    <button class="refresh-btn" onclick="loadData()">🔄 Обновить</button>
+    <button class="refresh-btn" onclick="loadBookings()">🔄 Обновить</button>
     <div id="bookingsList"></div>
 
     <script>
         const JSONBIN_KEY = '$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';
         const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
 
-        let allData = { dates: [], bookings: [] };
-
-        function loadData() {
+        function loadBookings() {
             fetch(JSONBIN_URL + '/latest', {
                 headers: { 'X-Master-Key': JSONBIN_KEY }
             })
             .then(r => r.json())
             .then(data => {
-                allData = data.record || { dates: [], bookings: [] };
-                renderBookings();
+                const bookings = (data.record && data.record.bookings) ? data.record.bookings : [];
+                document.getElementById('counter').textContent = bookings.length;
+                
+                if (bookings.length === 0) {
+                    document.getElementById('bookingsList').innerHTML = '<div class="empty">📭 Пока нет заявок</div>';
+                    return;
+                }
+
+                document.getElementById('bookingsList').innerHTML = bookings.map((b, i) => {
+                    const isNew = b.new ? '<span class="new-badge">Новая</span>' : '';
+                    return `
+                        <div class="booking-card">
+                            <div class="booking-info">
+                                <strong>${b.name} ${isNew}</strong>
+                                <div class="date">📞 ${b.phone}</div>
+                                <div class="date">📅 ${b.date} | ⏰ ${b.time}</div>
+                            </div>
+                            <button class="delete-btn" onclick="deleteBooking(${i})">Удалить</button>
+                        </div>
+                    `;
+                }).reverse().join('');
             })
             .catch(() => {
                 document.getElementById('bookingsList').innerHTML = '<div class="empty">❌ Ошибка загрузки</div>';
@@ -102,51 +90,33 @@
         }
 
         function deleteBooking(index) {
-            if (confirm('Удалить эту заявку?')) {
-                allData.bookings.splice(index, 1);
+            if (!confirm('Точно удалить эту заявку?')) return;
 
-                fetch(JSONBIN_URL, {
+            fetch(JSONBIN_URL + '/latest', {
+                headers: { 'X-Master-Key': JSONBIN_KEY }
+            })
+            .then(r => r.json())
+            .then(data => {
+                const record = data.record || {};
+                const dates = record.dates || [];
+                const bookings = record.bookings || [];
+                bookings.splice(index, 1);
+
+                return fetch(JSONBIN_URL, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-Master-Key': JSONBIN_KEY
                     },
-                    body: JSON.stringify(allData)
-                })
-                .then(() => loadData())
-                .catch(() => loadData());
-            }
+                    body: JSON.stringify({ dates: dates, bookings: bookings })
+                });
+            })
+            .then(() => loadBookings())
+            .catch(() => loadBookings());
         }
 
-        function renderBookings() {
-            const list = document.getElementById('bookingsList');
-            const counter = document.getElementById('counter');
-            
-            const bookings = allData.bookings || [];
-            counter.textContent = bookings.length;
-
-            if (bookings.length === 0) {
-                list.innerHTML = '<div class="empty">📭 Пока нет заявок</div>';
-                return;
-            }
-
-            list.innerHTML = bookings.map((b, i) => {
-                const isNew = b.new ? '<span class="new-badge">Новая</span>' : '';
-                return `
-                    <div class="booking-card">
-                        <div class="booking-info">
-                            <strong>${b.name} ${isNew}</strong>
-                            <div class="date">📞 ${b.phone}</div>
-                            <div class="date">📅 ${b.date} | ⏰ ${b.time}</div>
-                        </div>
-                        <button class="delete-btn" onclick="deleteBooking(${i})">Удалить</button>
-                    </div>
-                `;
-            }).reverse().join('');
-        }
-
-        setInterval(loadData, 30000);
-        loadData();
+        setInterval(loadBookings, 15000);
+        loadBookings();
     </script>
 </body>
 </html>
