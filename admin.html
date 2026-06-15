@@ -21,8 +21,42 @@
         .empty { text-align: center; color: #8E8E93; padding: 40px; font-size: 16px; }
         .counter { background: #007AFF; color: #FFFFFF; padding: 4px 10px; border-radius: 100px; font-size: 13px; font-weight: 700; margin-left: 8px; }
         .status { font-size: 13px; margin-bottom: 16px; font-weight: 600; }
-        .alert-popup { display: none; position: fixed; top: 20px; right: 20px; background: #FF3B30; color: #FFFFFF; padding: 16px 20px; border-radius: 12px; font-weight: 700; font-size: 15px; z-index: 1000; animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from{transform:translateX(100px);opacity:0} to{transform:translateX(0);opacity:1} }
+
+        /* Всплывающее уведомление по центру */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .popup-overlay.show { display: flex; }
+        .popup-box {
+            background: #FFFFFF;
+            border-radius: 24px;
+            padding: 30px 24px;
+            text-align: center;
+            max-width: 350px;
+            width: 90%;
+            animation: popIn 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .popup-icon { font-size: 60px; margin-bottom: 12px; }
+        .popup-title { font-size: 22px; font-weight: 800; color: #1C1C1E; margin-bottom: 6px; }
+        .popup-name { font-size: 18px; color: #007AFF; font-weight: 700; margin-bottom: 4px; }
+        .popup-detail { font-size: 14px; color: #636366; margin-bottom: 2px; }
+        .popup-close {
+            background: #007AFF; color: #FFFFFF; border: none;
+            padding: 14px 40px; border-radius: 100px; font-weight: 700;
+            font-size: 16px; cursor: pointer; margin-top: 16px;
+        }
     </style>
 </head>
 <body>
@@ -31,7 +65,18 @@
     <button class="refresh-btn" onclick="loadBookings()">🔄 Обновить</button>
     <button class="sound-btn sound-on" id="soundBtn" onclick="toggleSound()">🔊 Звук ВКЛ</button>
     <div id="bookingsList"></div>
-    <div class="alert-popup" id="alertPopup">🔔 Новая заявка!</div>
+
+    <!-- Всплывающее уведомление -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-box">
+            <div class="popup-icon">🔔</div>
+            <div class="popup-title">Новая заявка!</div>
+            <div class="popup-name" id="popupName"></div>
+            <div class="popup-detail" id="popupPhone"></div>
+            <div class="popup-detail" id="popupDate"></div>
+            <button class="popup-close" onclick="closePopup()">OK</button>
+        </div>
+    </div>
 
     <script>
         const JSONBIN_KEY='$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';
@@ -42,13 +87,8 @@
 
         function updateSoundBtn(){
             const btn = document.getElementById('soundBtn');
-            if(soundOn){
-                btn.textContent = '🔊 Звук ВКЛ';
-                btn.className = 'sound-btn sound-on';
-            } else {
-                btn.textContent = '🔇 Звук ВЫКЛ';
-                btn.className = 'sound-btn sound-off';
-            }
+            if(soundOn){ btn.textContent = '🔊 Звук ВКЛ'; btn.className = 'sound-btn sound-on'; }
+            else { btn.textContent = '🔇 Звук ВЫКЛ'; btn.className = 'sound-btn sound-off'; }
         }
         updateSoundBtn();
 
@@ -63,48 +103,57 @@
             if(!soundOn) return;
             try{
                 const ctx = new (window.AudioContext||window.webkitAudioContext)();
+                if(ctx.state === 'suspended') ctx.resume();
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.connect(gain); gain.connect(ctx.destination);
-                osc.frequency.value = 880; gain.gain.value = 0.4;
+                osc.frequency.value = 880; gain.gain.value = 0.5;
                 osc.start();
                 setTimeout(()=>{osc.frequency.value=1100},100);
                 setTimeout(()=>{osc.frequency.value=660},250);
-                setTimeout(()=>{osc.stop()},450);
+                setTimeout(()=>{osc.stop();ctx.close()},450);
             }catch(e){}
         }
 
-        function showPopup(){
-            const p = document.getElementById('alertPopup');
-            p.style.display = 'block';
-            setTimeout(()=>{p.style.display='none'},3000);
+        function showPopup(name, phone, date, time){
+            document.getElementById('popupName').textContent = '👤 ' + name;
+            document.getElementById('popupPhone').textContent = '📞 ' + phone;
+            document.getElementById('popupDate').textContent = '📅 ' + date + ' в ' + time;
+            document.getElementById('popupOverlay').classList.add('show');
+        }
+
+        function closePopup(){
+            document.getElementById('popupOverlay').classList.remove('show');
         }
 
         function updateBadge(count){
+            document.title = count > 0 ? '(' + count + ') Meloman Sound | Админ-панель' : 'Meloman Sound | Админ-панель';
             if('setAppBadge' in navigator){
-                navigator.setAppBadge(count).catch(()=>{});
+                navigator.setAppBadge(count || 0).catch(()=>{});
             }
-            document.title = count > 0 ? `(${count}) Meloman Sound | Админ-панель` : 'Meloman Sound | Админ-панель';
         }
 
         function loadBookings(){
-            fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}}).then(r=>r.json()).then(data=>{
+            fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}})
+            .then(r=>r.json())
+            .then(data=>{
                 const bookings = (data.record&&data.record.bookings) ? data.record.bookings : [];
-                document.getElementById('counter').textContent = bookings.length;
-                updateBadge(bookings.length);
+                const count = bookings.length;
+                document.getElementById('counter').textContent = count;
+                updateBadge(count);
 
-                if(bookings.length > lastCount && lastCount > 0){
+                if(count > lastCount && lastCount > 0){
+                    const last = bookings[count-1];
                     beep();
-                    showPopup();
+                    showPopup(last.name, last.phone, last.date, last.time);
                     if('Notification' in window && Notification.permission === 'granted'){
-                        const last = bookings[bookings.length-1];
                         new Notification('Новая заявка!',{body: last.name + ' — ' + last.date + ' в ' + last.time, icon:'🎙️', tag:'booking'});
                     }
                 }
-                lastCount = bookings.length;
-                localStorage.setItem('lastBookingCount', lastCount);
+                lastCount = count;
+                localStorage.setItem('lastBookingCount', count);
 
-                if(bookings.length === 0){
+                if(count === 0){
                     document.getElementById('bookingsList').innerHTML = '<div class="empty">📭 Пока нет заявок</div>';
                     document.getElementById('status').textContent = '🟢 Ожидание заявок...';
                     return;
@@ -112,12 +161,13 @@
 
                 document.getElementById('bookingsList').innerHTML = bookings.map(b=>{
                     const isNew = b.new ? '<span class="new-badge">Новая</span>' : '';
-                    return `<div class="booking-card"><div class="booking-info"><strong>${b.name} ${isNew}</strong><div class="date">📞 ${b.phone}</div><div class="date">📅 ${b.date} | ⏰ ${b.time}</div></div></div>`
+                    return '<div class="booking-card"><div class="booking-info"><strong>'+b.name+' '+isNew+'</strong><div class="date">📞 '+b.phone+'</div><div class="date">📅 '+b.date+' | ⏰ '+b.time+'</div></div></div>';
                 }).reverse().join('');
                 document.getElementById('status').textContent = '🟢 Отслеживание...';
-            }).catch(()=>{
-                document.getElementById('status').textContent = '🔴 Ошибка соединения';
             })
+            .catch(()=>{
+                document.getElementById('status').textContent = '🔴 Ошибка соединения';
+            });
         }
 
         document.body.addEventListener('click', function(){
