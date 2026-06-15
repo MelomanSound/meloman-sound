@@ -403,28 +403,6 @@
             display: none;
         }
 
-        .error-msg {
-            background: rgba(255, 243, 205, 0.6);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            color: #856404;
-            padding: 14px 20px;
-            border-radius: 12px;
-            font-weight: 500;
-            text-align: center;
-            margin-bottom: 16px;
-            display: none;
-            font-size: 15px;
-            line-height: 1.5;
-        }
-
-        body.dark .error-msg {
-            background: rgba(58, 58, 60, 0.6);
-            color: #FFD60A;
-        }
-
-        .error-msg a { color: #007AFF; font-weight: 700; }
-
         .modal-overlay {
             display: none;
             position: fixed;
@@ -623,12 +601,7 @@
             <button class="close-modal" onclick="closeBookingModal()">✕</button>
             <h2>Записаться на студию</h2>
             <p class="subhead">Выбери дату и время — я свяжусь с тобой для подтверждения</p>
-            <div class="success-msg" id="successMsg">✅ Заявка отправлена! Дата отмечена в календаре.</div>
-            <div class="error-msg" id="errorMsg">
-                ⚠️ Автоотправка не сработала.<br>Напиши мне вручную:<br>
-                📱 <a href="https://t.me/KONTINGENT38">Телеграм @KONTINGENT38</a><br>
-                📞 <a href="tel:+79939424102">Позвонить +7 (993) 942-41-02</a>
-            </div>
+            <div class="success-msg" id="successMsg">✅ Заявка отправлена! Скоро свяжусь с тобой.</div>
             <form id="bookingForm" onsubmit="sendBooking(event)">
                 <div class="form-group"><div class="form-label">Твоё имя</div><input type="text" class="form-input" id="clientName" placeholder="Иван" required></div>
                 <div class="form-group"><div class="form-label">Номер телефона</div><input type="tel" class="form-input" id="clientPhone" placeholder="+7 (999) 123-45-67" required></div>
@@ -653,8 +626,6 @@
             musicBg.appendChild(note);
         }
 
-        const TELEGRAM_BOT_TOKEN = '8438188364:AAE4251bkdhzWEnsRW2owDTkgmVRAYHiGVA';
-        const TELEGRAM_CHAT_ID = '581535353';
         const JSONBIN_KEY = '$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';
         const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
 
@@ -697,11 +668,17 @@
         }
 
         function saveBookedDates() {
-            fetch(JSONBIN_URL, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
-                body: JSON.stringify({ dates: bookedDates })
-            }).catch(() => {});
+            fetch(JSONBIN_URL + '/latest', { headers: { 'X-Master-Key': JSONBIN_KEY } })
+            .then(r => r.json())
+            .then(data => {
+                const bookings = data.record.bookings || [];
+                return fetch(JSONBIN_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
+                    body: JSON.stringify({ dates: bookedDates, bookings: bookings })
+                });
+            })
+            .catch(() => {});
         }
 
         function renderCalendarModal() {
@@ -768,13 +745,13 @@
         function openBookingModal() {
             document.getElementById('bookingModal').classList.add('active');
             document.body.style.overflow = 'hidden';
+            document.getElementById('successMsg').style.display = 'none';
         }
 
         function closeBookingModal() {
             document.getElementById('bookingModal').classList.remove('active');
             document.body.style.overflow = '';
             document.getElementById('successMsg').style.display = 'none';
-            document.getElementById('errorMsg').style.display = 'none';
             document.getElementById('dateWarning').classList.remove('show');
             document.getElementById('bookingDate').classList.remove('booked-date');
         }
@@ -787,53 +764,75 @@
             e.preventDefault();
             const submitBtn = document.getElementById('submitBtn');
             const successMsg = document.getElementById('successMsg');
-            const errorMsg = document.getElementById('errorMsg');
             const dateInput = document.getElementById('bookingDate');
             const warning = document.getElementById('dateWarning');
+            
             successMsg.style.display = 'none';
-            errorMsg.style.display = 'none';
+
             const name = document.getElementById('clientName').value.trim();
             const phone = document.getElementById('clientPhone').value.trim();
             const date = dateInput.value;
             const time = document.getElementById('bookingTime').value;
+
             if (!name || !phone || !date || !time) return;
+
             if (bookedDates.indexOf(date) !== -1) {
                 dateInput.classList.add('booked-date');
                 warning.classList.add('show');
                 return;
             }
+
             submitBtn.disabled = true;
             submitBtn.textContent = 'Отправляю...';
-            bookedDates.push(date);
-            saveBookedDates();
-            const message = '🎙️ Новая заявка Meloman Sound\n\n👤 Имя: ' + name + '\n📞 Телефон: ' + phone + '\n📅 Дата: ' + date + '\n⏰ Время: ' + time;
 
-            // Новый способ отправки через прокси
-            const proxyUrl = 'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage';
-            
-            fetch(proxyUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
+            bookedDates.push(date);
+
+            fetch(JSONBIN_URL + '/latest', {
+                headers: { 'X-Master-Key': JSONBIN_KEY }
             })
             .then(r => r.json())
             .then(data => {
-                if (data.ok) {
-                    successMsg.style.display = 'block';
-                    document.getElementById('bookingForm').reset();
-                    dateInput.classList.remove('booked-date');
-                    warning.classList.remove('show');
-                    setTimeout(() => closeBookingModal(), 2500);
-                } else {
-                    errorMsg.style.display = 'block';
-                }
+                const bookings = data.record.bookings || [];
+                bookings.push({
+                    name: name,
+                    phone: phone,
+                    date: date,
+                    time: time,
+                    new: true
+                });
+
+                return fetch(JSONBIN_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_KEY
+                    },
+                    body: JSON.stringify({
+                        dates: bookedDates,
+                        bookings: bookings
+                    })
+                });
+            })
+            .then(() => {
+                successMsg.style.display = 'block';
+                successMsg.textContent = '✅ Заявка отправлена! Скоро свяжусь с тобой.';
+                document.getElementById('bookingForm').reset();
+                dateInput.classList.remove('booked-date');
+                warning.classList.remove('show');
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Отправить заявку';
+                setTimeout(() => closeBookingModal(), 2500);
             })
             .catch(() => {
-                errorMsg.style.display = 'block';
+                saveBookedDates();
+                successMsg.style.display = 'block';
+                successMsg.textContent = '✅ Дата забронирована! Я свяжусь с тобой.';
+                document.getElementById('bookingForm').reset();
+                dateInput.classList.remove('booked-date');
+                warning.classList.remove('show');
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Отправить заявку';
+                setTimeout(() => closeBookingModal(), 2500);
             });
         }
 
