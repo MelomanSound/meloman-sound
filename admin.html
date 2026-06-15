@@ -11,7 +11,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #F2F2F7; padding: 20px; padding-bottom: 100px; }
         h1 { margin-bottom: 8px; color: #1C1C1E; font-size: 24px; }
-        .booking-card { background: #FFFFFF; border-radius: 16px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .booking-card { background: #FFFFFF; border-radius: 16px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .booking-info { flex: 1; min-width: 180px; }
         .booking-info strong { color: #007AFF; font-size: 16px; }
         .booking-info .date { font-size: 14px; color: #636366; margin-top: 4px; }
         .new-badge { background: #FF3B30; color: #FFFFFF; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 700; margin-left: 8px; animation: pulse 1s infinite; }
@@ -22,6 +23,8 @@
         .sound-on { background: #34C759; }
         .sound-off { background: #8E8E93; }
         .notify-btn { color: #FFFFFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; background: #FF9500; }
+        .delete-btn { background: #FF3B30; color: #FFFFFF; border: none; padding: 10px 16px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 13px; white-space: nowrap; }
+        .delete-btn:active { opacity: 0.7; }
         .empty { text-align: center; color: #8E8E93; padding: 40px; font-size: 16px; }
         .counter { background: #FF3B30; color: #FFFFFF; padding: 4px 10px; border-radius: 100px; font-size: 13px; font-weight: 700; margin-left: 8px; }
         .status { font-size: 13px; margin-bottom: 16px; font-weight: 600; }
@@ -58,7 +61,6 @@
     </div>
 
     <script>
-        // Регистрируем Service Worker для iOS
         if('serviceWorker' in navigator){
             navigator.serviceWorker.register('/meloman-sound/sw.js').catch(()=>{});
         }
@@ -103,8 +105,7 @@
             if('Notification' in window){
                 Notification.requestPermission().then(perm => {
                     if(perm === 'granted'){
-                        new Notification('✅ Готово!',{body:'Уведомления включены! При новой заявке ты получишь уведомление.', icon:'🎙️', vibrate:[200,100,200]});
-                        alert('✅ Уведомления включены!');
+                        new Notification('✅ Готово!',{body:'Уведомления включены!', icon:'🎙️', vibrate:[200,100,200]});
                     } else {
                         alert('❌ Зайди в Настройки → Safari → Уведомления и разреши для этого сайта.');
                     }
@@ -136,9 +137,7 @@
                 navigator.serviceWorker.ready.then(reg => {
                     reg.showNotification('Новая заявка!', {
                         body: name + ' — ' + date + ' в ' + time,
-                        icon: '🎙️',
-                        badge: '🎙️',
-                        tag: 'booking',
+                        icon: '🎙️', badge: '🎙️', tag: 'booking',
                         vibrate: [200,100,200,100,200],
                         requireInteraction: true
                     });
@@ -146,6 +145,33 @@
                     new Notification('Новая заявка!',{body: name + ' — ' + date + ' в ' + time, icon:'🎙️', tag:'booking', vibrate:[200,100,200]});
                 });
             }
+        }
+
+        function deleteBooking(index){
+            if(!confirm('Удалить заявку и освободить дату?')) return;
+
+            fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}})
+            .then(r=>r.json())
+            .then(data=>{
+                const record = data.record || {};
+                const dates = record.dates || [];
+                const bookings = record.bookings || [];
+                
+                // Удаляем дату этой заявки из календаря
+                const deletedDate = bookings[index].date;
+                const newDates = dates.filter(d => d !== deletedDate);
+                
+                // Удаляем саму заявку
+                bookings.splice(index, 1);
+
+                return fetch(JSONBIN_URL,{
+                    method:'PUT',
+                    headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY},
+                    body:JSON.stringify({dates:newDates, bookings:bookings})
+                });
+            })
+            .then(()=>loadBookings())
+            .catch(()=>loadBookings());
         }
 
         function loadBookings(){
@@ -172,9 +198,9 @@
                     return;
                 }
 
-                document.getElementById('bookingsList').innerHTML = bookings.map(b=>{
+                document.getElementById('bookingsList').innerHTML = bookings.map((b, i)=>{
                     const isNew = b.new ? '<span class="new-badge">Новая</span>' : '';
-                    return '<div class="booking-card"><div class="booking-info"><strong>'+b.name+' '+isNew+'</strong><div class="date">📞 '+b.phone+'</div><div class="date">📅 '+b.date+' | ⏰ '+b.time+'</div></div></div>';
+                    return '<div class="booking-card"><div class="booking-info"><strong>'+b.name+' '+isNew+'</strong><div class="date">📞 '+b.phone+'</div><div class="date">📅 '+b.date+' | ⏰ '+b.time+'</div></div><button class="delete-btn" onclick="deleteBooking('+i+')">🗑 Удалить</button></div>';
                 }).reverse().join('');
                 document.getElementById('status').textContent = '🟢 Отслеживание...';
             })
