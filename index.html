@@ -39,6 +39,104 @@
             line-height: 1.4;
             -webkit-font-smoothing: antialiased;
             transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* Анимация фона */
+        .music-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        body.dark .music-bg {
+            opacity: 0.2;
+        }
+
+        .note {
+            position: absolute;
+            font-size: 30px;
+            animation: float linear infinite;
+            color: var(--ios-accent);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Звуковые волны внизу */
+        .wave-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.25;
+        }
+
+        body.dark .wave-container {
+            opacity: 0.15;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                var(--ios-accent) 0%, 
+                transparent 20%, 
+                transparent 40%, 
+                var(--ios-accent) 60%, 
+                transparent 80%, 
+                var(--ios-accent) 100%);
+            background-size: 50% 100%;
+            animation: wave 8s linear infinite;
+            border-radius: 50% 50% 0 0;
+        }
+
+        .wave:nth-child(2) {
+            animation-duration: 12s;
+            animation-delay: -4s;
+            opacity: 0.5;
+            background-size: 70% 100%;
+        }
+
+        .wave:nth-child(3) {
+            animation-duration: 6s;
+            animation-delay: -2s;
+            opacity: 0.3;
+            background-size: 30% 100%;
+        }
+
+        @keyframes wave {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
         }
 
         nav {
@@ -114,6 +212,8 @@
 
         .container {
             padding: 0 16px;
+            position: relative;
+            z-index: 1;
         }
 
         .hero {
@@ -285,10 +385,6 @@
             background: #3A3A3C;
         }
 
-        .map-link:active {
-            opacity: 0.7;
-        }
-
         .action-btn {
             display: block;
             background: var(--ios-accent);
@@ -304,14 +400,6 @@
             border: none;
             width: 100%;
             cursor: pointer;
-        }
-
-        .action-btn:active {
-            opacity: 0.6;
-        }
-
-        .action-btn:disabled {
-            opacity: 0.4;
         }
 
         .calendar-btn {
@@ -331,15 +419,13 @@
             cursor: pointer;
         }
 
-        .calendar-btn:active {
-            opacity: 0.7;
-        }
-
         footer {
             text-align: center;
             padding: 24px 16px 40px;
             color: #8E8E93;
             font-size: 13px;
+            position: relative;
+            z-index: 1;
         }
 
         .form-group {
@@ -366,7 +452,6 @@
             color: var(--ios-text);
             -webkit-appearance: none;
             appearance: none;
-            transition: 0.2s;
         }
 
         .form-input:focus {
@@ -529,7 +614,6 @@
         .calendar-modal .day {
             padding: 10px;
             border-radius: 8px;
-            cursor: default;
             font-size: 15px;
             color: var(--ios-text);
         }
@@ -571,6 +655,14 @@
     </style>
 </head>
 <body>
+
+    <!-- Анимация фона -->
+    <div class="music-bg" id="musicBg"></div>
+    <div class="wave-container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
 
     <nav>
         <div class="logo">
@@ -749,9 +841,23 @@
     </div>
 
     <script>
+        // Создаём летающие ноты
+        const notes = ['🎵', '🎶', '♪', '♫', '♬', '🎼', '🎹', '🎸'];
+        const musicBg = document.getElementById('musicBg');
+
+        for (let i = 0; i < 20; i++) {
+            const note = document.createElement('span');
+            note.className = 'note';
+            note.textContent = notes[Math.floor(Math.random() * notes.length)];
+            note.style.left = Math.random() * 100 + '%';
+            note.style.fontSize = (20 + Math.random() * 30) + 'px';
+            note.style.animationDuration = (8 + Math.random() * 15) + 's';
+            note.style.animationDelay = Math.random() * 10 + 's';
+            musicBg.appendChild(note);
+        }
+
         const TELEGRAM_BOT_TOKEN = '8438188364:AAE4251bkdhzWEnsRW2owDTkgmVRAYHiGVA';
         const TELEGRAM_CHAT_ID = '581535353';
-
         const JSONBIN_KEY = '$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';
         const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
 
@@ -762,7 +868,6 @@
         let calCurrentMonth = new Date().getMonth();
         let calCurrentYear = new Date().getFullYear();
 
-        // Переключение темы
         function toggleTheme() {
             const body = document.body;
             const btn = document.querySelector('.theme-btn');
@@ -777,7 +882,6 @@
             }
         }
 
-        // Загружаем сохранённую тему
         if (localStorage.getItem('theme') === 'dark') {
             document.body.classList.add('dark');
             document.querySelector('.theme-btn').textContent = '☀️';
@@ -791,25 +895,16 @@
             .then(function(data) {
                 var allDates = data.record.dates || [];
                 var todayStr = new Date().toISOString().split('T')[0];
-                bookedDates = allDates.filter(function(d) {
-                    return d >= todayStr;
-                });
-                if (bookedDates.length !== allDates.length) {
-                    saveBookedDates();
-                }
+                bookedDates = allDates.filter(function(d) { return d >= todayStr; });
+                if (bookedDates.length !== allDates.length) saveBookedDates();
             })
-            .catch(function() {
-                bookedDates = [];
-            });
+            .catch(function() { bookedDates = []; });
         }
 
         function saveBookedDates() {
             fetch(JSONBIN_URL, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': JSONBIN_KEY
-                },
+                headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
                 body: JSON.stringify({ dates: bookedDates })
             }).catch(function() {});
         }
@@ -817,61 +912,36 @@
         function renderCalendarModal() {
             const monthLabel = document.getElementById('calMonthLabel');
             const daysGrid = document.getElementById('calDaysGrid');
-            
             const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
             monthLabel.textContent = months[calCurrentMonth] + ' ' + calCurrentYear;
-
             daysGrid.innerHTML = '';
-            
-            const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-            dayNames.forEach(function(d) {
+            ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].forEach(function(d) {
                 const div = document.createElement('div');
                 div.className = 'day-name';
                 div.textContent = d;
                 daysGrid.appendChild(div);
             });
-
             const firstDay = new Date(calCurrentYear, calCurrentMonth, 1).getDay();
             const daysInMonth = new Date(calCurrentYear, calCurrentMonth + 1, 0).getDate();
-            
             let startDay = firstDay === 0 ? 6 : firstDay - 1;
-            for (let i = 0; i < startDay; i++) {
-                const div = document.createElement('div');
-                daysGrid.appendChild(div);
-            }
-
+            for (let i = 0; i < startDay; i++) { const div = document.createElement('div'); daysGrid.appendChild(div); }
             const todayStr = new Date().toISOString().split('T')[0];
             for (let d = 1; d <= daysInMonth; d++) {
                 const div = document.createElement('div');
                 div.className = 'day';
                 div.textContent = d;
-                
                 const dateStr = calCurrentYear + '-' + String(calCurrentMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
-                
-                if (bookedDates.indexOf(dateStr) !== -1) {
-                    div.classList.add('booked');
-                } else if (dateStr >= todayStr) {
-                    div.classList.add('free');
-                }
-                
-                if (dateStr === todayStr) {
-                    div.classList.add('today');
-                }
-                
+                if (bookedDates.indexOf(dateStr) !== -1) div.classList.add('booked');
+                else if (dateStr >= todayStr) div.classList.add('free');
+                if (dateStr === todayStr) div.classList.add('today');
                 daysGrid.appendChild(div);
             }
         }
 
         function changeMonth(dir) {
             calCurrentMonth += dir;
-            if (calCurrentMonth > 11) {
-                calCurrentMonth = 0;
-                calCurrentYear++;
-            }
-            if (calCurrentMonth < 0) {
-                calCurrentMonth = 11;
-                calCurrentYear--;
-            }
+            if (calCurrentMonth > 11) { calCurrentMonth = 0; calCurrentYear++; }
+            if (calCurrentMonth < 0) { calCurrentMonth = 11; calCurrentYear--; }
             renderCalendarModal();
         }
 
@@ -893,9 +963,7 @@
         function checkDate() {
             const dateInput = document.getElementById('bookingDate');
             const warning = document.getElementById('dateWarning');
-            const selectedDate = dateInput.value;
-
-            if (bookedDates.indexOf(selectedDate) !== -1) {
+            if (bookedDates.indexOf(dateInput.value) !== -1) {
                 dateInput.classList.add('booked-date');
                 warning.classList.add('show');
             } else {
@@ -924,42 +992,32 @@
 
         function sendBooking(e) {
             e.preventDefault();
-
             const submitBtn = document.getElementById('submitBtn');
             const successMsg = document.getElementById('successMsg');
             const errorMsg = document.getElementById('errorMsg');
             const dateInput = document.getElementById('bookingDate');
             const warning = document.getElementById('dateWarning');
-
             successMsg.style.display = 'none';
             errorMsg.style.display = 'none';
-
             const name = document.getElementById('clientName').value.trim();
             const phone = document.getElementById('clientPhone').value.trim();
             const date = dateInput.value;
             const time = document.getElementById('bookingTime').value;
-
             if (!name || !phone || !date || !time) return;
-
             if (bookedDates.indexOf(date) !== -1) {
                 dateInput.classList.add('booked-date');
                 warning.classList.add('show');
                 return;
             }
-
             submitBtn.disabled = true;
             submitBtn.textContent = 'Отправляю...';
-
             bookedDates.push(date);
             saveBookedDates();
-
             const message = '🎙️ Новая заявка Meloman Sound\n\n👤 Имя: ' + name + '\n📞 Телефон: ' + phone + '\n📅 Дата: ' + date + '\n⏰ Время: ' + time;
-
             const urls = [
                 'https://api.telegram-bot.com/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
                 'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage'
             ];
-
             function trySend(index) {
                 if (index >= urls.length) {
                     successMsg.style.display = 'block';
@@ -971,14 +1029,10 @@
                     setTimeout(function() { closeBookingModal(); }, 2500);
                     return;
                 }
-
                 fetch(urls[index], {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: message
-                    })
+                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
                 })
                 .then(function(r) { return r.json(); })
                 .then(function(data) {
@@ -988,9 +1042,7 @@
                         dateInput.classList.remove('booked-date');
                         warning.classList.remove('show');
                         setTimeout(function() { closeBookingModal(); }, 2500);
-                    } else {
-                        trySend(index + 1);
-                    }
+                    } else { trySend(index + 1); }
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Отправить заявку';
                 })
@@ -1000,12 +1052,10 @@
                     submitBtn.textContent = 'Отправить заявку';
                 });
             }
-
             trySend(0);
         }
 
         loadBookedDates();
     </script>
-
 </body>
 </html>
