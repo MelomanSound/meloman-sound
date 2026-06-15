@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meloman Sound | Админ-панель</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙️</text></svg>">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #F2F2F7; padding: 20px; }
@@ -14,7 +15,9 @@
         .new-badge { background: #FF3B30; color: #FFFFFF; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 700; margin-left: 8px; animation: pulse 1s infinite; }
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
         .refresh-btn { background: #007AFF; color: #FFFFFF; border: none; padding: 12px 24px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; margin-bottom: 20px; }
-        .sound-btn { background: #FF9500; color: #FFFFFF; border: none; padding: 12px 24px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; margin-bottom: 20px; margin-left: 8px; }
+        .sound-btn { color: #FFFFFF; border: none; padding: 12px 24px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; margin-bottom: 20px; margin-left: 8px; }
+        .sound-on { background: #34C759; }
+        .sound-off { background: #8E8E93; }
         .empty { text-align: center; color: #8E8E93; padding: 40px; font-size: 16px; }
         .counter { background: #007AFF; color: #FFFFFF; padding: 4px 10px; border-radius: 100px; font-size: 13px; font-weight: 700; margin-left: 8px; }
         .status { font-size: 13px; margin-bottom: 16px; font-weight: 600; }
@@ -26,7 +29,7 @@
     <h1>🎙️ Заявки Meloman Sound <span class="counter" id="counter">0</span></h1>
     <p class="status" id="status">🟢 Отслеживание...</p>
     <button class="refresh-btn" onclick="loadBookings()">🔄 Обновить</button>
-    <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔊 Звук ВКЛ</button>
+    <button class="sound-btn sound-on" id="soundBtn" onclick="toggleSound()">🔊 Звук ВКЛ</button>
     <div id="bookingsList"></div>
     <div class="alert-popup" id="alertPopup">🔔 Новая заявка!</div>
 
@@ -34,12 +37,26 @@
         const JSONBIN_KEY='$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';
         const JSONBIN_URL='https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
         
-        let lastCount = 0;
-        let soundOn = true;
+        let lastCount = parseInt(localStorage.getItem('lastBookingCount') || '0');
+        let soundOn = localStorage.getItem('soundOn') !== 'false';
+
+        function updateSoundBtn(){
+            const btn = document.getElementById('soundBtn');
+            if(soundOn){
+                btn.textContent = '🔊 Звук ВКЛ';
+                btn.className = 'sound-btn sound-on';
+            } else {
+                btn.textContent = '🔇 Звук ВЫКЛ';
+                btn.className = 'sound-btn sound-off';
+            }
+        }
+        updateSoundBtn();
 
         function toggleSound(){
             soundOn = !soundOn;
-            document.getElementById('soundBtn').textContent = soundOn ? '🔊 Звук ВКЛ' : '🔇 Звук ВЫКЛ';
+            localStorage.setItem('soundOn', soundOn);
+            updateSoundBtn();
+            if(soundOn) beep();
         }
 
         function beep(){
@@ -49,10 +66,11 @@
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.connect(gain); gain.connect(ctx.destination);
-                osc.frequency.value = 800; gain.gain.value = 0.3;
+                osc.frequency.value = 880; gain.gain.value = 0.4;
                 osc.start();
-                setTimeout(()=>{osc.frequency.value=1000},150);
-                setTimeout(()=>{osc.stop()},400);
+                setTimeout(()=>{osc.frequency.value=1100},100);
+                setTimeout(()=>{osc.frequency.value=660},250);
+                setTimeout(()=>{osc.stop()},450);
             }catch(e){}
         }
 
@@ -62,20 +80,29 @@
             setTimeout(()=>{p.style.display='none'},3000);
         }
 
+        function updateBadge(count){
+            if('setAppBadge' in navigator){
+                navigator.setAppBadge(count).catch(()=>{});
+            }
+            document.title = count > 0 ? `(${count}) Meloman Sound | Админ-панель` : 'Meloman Sound | Админ-панель';
+        }
+
         function loadBookings(){
             fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}}).then(r=>r.json()).then(data=>{
                 const bookings = (data.record&&data.record.bookings) ? data.record.bookings : [];
                 document.getElementById('counter').textContent = bookings.length;
+                updateBadge(bookings.length);
 
                 if(bookings.length > lastCount && lastCount > 0){
                     beep();
                     showPopup();
                     if('Notification' in window && Notification.permission === 'granted'){
                         const last = bookings[bookings.length-1];
-                        new Notification('Новая заявка!',{body: last.name + ' — ' + last.date + ' в ' + last.time, icon:'🎙️'});
+                        new Notification('Новая заявка!',{body: last.name + ' — ' + last.date + ' в ' + last.time, icon:'🎙️', tag:'booking'});
                     }
                 }
                 lastCount = bookings.length;
+                localStorage.setItem('lastBookingCount', lastCount);
 
                 if(bookings.length === 0){
                     document.getElementById('bookingsList').innerHTML = '<div class="empty">📭 Пока нет заявок</div>';
@@ -93,7 +120,6 @@
             })
         }
 
-        // Запрашиваем разрешение на уведомления при первом клике
         document.body.addEventListener('click', function(){
             if('Notification' in window && Notification.permission === 'default'){
                 Notification.requestPermission();
