@@ -433,7 +433,6 @@
             color: var(--ios-secondary);
         }
 
-        /* Календарь в модалке */
         .calendar-modal {
             text-align: center;
         }
@@ -559,12 +558,19 @@
         <div class="card">
             <div class="gear-category">🎤 Микрофон</div>
             <div class="gear-grid" style="margin-bottom: 16px;">
-                <span class="gear-chip">Rode NT1-A</span>
+                <span class="gear-chip">Audio-Technica AT2020</span>
             </div>
-            <div class="gear-category">🔊 Мониторы</div>
+            <div class="gear-category">🎛️ Звуковая карта</div>
             <div class="gear-grid" style="margin-bottom: 16px;">
-                <span class="gear-chip">JBL</span>
-                <span class="gear-chip">EURO SOUND</span>
+                <span class="gear-chip">Audient iD4 MKII</span>
+            </div>
+            <div class="gear-category">🔥 Ламповый предусилитель</div>
+            <div class="gear-grid" style="margin-bottom: 16px;">
+                <span class="gear-chip">Alctron TMP-6</span>
+            </div>
+            <div class="gear-category">🎧 Наушники</div>
+            <div class="gear-grid" style="margin-bottom: 16px;">
+                <span class="gear-chip">AKG</span>
             </div>
             <div class="gear-category">💻 Софт</div>
             <div class="gear-grid">
@@ -689,10 +695,17 @@
             })
             .then(function(r) { return r.json(); })
             .then(function(data) {
-                bookedDates = data.record.dates || [];
+                var allDates = data.record.dates || [];
+                var todayStr = new Date().toISOString().split('T')[0];
+                bookedDates = allDates.filter(function(d) {
+                    return d >= todayStr;
+                });
+                if (bookedDates.length !== allDates.length) {
+                    saveBookedDates();
+                }
             })
             .catch(function() {
-                bookedDates = JSON.parse(localStorage.getItem('bookedDates') || '[]');
+                bookedDates = [];
             });
         }
 
