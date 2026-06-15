@@ -556,8 +556,9 @@
 
         <div class="section-header">Оборудование</div>
         <div class="card">
-            <div class="gear-category">🎤 Микрофон</div>
+            <div class="gear-category">🎤 Микрофоны</div>
             <div class="gear-grid" style="margin-bottom: 16px;">
+                <span class="gear-chip">Rode NT1-A</span>
                 <span class="gear-chip">Audio-Technica AT2020</span>
             </div>
             <div class="gear-category">🎛️ Звуковая карта</div>
@@ -567,6 +568,11 @@
             <div class="gear-category">🔥 Ламповый предусилитель</div>
             <div class="gear-grid" style="margin-bottom: 16px;">
                 <span class="gear-chip">Alctron TMP-6</span>
+            </div>
+            <div class="gear-category">🔊 Мониторы</div>
+            <div class="gear-grid" style="margin-bottom: 16px;">
+                <span class="gear-chip">JBL</span>
+                <span class="gear-chip">EURO SOUND</span>
             </div>
             <div class="gear-category">🎧 Наушники</div>
             <div class="gear-grid" style="margin-bottom: 16px;">
@@ -710,8 +716,6 @@
         }
 
         function saveBookedDates() {
-            localStorage.setItem('bookedDates', JSON.stringify(bookedDates));
-            
             fetch(JSONBIN_URL, {
                 method: 'PUT',
                 headers: {
