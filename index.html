@@ -48,11 +48,11 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.4;
+            opacity: 0.5;
         }
 
         body.dark .music-bg {
-            opacity: 0.25;
+            opacity: 0.3;
         }
 
         .note {
@@ -67,12 +67,8 @@
                 transform: translateY(100vh) rotate(0deg) scale(0);
                 opacity: 0;
             }
-            10% {
-                opacity: 0.7;
-            }
-            90% {
-                opacity: 0.2;
-            }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.2; }
             100% {
                 transform: translateY(-100px) rotate(360deg) scale(1.5);
                 opacity: 0;
@@ -87,7 +83,7 @@
             height: 80px;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.3;
+            opacity: 0.35;
         }
 
         body.dark .wave-container {
@@ -100,13 +96,7 @@
             left: 0;
             width: 200%;
             height: 100%;
-            background: linear-gradient(90deg, 
-                var(--ios-accent) 0%, 
-                transparent 20%, 
-                transparent 40%, 
-                var(--ios-accent) 60%, 
-                transparent 80%, 
-                var(--ios-accent) 100%);
+            background: linear-gradient(90deg, var(--ios-accent) 0%, transparent 20%, transparent 40%, var(--ios-accent) 60%, transparent 80%, var(--ios-accent) 100%);
             background-size: 50% 100%;
             animation: wave 8s linear infinite;
             border-radius: 50% 50% 0 0;
@@ -132,7 +122,7 @@
         }
 
         nav {
-            background: rgba(242, 242, 247, 0.7);
+            background: rgba(242, 242, 247, 0.5);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             position: sticky;
@@ -146,7 +136,7 @@
         }
 
         body.dark nav {
-            background: rgba(44, 44, 46, 0.7);
+            background: rgba(44, 44, 46, 0.5);
         }
 
         .logo {
@@ -183,12 +173,8 @@
             cursor: pointer;
         }
 
-        .header-btn:active {
-            opacity: 0.6;
-        }
-
         .theme-btn {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             color: var(--ios-text);
@@ -197,15 +183,10 @@
             border-radius: 100px;
             font-size: 16px;
             cursor: pointer;
-            transition: 0.2s;
         }
 
         body.dark .theme-btn {
-            background: rgba(44, 44, 46, 0.5);
-        }
-
-        .theme-btn:active {
-            opacity: 0.6;
+            background: rgba(44, 44, 46, 0.3);
         }
 
         .container {
@@ -248,19 +229,18 @@
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
-            transition: background-color 0.3s;
-            border: 0.5px solid rgba(0,0,0,0.06);
+            border: 0.5px solid rgba(0,0,0,0.04);
         }
 
         body.dark .card {
-            background: rgba(44, 44, 46, 0.5);
-            border: 0.5px solid rgba(255,255,255,0.06);
+            background: rgba(44, 44, 46, 0.2);
+            border: 0.5px solid rgba(255,255,255,0.04);
         }
 
         .section-header {
@@ -296,11 +276,11 @@
             align-items: center;
             justify-content: center;
             font-size: 22px;
-            background: rgba(242, 242, 247, 0.6);
+            background: rgba(242, 242, 247, 0.4);
         }
 
         body.dark .service-icon-box {
-            background: rgba(58, 58, 60, 0.6);
+            background: rgba(58, 58, 60, 0.4);
         }
 
         .service-name {
@@ -326,17 +306,16 @@
         }
 
         .gear-chip {
-            background: rgba(242, 242, 247, 0.6);
+            background: rgba(242, 242, 247, 0.4);
             padding: 8px 16px;
             border-radius: 100px;
             font-size: 14px;
             font-weight: 500;
             color: var(--ios-text);
-            transition: background-color 0.3s;
         }
 
         body.dark .gear-chip {
-            background: rgba(58, 58, 60, 0.6);
+            background: rgba(58, 58, 60, 0.4);
         }
 
         .gear-category {
@@ -376,7 +355,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(229, 229, 234, 0.5);
+            background: rgba(229, 229, 234, 0.3);
             border-radius: 12px;
             height: 150px;
             color: var(--ios-accent);
@@ -384,11 +363,10 @@
             font-weight: 600;
             margin-top: 16px;
             text-decoration: none;
-            transition: 0.2s;
         }
 
         body.dark .map-link {
-            background: rgba(58, 58, 60, 0.5);
+            background: rgba(58, 58, 60, 0.3);
         }
 
         .action-btn {
@@ -402,7 +380,6 @@
             font-size: 17px;
             text-decoration: none;
             margin: 24px 0 40px;
-            transition: 0.2s;
             border: none;
             width: 100%;
             cursor: pointer;
@@ -410,26 +387,24 @@
 
         .calendar-btn {
             display: block;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             color: var(--ios-accent);
             text-align: center;
             padding: 14px;
             border-radius: 16px;
             font-weight: 600;
             font-size: 15px;
-            text-decoration: none;
             margin: 0 0 24px;
-            transition: 0.2s;
-            border: 0.5px solid rgba(0,0,0,0.06);
+            border: 0.5px solid rgba(0,0,0,0.04);
             width: 100%;
             cursor: pointer;
         }
 
         body.dark .calendar-btn {
-            background: rgba(44, 44, 46, 0.5);
-            border: 0.5px solid rgba(255,255,255,0.06);
+            background: rgba(44, 44, 46, 0.2);
+            border: 0.5px solid rgba(255,255,255,0.04);
         }
 
         footer {
@@ -461,7 +436,7 @@
             border-radius: 12px;
             font-size: 17px;
             font-family: inherit;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
             color: var(--ios-text);
@@ -470,17 +445,17 @@
         }
 
         body.dark .form-input {
-            background: rgba(44, 44, 46, 0.4);
+            background: rgba(44, 44, 46, 0.3);
         }
 
         .form-input:focus {
             outline: none;
             border-color: var(--ios-accent);
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.5);
         }
 
         body.dark .form-input:focus {
-            background: rgba(44, 44, 46, 0.6);
+            background: rgba(44, 44, 46, 0.5);
         }
 
         .form-input.booked-date {
@@ -518,7 +493,7 @@
         }
 
         .error-msg {
-            background: rgba(255, 243, 205, 0.8);
+            background: rgba(255, 243, 205, 0.6);
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
             color: #856404;
@@ -533,7 +508,7 @@
         }
 
         body.dark .error-msg {
-            background: rgba(58, 58, 60, 0.8);
+            background: rgba(58, 58, 60, 0.6);
             color: #FFD60A;
         }
 
@@ -549,9 +524,9 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 200;
             align-items: center;
             justify-content: center;
@@ -563,7 +538,7 @@
         }
 
         .modal {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 20px;
@@ -576,7 +551,7 @@
         }
 
         body.dark .modal {
-            background: rgba(44, 44, 46, 0.9);
+            background: rgba(44, 44, 46, 0.85);
             border: 0.5px solid rgba(255,255,255,0.08);
         }
 
@@ -594,7 +569,7 @@
         }
 
         .close-modal {
-            background: rgba(242, 242, 247, 0.6);
+            background: rgba(242, 242, 247, 0.5);
             border: none;
             width: 36px;
             height: 36px;
@@ -609,7 +584,7 @@
         }
 
         body.dark .close-modal {
-            background: rgba(58, 58, 60, 0.6);
+            background: rgba(58, 58, 60, 0.5);
         }
 
         .calendar-modal {
@@ -665,13 +640,13 @@
         }
 
         .calendar-modal .day.free {
-            background: rgba(232, 245, 233, 0.7);
+            background: rgba(232, 245, 233, 0.5);
             color: #2E7D32;
             font-weight: 500;
         }
 
         body.dark .calendar-modal .day.free {
-            background: rgba(27, 94, 32, 0.7);
+            background: rgba(27, 94, 32, 0.5);
             color: #A5D6A7;
         }
 
@@ -1089,5 +1064,6 @@
 
         loadBookedDates();
     </script>
+
 </body>
 </html>
