@@ -30,12 +30,12 @@
         .theme-btn { background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--ios-text); border: 0.5px solid var(--ios-separator); padding: 10px 12px; border-radius: 100px; font-size: 16px; cursor: pointer; }
         body.dark .theme-btn { background: rgba(44, 44, 46, 0.3); }
         .container { padding: 0 16px; position: relative; z-index: 1; }
-        .hero { padding: 20px 0; text-align: center; }
-        .hero-logo { width: 100%; max-width: 400px; height: auto; margin-bottom: 20px; background: transparent; filter: none; transition: filter 0.3s; }
-        body.dark .hero-logo { filter: brightness(0) invert(1); }
-        .hero h1 { font-size: 34px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; line-height: 1.1; text-align: left; }
+        .hero { padding: 20px 0; text-align: center; position: relative; }
+        .hero-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; max-width: 500px; height: auto; background: transparent; opacity: 0.08; pointer-events: none; z-index: 0; transition: opacity 0.3s; }
+        body.dark .hero-logo { opacity: 0.05; }
+        .hero h1 { font-size: 34px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; line-height: 1.1; text-align: left; position: relative; z-index: 1; }
         .hero .accent { color: var(--ios-accent); }
-        .hero p { font-size: 17px; color: var(--ios-secondary); margin-bottom: 24px; text-align: left; }
+        .hero p { font-size: 17px; color: var(--ios-secondary); margin-bottom: 24px; text-align: left; position: relative; z-index: 1; }
         .card { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 0.5px solid rgba(0,0,0,0.04); }
         body.dark .card { background: rgba(44, 44, 46, 0.2); border: 0.5px solid rgba(255,255,255,0.04); }
         .section-header { font-size: 22px; font-weight: 700; margin: 32px 0 12px 0; letter-spacing: -0.3px; }
@@ -104,7 +104,11 @@
     <div class="wave-container"><div class="wave"></div><div class="wave"></div><div class="wave"></div></div>
     <nav><div class="logo">MELOMAN<span>sound</span></div><div class="nav-buttons"><button class="theme-btn" onclick="toggleTheme()">🌙</button><button class="header-btn" onclick="openBookingModal()">Запись</button></div></nav>
     <div class="container">
-        <div class="hero"><img src="LOGO-Meloman.png" alt="Meloman Sound" class="hero-logo"><h1>Твой звук <span class="accent">рождается здесь</span></h1><p>Профессиональная студия звукозаписи в Иркутске — запись, сведение, мастеринг.</p></div>
+        <div class="hero">
+            <img src="LOGO222.png" alt="" class="hero-logo">
+            <h1>Твой звук <span class="accent">рождается здесь</span></h1>
+            <p>Профессиональная студия звукозаписи в Иркутске — запись, сведение, мастеринг.</p>
+        </div>
         <div class="section-header">Услуги</div>
         <div class="card">
             <div class="service-row"><div class="service-left"><div class="service-icon-box">🎤</div><div><div class="service-name">Запись вокала</div><div class="service-desc">Чистый звук, профессиональный микрофон</div></div></div><div class="service-price">от 500 ₽/ч</div></div>
