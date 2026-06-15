@@ -1,610 +1,629 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>Meloman Sound | Студия звукозаписи Иркутск</title>
-<style>
-:root {
---ios-bg: #F2F2F7;
---ios-card: #FFFFFF;
---ios-text: #1C1C1E;
---ios-secondary: #636366;
---ios-accent: #007AFF;
---ios-separator: #E5E5EA;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>Meloman Sound | Студия звукозаписи Иркутск</title>
+    <style>
+        :root {
+            --ios-bg: #F2F2F7;
+            --ios-card: #FFFFFF;
+            --ios-text: #1C1C1E;
+            --ios-secondary: #636366;
+            --ios-accent: #007AFF;
+            --ios-separator: #E5E5EA;
+        }
 
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
--webkit-tap-highlight-color: transparent;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-body {
-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-background-color: var(--ios-bg);
-color: var(--ios-text);
-line-height: 1.4;
--webkit-font-smoothing: antialiased;
-}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--ios-bg);
+            color: var(--ios-text);
+            line-height: 1.4;
+            -webkit-font-smoothing: antialiased;
+        }
 
-nav {
-background: rgba(242, 242, 247, 0.8);
-backdrop-filter: blur(20px);
--webkit-backdrop-filter: blur(20px);
-position: sticky;
-top: 0;
-z-index: 100;
-border-bottom: 0.5px solid var(--ios-separator);
-padding: 12px 16px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
+        nav {
+            background: rgba(242, 242, 247, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 0.5px solid var(--ios-separator);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.logo {
-font-size: 22px;
-font-weight: 700;
-letter-spacing: -0.5px;
-color: var(--ios-text);
-}
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--ios-text);
+        }
 
-.logo span {
-font-weight: 400;
-font-size: 13px;
-color: var(--ios-secondary);
-letter-spacing: 2px;
-display: block;
-}
+        .logo span {
+            font-weight: 400;
+            font-size: 13px;
+            color: var(--ios-secondary);
+            letter-spacing: 2px;
+            display: block;
+        }
 
-.header-btn {
-background: var(--ios-accent);
-color: #FFFFFF;
-border: none;
-padding: 10px 20px;
-border-radius: 100px;
-font-weight: 600;
-font-size: 15px;
-text-decoration: none;
-transition: 0.2s;
-cursor: pointer;
-}
+        .header-btn {
+            background: var(--ios-accent);
+            color: #FFFFFF;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: 0.2s;
+            cursor: pointer;
+        }
 
-.header-btn:active {
-opacity: 0.6;
-}
+        .header-btn:active {
+            opacity: 0.6;
+        }
 
-.container {
-padding: 0 16px;
-}
+        .container {
+            padding: 0 16px;
+        }
 
-.hero {
-padding: 40px 0 20px;
-text-align: left;
-}
+        .hero {
+            padding: 40px 0 20px;
+            text-align: left;
+        }
 
-.hero-icon {
-font-size: 48px;
-margin-bottom: 12px;
-}
+        .hero-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
 
-.hero h1 {
-font-size: 34px;
-font-weight: 700;
-letter-spacing: -0.5px;
-margin-bottom: 8px;
-line-height: 1.1;
-}
+        .hero h1 {
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
 
-.hero .accent {
-color: var(--ios-accent);
-}
+        .hero .accent {
+            color: var(--ios-accent);
+        }
 
-.hero p {
-font-size: 17px;
-color: var(--ios-secondary);
-margin-bottom: 24px;
-}
+        .hero p {
+            font-size: 17px;
+            color: var(--ios-secondary);
+            margin-bottom: 24px;
+        }
 
-.card {
-background: var(--ios-card);
-border-radius: 16px;
-padding: 20px;
-margin-bottom: 20px;
-box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-border: 0.5px solid rgba(0,0,0,0.04);
-}
+        .card {
+            background: var(--ios-card);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
 
-.section-header {
-font-size: 22px;
-font-weight: 700;
-margin: 32px 0 12px 0;
-letter-spacing: -0.3px;
-}
+        .section-header {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 32px 0 12px 0;
+            letter-spacing: -0.3px;
+        }
 
-.subhead {
-font-size: 15px;
-color: var(--ios-secondary);
-margin-bottom: 16px;
-}
+        .service-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 0.5px solid var(--ios-separator);
+        }
 
-.service-row {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 14px 0;
-border-bottom: 0.5px solid var(--ios-separator);
-}
+        .service-row:last-child {
+            border-bottom: none;
+        }
 
-.service-row:last-child {
-border-bottom: none;
-}
+        .service-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-.service-left {
-display: flex;
-align-items: center;
-gap: 12px;
-}
+        .service-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            background: #F2F2F7;
+        }
 
-.service-icon-box {
-width: 44px;
-height: 44px;
-border-radius: 12px;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 22px;
-background: #F2F2F7;
-}
+        .service-name {
+            font-weight: 600;
+            font-size: 17px;
+        }
 
-.service-name {
-font-weight: 600;
-font-size: 17px;
-}
+        .service-desc {
+            font-size: 13px;
+            color: var(--ios-secondary);
+        }
 
-.service-desc {
-font-size: 13px;
-color: var(--ios-secondary);
-}
+        .service-price {
+            font-weight: 700;
+            color: var(--ios-accent);
+            font-size: 17px;
+        }
 
-.service-price {
-font-weight: 700;
-color: var(--ios-accent);
-font-size: 17px;
-}
+        .gear-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
 
-.gear-grid {
-display: flex;
-flex-wrap: wrap;
-gap: 12px;
-}
+        .gear-chip {
+            background: #F2F2F7;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--ios-text);
+        }
 
-.gear-chip {
-background: #F2F2F7;
-padding: 8px 16px;
-border-radius: 100px;
-font-size: 14px;
-font-weight: 500;
-color: var(--ios-text);
-}
+        .gear-category {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--ios-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-.gear-category {
-font-weight: 700;
-font-size: 14px;
-color: var(--ios-secondary);
-margin-bottom: 8px;
-text-transform: uppercase;
-letter-spacing: 0.5px;
-}
+        .contact-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 0.5px solid var(--ios-separator);
+            text-decoration: none;
+            color: var(--ios-accent);
+            font-size: 17px;
+        }
 
-.contact-link {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 14px 0;
-border-bottom: 0.5px solid var(--ios-separator);
-text-decoration: none;
-color: var(--ios-accent);
-font-size: 17px;
-}
+        .contact-link:last-child {
+            border-bottom: none;
+        }
 
-.contact-link:last-child {
-border-bottom: none;
-}
+        .contact-label {
+            color: var(--ios-text);
+            font-weight: 500;
+        }
 
-.contact-label {
-color: var(--ios-text);
-font-weight: 500;
-}
+        .contact-value {
+            font-weight: 400;
+        }
 
-.contact-value {
-font-weight: 400;
-}
+        .map-placeholder {
+            background: #E5E5EA;
+            border-radius: 12px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ios-secondary);
+            font-size: 15px;
+            margin-top: 16px;
+        }
 
-.map-placeholder {
-background: #E5E5EA;
-border-radius: 12px;
-height: 150px;
-display: flex;
-align-items: center;
-justify-content: center;
-color: var(--ios-secondary);
-font-size: 15px;
-margin-top: 16px;
-}
+        .action-btn {
+            display: block;
+            background: var(--ios-accent);
+            color: #FFFFFF;
+            text-align: center;
+            padding: 16px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 17px;
+            text-decoration: none;
+            margin: 24px 0 40px;
+            transition: 0.2s;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+        }
 
-.action-btn {
-display: block;
-background: var(--ios-accent);
-color: #FFFFFF;
-text-align: center;
-padding: 16px;
-border-radius: 16px;
-font-weight: 700;
-font-size: 17px;
-text-decoration: none;
-margin: 24px 0 40px;
-transition: 0.2s;
-border: none;
-width: 100%;
-cursor: pointer;
-}
+        .action-btn:active {
+            opacity: 0.6;
+        }
 
-.action-btn:active {
-opacity: 0.6;
-}
+        .action-btn:disabled {
+            opacity: 0.4;
+        }
 
-.action-btn:disabled {
-opacity: 0.4;
-}
+        footer {
+            text-align: center;
+            padding: 24px 16px 40px;
+            color: #8E8E93;
+            font-size: 13px;
+        }
 
-footer {
-text-align: center;
-padding: 24px 16px 40px;
-color: #8E8E93;
-font-size: 13px;
-}
+        .form-group {
+            margin-bottom: 16px;
+        }
 
-.form-group {
-margin-bottom: 16px;
-}
+        .form-label {
+            font-size: 13px;
+            color: var(--ios-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
 
-.form-label {
-font-size: 13px;
-color: var(--ios-secondary);
-text-transform: uppercase;
-letter-spacing: 0.5px;
-margin-bottom: 6px;
-font-weight: 600;
-}
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #E5E5EA;
+            border-radius: 12px;
+            font-size: 17px;
+            font-family: inherit;
+            background: #F9F9F9;
+            color: var(--ios-text);
+            -webkit-appearance: none;
+            transition: 0.2s;
+        }
 
-.form-input {
-width: 100%;
-padding: 14px 16px;
-border: 1px solid #E5E5EA;
-border-radius: 12px;
-font-size: 17px;
-font-family: inherit;
-background: #F9F9F9;
-color: var(--ios-text);
--webkit-appearance: none;
-appearance: none;
-transition: 0.2s;
-}
+        .form-input:focus {
+            outline: none;
+            border-color: var(--ios-accent);
+            background: #FFFFFF;
+        }
 
-.form-input:focus {
-outline: none;
-border-color: var(--ios-accent);
-background: #FFFFFF;
-}
+        select.form-input {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23636366' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
 
-select.form-input {
-background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23636366' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-background-repeat: no-repeat;
-background-position: right 16px center;
-padding-right: 40px;
-}
+        .success-msg {
+            background: #34C759;
+            color: #FFFFFF;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 16px;
+            display: none;
+        }
 
-.success-msg {
-background: #34C759;
-color: #FFFFFF;
-padding: 14px 20px;
-border-radius: 12px;
-font-weight: 600;
-text-align: center;
-margin-bottom: 16px;
-display: none;
-}
+        .error-msg {
+            background: #FFF3CD;
+            color: #856404;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 16px;
+            display: none;
+            font-size: 15px;
+            line-height: 1.5;
+        }
 
-.error-msg {
-background: #FF3B30;
-color: #FFFFFF;
-padding: 14px 20px;
-border-radius: 12px;
-font-weight: 600;
-text-align: center;
-margin-bottom: 16px;
-display: none;
-}
+        .error-msg a {
+            color: #007AFF;
+            font-weight: 700;
+        }
 
-.modal-overlay {
-display: none;
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background: rgba(0,0,0,0.5);
-z-index: 200;
-align-items: center;
-justify-content: center;
-padding: 20px;
-}
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-.modal-overlay.active {
-display: flex;
-}
+        .modal-overlay.active {
+            display: flex;
+        }
 
-.modal {
-background: #FFFFFF;
-border-radius: 20px;
-padding: 24px;
-width: 100%;
-max-width: 400px;
-max-height: 90vh;
-overflow-y: auto;
-}
+        .modal {
+            background: #FFFFFF;
+            border-radius: 20px;
+            padding: 24px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
 
-.modal h2 {
-font-size: 22px;
-font-weight: 700;
-margin-bottom: 8px;
-text-align: left;
-}
+        .modal h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: left;
+        }
 
-.modal .subhead {
-margin-bottom: 20px;
-}
+        .modal .subhead {
+            margin-bottom: 20px;
+        }
 
-.close-modal {
-background: #F2F2F7;
-border: none;
-width: 36px;
-height: 36px;
-border-radius: 50%;
-font-size: 18px;
-cursor: pointer;
-float: right;
-display: flex;
-align-items: center;
-justify-content: center;
-color: var(--ios-secondary);
-}
+        .close-modal {
+            background: #F2F2F7;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            float: right;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ios-secondary);
+        }
 
-@media (max-width: 380px) {
-.hero h1 {
-font-size: 28px;
-}
-}
-</style>
+        @media (max-width: 380px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<nav>
-<div class="logo">
-MELOMAN<span>звук</span>
-</div>
-<button class="header-btn" onclick="openModal()">Запись</button>
-</nav>
+    <nav>
+        <div class="logo">
+            MELOMAN<span>звук</span>
+        </div>
+        <button class="header-btn" onclick="openModal()">Запись</button>
+    </nav>
 
-<div class="container">
-<div class="hero">
-<div class="hero-icon">🎙️</div>
-<h1>Твой звук <span class="accent">рождается здесь</span></h1>
-<p>Профессиональная студия звукозаписи в Иркутске — запись, сведение, мастеринг.</p>
-</div>
+    <div class="container">
+        <div class="hero">
+            <div class="hero-icon">🎙️</div>
+            <h1>Твой звук <span class="accent">рождается здесь</span></h1>
+            <p>Профессиональная студия звукозаписи в Иркутске — запись, сведение, мастеринг.</p>
+        </div>
 
-<div class="section-header">Услуги</div>
-<div class="card">
-<div class="service-row">
-<div class="service-left">
-<div class="service-icon-box">🎤</div>
-<div>
-<div class="service-name">Запись вокала</div>
-<div class="service-desc">Чистый звук, профессиональный микрофон</div>
-</div>
-</div>
-<div class="service-price">от 500 ₽/ч</div>
-</div>
-<div class="service-row">
-<div class="service-left">
-<div class="service-icon-box">🎧</div>
-<div>
-<div class="service-name">Сведение</div>
-<div class="service-desc">Обработка голоса, громкость, чистота</div>
-</div>
-</div>
-<div class="service-price">от 1000 ₽</div>
-</div>
-<div class="service-row">
-<div class="service-left">
-<div class="service-icon-box">💿</div>
-<div>
-<div class="service-name">Мастеринг</div>
-<div class="service-desc">Финальная обработка трека</div>
-</div>
-</div>
-<div class="service-price">от 500 ₽</div>
-</div>
-</div>
+        <div class="section-header">Услуги</div>
+        <div class="card">
+            <div class="service-row">
+                <div class="service-left">
+                    <div class="service-icon-box">🎤</div>
+                    <div>
+                        <div class="service-name">Запись вокала</div>
+                        <div class="service-desc">Чистый звук, профессиональный микрофон</div>
+                    </div>
+                </div>
+                <div class="service-price">от 500 ₽/ч</div>
+            </div>
+            <div class="service-row">
+                <div class="service-left">
+                    <div class="service-icon-box">🎧</div>
+                    <div>
+                        <div class="service-name">Сведение</div>
+                        <div class="service-desc">Обработка голоса, громкость, чистота</div>
+                    </div>
+                </div>
+                <div class="service-price">от 1000 ₽</div>
+            </div>
+            <div class="service-row">
+                <div class="service-left">
+                    <div class="service-icon-box">💿</div>
+                    <div>
+                        <div class="service-name">Мастеринг</div>
+                        <div class="service-desc">Финальная обработка трека</div>
+                    </div>
+                </div>
+                <div class="service-price">от 500 ₽</div>
+            </div>
+        </div>
 
-<div class="section-header">Оборудование</div>
-<div class="card">
-<div class="gear-category">🎤 Микрофон</div>
-<div class="gear-grid" style="margin-bottom: 16px;">
-<span class="gear-chip">Роде НТ1-А (студийный)</span>
-</div>
-<div class="gear-category">🔊 Колонки</div>
-<div class="gear-grid" style="margin-bottom: 16px;">
-<span class="gear-chip">ДжиБиЭль</span>
-<span class="gear-chip">ЕвроСаунд</span>
-</div>
-<div class="gear-category">💻 Программа</div>
-<div class="gear-grid">
-<span class="gear-chip">Кубейс 12 Про</span>
-</div>
-</div>
+        <div class="section-header">Оборудование</div>
+        <div class="card">
+            <div class="gear-category">🎤 Микрофон</div>
+            <div class="gear-grid" style="margin-bottom: 16px;">
+                <span class="gear-chip">Роде НТ1-А (студийный)</span>
+            </div>
+            <div class="gear-category">🔊 Колонки</div>
+            <div class="gear-grid" style="margin-bottom: 16px;">
+                <span class="gear-chip">ДжиБиЭль</span>
+                <span class="gear-chip">ЕвроСаунд</span>
+            </div>
+            <div class="gear-category">💻 Программа</div>
+            <div class="gear-grid">
+                <span class="gear-chip">Кубейс 12 Про</span>
+            </div>
+        </div>
 
-<div id="contact-section" class="section-header">Контакты</div>
-<div class="card">
-<div class="contact-link">
-<span class="contact-label">📍 Адрес</span>
-<span class="contact-value" style="color: var(--ios-text);">Иркутск, ул. Румянцева, 5/1</span>
-</div>
-<a href="tel:+79939424102" class="contact-link">
-<span class="contact-label">📞 Телефон</span>
-<span class="contact-value">+7 (993) 942-41-02</span>
-</a>
-<a href="mailto:info@meloman-sound.ru" class="contact-link">
-<span class="contact-label">✉️ Почта</span>
-<span class="contact-value">info@meloman-sound.ru</span>
-</a>
-<a href="https://vk.com/clubmeloman_sound" class="contact-link">
-<span class="contact-label">📱 ВКонтакте</span>
-<span class="contact-value">@clubmeloman_sound</span>
-</a>
-<div class="map-placeholder">
-🗺️ Иркутск, ул. Румянцева, 5/1
-</div>
-</div>
+        <div id="contact-section" class="section-header">Контакты</div>
+        <div class="card">
+            <div class="contact-link">
+                <span class="contact-label">📍 Адрес</span>
+                <span class="contact-value" style="color: var(--ios-text);">Иркутск, ул. Румянцева, 5/1</span>
+            </div>
+            <a href="tel:+79939424102" class="contact-link">
+                <span class="contact-label">📞 Телефон</span>
+                <span class="contact-value">+7 (993) 942-41-02</span>
+            </a>
+            <a href="https://t.me/KONTINGENT38" class="contact-link">
+                <span class="contact-label">📱 Телеграм</span>
+                <span class="contact-value">@KONTINGENT38</span>
+            </a>
+            <a href="https://vk.com/clubmeloman_sound" class="contact-link">
+                <span class="contact-label">📱 ВКонтакте</span>
+                <span class="contact-value">@clubmeloman_sound</span>
+            </a>
+            <div class="map-placeholder">
+                🗺️ Иркутск, ул. Румянцева, 5/1
+            </div>
+        </div>
 
-<button class="action-btn" onclick="openModal()">Забронировать запись</button>
+        <button class="action-btn" onclick="openModal()">Забронировать запись</button>
 
-<footer>
-Меломан Саунд. Иркутск, Румянцева 5/1. 2026 год.
-</footer>
-</div>
+        <footer>
+            Меломан Саунд. Иркутск, Румянцева 5/1. 2026 год.
+        </footer>
+    </div>
 
-<div class="modal-overlay" id="bookingModal">
-<div class="modal">
-<button class="close-modal" onclick="closeModal()">✕</button>
-<h2>Записаться на студию</h2>
-<p class="subhead">Выбери удобное время — я позвоню подтвердить</p>
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal">
+            <button class="close-modal" onclick="closeModal()">✕</button>
+            <h2>Записаться на студию</h2>
+            <p class="subhead">Выбери дату и время — я свяжусь с тобой для подтверждения</p>
 
-<div class="success-msg" id="successMsg">✅ Заявка отправлена! Скоро свяжусь.</div>
-<div class="error-msg" id="errorMsg">❌ Не отправилось. Позвони: +7 (993) 942-41-02</div>
+            <div class="success-msg" id="successMsg">✅ Заявка отправлена! Скоро свяжусь.</div>
+            <div class="error-msg" id="errorMsg">
+                ⚠️ Автоотправка не сработала.<br>Напиши мне вручную:<br>
+                📱 <a href="https://t.me/KONTINGENT38">Телеграм @KONTINGENT38</a><br>
+                📞 <a href="tel:+79939424102">Позвонить +7 (993) 942-41-02</a>
+            </div>
 
-<form id="bookingForm" onsubmit="sendBooking(event)">
-<div class="form-group">
-<div class="form-label">Твоё имя</div>
-<input type="text" class="form-input" id="clientName" placeholder="Иван" required>
-</div>
-<div class="form-group">
-<div class="form-label">Номер телефона</div>
-<input type="tel" class="form-input" id="clientPhone" placeholder="+7 (999) 123-45-67" required>
-</div>
-<div class="form-group">
-<div class="form-label">Дата записи</div>
-<input type="date" class="form-input" id="bookingDate" required>
-</div>
-<div class="form-group">
-<div class="form-label">Время записи</div>
-<select class="form-input" id="bookingTime" required>
-<option value="">Выбери время</option>
-<option value="10:00">10:00</option>
-<option value="11:00">11:00</option>
-<option value="12:00">12:00</option>
-<option value="13:00">13:00</option>
-<option value="14:00">14:00</option>
-<option value="15:00">15:00</option>
-<option value="16:00">16:00</option>
-<option value="17:00">17:00</option>
-<option value="18:00">18:00</option>
-<option value="19:00">19:00</option>
-<option value="20:00">20:00</option>
-<option value="21:00">21:00</option>
-</select>
-</div>
-<button type="submit" class="action-btn" id="submitBtn" style="margin-bottom: 0;">Отправить заявку</button>
-</form>
-</div>
-</div>
+            <form id="bookingForm" onsubmit="sendBooking(event)">
+                <div class="form-group">
+                    <div class="form-label">Твоё имя</div>
+                    <input type="text" class="form-input" id="clientName" placeholder="Иван" required>
+                </div>
+                <div class="form-group">
+                    <div class="form-label">Номер телефона</div>
+                    <input type="tel" class="form-input" id="clientPhone" placeholder="+7 (999) 123-45-67" required>
+                </div>
+                <div class="form-group">
+                    <div class="form-label">Дата записи</div>
+                    <input type="date" class="form-input" id="bookingDate" required>
+                </div>
+                <div class="form-group">
+                    <div class="form-label">Время записи</div>
+                    <select class="form-input" id="bookingTime" required>
+                        <option value="">Выбери время</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
+                        <option value="21:00">21:00</option>
+                    </select>
+                </div>
+                <button type="submit" class="action-btn" id="submitBtn" style="margin-bottom: 0;">Отправить заявку</button>
+            </form>
+        </div>
+    </div>
 
-<script>
-const VK_TOKEN = 'vk1.a.8hGr612bwmdcseLwhf8Lqe_KACJ0UTrrx_bQHNkI1plS8k1l_Lf1jGD8_oiWGd7SGRRQgb7HciBBK55SfoMp7rEICQbzdFyD5D6H-O1VFMF9PwMyjg0oT-4FdhGvaaBSX1TPk-OqfR3Fvajy3WHTfm7ul2nYHYBFrolo3VPB9qlib8UIee1Q9sC8hOgYR-Ic-3kyrUtV__VeuP_LGvz2pw';
-const VK_GROUP_ID = '147915819';
-const VK_USER_ID = '453729652';
+    <script>
+        const TELEGRAM_BOT_TOKEN = '8438188364:AAE4251bkdhzWEnsRW2owDTkgmVRAYHiGVA';
+        const TELEGRAM_CHAT_ID = '581535353';
 
-const today = new Date().toISOString().split('T')[0];
-document.getElementById('bookingDate').setAttribute('min', today);
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('bookingDate').setAttribute('min', today);
 
-function openModal() {
-document.getElementById('bookingModal').classList.add('active');
-document.body.style.overflow = 'hidden';
-}
+        function openModal() {
+            document.getElementById('bookingModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
 
-function closeModal() {
-document.getElementById('bookingModal').classList.remove('active');
-document.body.style.overflow = '';
-document.getElementById('successMsg').style.display = 'none';
-document.getElementById('errorMsg').style.display = 'none';
-}
+        function closeModal() {
+            document.getElementById('bookingModal').classList.remove('active');
+            document.body.style.overflow = '';
+            document.getElementById('successMsg').style.display = 'none';
+            document.getElementById('errorMsg').style.display = 'none';
+        }
 
-document.getElementById('bookingModal').addEventListener('click', function(e) {
-if (e.target === this) closeModal();
-});
+        document.getElementById('bookingModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
 
-function sendBooking(e) {
-e.preventDefault();
+        function sendBooking(e) {
+            e.preventDefault();
 
-const submitBtn = document.getElementById('submitBtn');
-const successMsg = document.getElementById('successMsg');
-const errorMsg = document.getElementById('errorMsg');
+            const submitBtn = document.getElementById('submitBtn');
+            const successMsg = document.getElementById('successMsg');
+            const errorMsg = document.getElementById('errorMsg');
 
-successMsg.style.display = 'none';
-errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
 
-const name = document.getElementById('clientName').value.trim();
-const phone = document.getElementById('clientPhone').value.trim();
-const date = document.getElementById('bookingDate').value;
-const time = document.getElementById('bookingTime').value;
+            const name = document.getElementById('clientName').value.trim();
+            const phone = document.getElementById('clientPhone').value.trim();
+            const date = document.getElementById('bookingDate').value;
+            const time = document.getElementById('bookingTime').value;
 
-if (!name || !phone || !date || !time) return;
+            if (!name || !phone || !date || !time) return;
 
-submitBtn.disabled = true;
-submitBtn.textContent = 'Отправляю...';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Отправляю...';
 
-const message = '🎙️ Новая заявка Меломан Саунд\n\n👤 Имя: ' + name + '\n📞 Телефон: ' + phone + '\n📅 Дата: ' + date + '\n⏰ Время: ' + time;
-const randomId = Math.floor(Math.random() * 99999999);
+            const message = '🎙️ Новая заявка Меломан Саунд\n\n👤 Имя: ' + name + '\n📞 Телефон: ' + phone + '\n📅 Дата: ' + date + '\n⏰ Время: ' + time;
 
-// Отправка лично тебе
-const url = 'https://api.vk.com/method/messages.send?user_id=' + VK_USER_ID + '&message=' + encodeURIComponent(message) + '&access_token=' + VK_TOKEN + '&v=5.199&random_id=' + randomId;
+            const urls = [
+                'https://api.telegram-bot.com/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
+                'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage'
+            ];
 
-fetch(url)
-.then(function(r) { return r.json(); })
-.then(function(data) {
-if (data.response) {
-successMsg.style.display = 'block';
-document.getElementById('bookingForm').reset();
-} else if (data.error) {
-errorMsg.style.display = 'block';
-}
-submitBtn.disabled = false;
-submitBtn.textContent = 'Отправить заявку';
-if (successMsg.style.display === 'block') {
-setTimeout(function() { closeModal(); }, 2500);
-}
-})
-.catch(function() {
-errorMsg.style.display = 'block';
-submitBtn.disabled = false;
-submitBtn.textContent = 'Отправить заявку';
-});
-}
-</script>
+            function trySend(index) {
+                if (index >= urls.length) {
+                    // Если ни одно зеркало не сработало — показываем контакты
+                    errorMsg.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Отправить заявку';
+                    return;
+                }
+
+                fetch(urls[index], {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message
+                    })
+                })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.ok) {
+                        successMsg.style.display = 'block';
+                        document.getElementById('bookingForm').reset();
+                        setTimeout(function() { closeModal(); }, 2500);
+                    } else {
+                        trySend(index + 1);
+                    }
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Отправить заявку';
+                })
+                .catch(function() {
+                    trySend(index + 1);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Отправить заявку';
+                });
+            }
+
+            trySend(0);
+        }
+    </script>
 
 </body>
 </html>
