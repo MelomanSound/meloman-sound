@@ -51,9 +51,7 @@
             opacity: 0.5;
         }
 
-        body.dark .music-bg {
-            opacity: 0.3;
-        }
+        body.dark .music-bg { opacity: 0.3; }
 
         .note {
             position: absolute;
@@ -63,16 +61,10 @@
         }
 
         @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg) scale(0);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh) rotate(0deg) scale(0); opacity: 0; }
             10% { opacity: 0.7; }
             90% { opacity: 0.2; }
-            100% {
-                transform: translateY(-100px) rotate(360deg) scale(1.5);
-                opacity: 0;
-            }
+            100% { transform: translateY(-100px) rotate(360deg) scale(1.5); opacity: 0; }
         }
 
         .wave-container {
@@ -86,9 +78,7 @@
             opacity: 0.35;
         }
 
-        body.dark .wave-container {
-            opacity: 0.2;
-        }
+        body.dark .wave-container { opacity: 0.2; }
 
         .wave {
             position: absolute;
@@ -102,19 +92,8 @@
             border-radius: 50% 50% 0 0;
         }
 
-        .wave:nth-child(2) {
-            animation-duration: 12s;
-            animation-delay: -4s;
-            opacity: 0.5;
-            background-size: 70% 100%;
-        }
-
-        .wave:nth-child(3) {
-            animation-duration: 6s;
-            animation-delay: -2s;
-            opacity: 0.3;
-            background-size: 30% 100%;
-        }
+        .wave:nth-child(2) { animation-duration: 12s; animation-delay: -4s; opacity: 0.5; background-size: 70% 100%; }
+        .wave:nth-child(3) { animation-duration: 6s; animation-delay: -2s; opacity: 0.3; background-size: 30% 100%; }
 
         @keyframes wave {
             0% { transform: translateX(0); }
@@ -135,9 +114,7 @@
             align-items: center;
         }
 
-        body.dark nav {
-            background: rgba(44, 44, 46, 0.5);
-        }
+        body.dark nav { background: rgba(44, 44, 46, 0.5); }
 
         .logo {
             font-size: 22px;
@@ -154,11 +131,7 @@
             display: block;
         }
 
-        .nav-buttons {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
+        .nav-buttons { display: flex; gap: 8px; align-items: center; }
 
         .header-btn {
             background: var(--ios-accent);
@@ -168,8 +141,6 @@
             border-radius: 100px;
             font-weight: 600;
             font-size: 14px;
-            text-decoration: none;
-            transition: 0.2s;
             cursor: pointer;
         }
 
@@ -185,20 +156,11 @@
             cursor: pointer;
         }
 
-        body.dark .theme-btn {
-            background: rgba(44, 44, 46, 0.3);
-        }
+        body.dark .theme-btn { background: rgba(44, 44, 46, 0.3); }
 
-        .container {
-            padding: 0 16px;
-            position: relative;
-            z-index: 1;
-        }
+        .container { padding: 0 16px; position: relative; z-index: 1; }
 
-        .hero {
-            padding: 20px 0;
-            text-align: center;
-        }
+        .hero { padding: 20px 0; text-align: center; }
 
         .hero-logo {
             width: 100%;
@@ -217,9 +179,7 @@
             text-align: left;
         }
 
-        .hero .accent {
-            color: var(--ios-accent);
-        }
+        .hero .accent { color: var(--ios-accent); }
 
         .hero p {
             font-size: 17px;
@@ -258,15 +218,9 @@
             border-bottom: 0.5px solid var(--ios-separator);
         }
 
-        .service-row:last-child {
-            border-bottom: none;
-        }
+        .service-row:last-child { border-bottom: none; }
 
-        .service-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .service-left { display: flex; align-items: center; gap: 12px; }
 
         .service-icon-box {
             width: 44px;
@@ -279,31 +233,13 @@
             background: rgba(242, 242, 247, 0.4);
         }
 
-        body.dark .service-icon-box {
-            background: rgba(58, 58, 60, 0.4);
-        }
+        body.dark .service-icon-box { background: rgba(58, 58, 60, 0.4); }
 
-        .service-name {
-            font-weight: 600;
-            font-size: 17px;
-        }
+        .service-name { font-weight: 600; font-size: 17px; }
+        .service-desc { font-size: 13px; color: var(--ios-secondary); }
+        .service-price { font-weight: 700; color: var(--ios-accent); font-size: 17px; }
 
-        .service-desc {
-            font-size: 13px;
-            color: var(--ios-secondary);
-        }
-
-        .service-price {
-            font-weight: 700;
-            color: var(--ios-accent);
-            font-size: 17px;
-        }
-
-        .gear-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
+        .gear-grid { display: flex; flex-wrap: wrap; gap: 12px; }
 
         .gear-chip {
             background: rgba(242, 242, 247, 0.4);
@@ -314,9 +250,7 @@
             color: var(--ios-text);
         }
 
-        body.dark .gear-chip {
-            background: rgba(58, 58, 60, 0.4);
-        }
+        body.dark .gear-chip { background: rgba(58, 58, 60, 0.4); }
 
         .gear-category {
             font-weight: 700;
@@ -338,18 +272,9 @@
             font-size: 17px;
         }
 
-        .contact-link:last-child {
-            border-bottom: none;
-        }
-
-        .contact-label {
-            color: var(--ios-text);
-            font-weight: 500;
-        }
-
-        .contact-value {
-            font-weight: 400;
-        }
+        .contact-link:last-child { border-bottom: none; }
+        .contact-label { color: var(--ios-text); font-weight: 500; }
+        .contact-value { font-weight: 400; }
 
         .map-link {
             display: flex;
@@ -365,9 +290,7 @@
             text-decoration: none;
         }
 
-        body.dark .map-link {
-            background: rgba(58, 58, 60, 0.3);
-        }
+        body.dark .map-link { background: rgba(58, 58, 60, 0.3); }
 
         .action-btn {
             display: block;
@@ -378,7 +301,6 @@
             border-radius: 16px;
             font-weight: 700;
             font-size: 17px;
-            text-decoration: none;
             margin: 24px 0 40px;
             border: none;
             width: 100%;
@@ -416,9 +338,7 @@
             z-index: 1;
         }
 
-        .form-group {
-            margin-bottom: 16px;
-        }
+        .form-group { margin-bottom: 16px; }
 
         .form-label {
             font-size: 13px;
@@ -444,9 +364,7 @@
             appearance: none;
         }
 
-        body.dark .form-input {
-            background: rgba(44, 44, 46, 0.3);
-        }
+        body.dark .form-input { background: rgba(44, 44, 46, 0.3); }
 
         .form-input:focus {
             outline: none;
@@ -454,13 +372,8 @@
             background: rgba(255, 255, 255, 0.5);
         }
 
-        body.dark .form-input:focus {
-            background: rgba(44, 44, 46, 0.5);
-        }
-
-        .form-input.booked-date {
-            border-color: #FF3B30;
-        }
+        body.dark .form-input:focus { background: rgba(44, 44, 46, 0.5); }
+        .form-input.booked-date { border-color: #FF3B30; }
 
         select.form-input {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23636366' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
@@ -477,9 +390,7 @@
             display: none;
         }
 
-        .date-warning.show {
-            display: block;
-        }
+        .date-warning.show { display: block; }
 
         .success-msg {
             background: #34C759;
@@ -512,10 +423,7 @@
             color: #FFD60A;
         }
 
-        .error-msg a {
-            color: #007AFF;
-            font-weight: 700;
-        }
+        .error-msg a { color: #007AFF; font-weight: 700; }
 
         .modal-overlay {
             display: none;
@@ -533,9 +441,7 @@
             padding: 20px;
         }
 
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
 
         .modal {
             background: rgba(255, 255, 255, 0.85);
@@ -555,18 +461,8 @@
             border: 0.5px solid rgba(255,255,255,0.08);
         }
 
-        .modal h2 {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            text-align: left;
-            color: var(--ios-text);
-        }
-
-        .modal .subhead {
-            margin-bottom: 20px;
-            color: var(--ios-secondary);
-        }
+        .modal h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; text-align: left; color: var(--ios-text); }
+        .modal .subhead { margin-bottom: 20px; color: var(--ios-secondary); }
 
         .close-modal {
             background: rgba(242, 242, 247, 0.5);
@@ -583,13 +479,9 @@
             color: var(--ios-secondary);
         }
 
-        body.dark .close-modal {
-            background: rgba(58, 58, 60, 0.5);
-        }
+        body.dark .close-modal { background: rgba(58, 58, 60, 0.5); }
 
-        .calendar-modal {
-            text-align: center;
-        }
+        .calendar-modal { text-align: center; }
 
         .calendar-modal .month-nav {
             display: flex;
@@ -608,11 +500,7 @@
             padding: 8px;
         }
 
-        .calendar-modal .month-nav span {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--ios-text);
-        }
+        .calendar-modal .month-nav span { font-size: 16px; font-weight: 700; color: var(--ios-text); }
 
         .calendar-modal .days {
             display: grid;
@@ -621,47 +509,14 @@
             text-align: center;
         }
 
-        .calendar-modal .day {
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 15px;
-            color: var(--ios-text);
-        }
+        .calendar-modal .day { padding: 10px; border-radius: 8px; font-size: 15px; color: var(--ios-text); }
+        .calendar-modal .day.booked { background: #FF3B30; color: #FFFFFF; font-weight: 700; }
+        .calendar-modal .day.today { border: 2px solid var(--ios-accent); font-weight: 700; }
+        .calendar-modal .day.free { background: rgba(232, 245, 233, 0.5); color: #2E7D32; font-weight: 500; }
+        body.dark .calendar-modal .day.free { background: rgba(27, 94, 32, 0.5); color: #A5D6A7; }
+        .calendar-modal .day-name { font-size: 12px; color: var(--ios-secondary); padding: 8px 0; font-weight: 600; }
 
-        .calendar-modal .day.booked {
-            background: #FF3B30;
-            color: #FFFFFF;
-            font-weight: 700;
-        }
-
-        .calendar-modal .day.today {
-            border: 2px solid var(--ios-accent);
-            font-weight: 700;
-        }
-
-        .calendar-modal .day.free {
-            background: rgba(232, 245, 233, 0.5);
-            color: #2E7D32;
-            font-weight: 500;
-        }
-
-        body.dark .calendar-modal .day.free {
-            background: rgba(27, 94, 32, 0.5);
-            color: #A5D6A7;
-        }
-
-        .calendar-modal .day-name {
-            font-size: 12px;
-            color: var(--ios-secondary);
-            padding: 8px 0;
-            font-weight: 600;
-        }
-
-        @media (max-width: 380px) {
-            .hero h1 {
-                font-size: 28px;
-            }
-        }
+        @media (max-width: 380px) { .hero h1 { font-size: 28px; } }
     </style>
 </head>
 <body>
@@ -674,9 +529,7 @@
     </div>
 
     <nav>
-        <div class="logo">
-            MELOMAN<span>sound</span>
-        </div>
+        <div class="logo">MELOMAN<span>sound</span></div>
         <div class="nav-buttons">
             <button class="theme-btn" onclick="toggleTheme()">🌙</button>
             <button class="header-btn" onclick="openBookingModal()">Запись</button>
@@ -695,30 +548,21 @@
             <div class="service-row">
                 <div class="service-left">
                     <div class="service-icon-box">🎤</div>
-                    <div>
-                        <div class="service-name">Запись вокала</div>
-                        <div class="service-desc">Чистый звук, профессиональный микрофон</div>
-                    </div>
+                    <div><div class="service-name">Запись вокала</div><div class="service-desc">Чистый звук, профессиональный микрофон</div></div>
                 </div>
                 <div class="service-price">от 500 ₽/ч</div>
             </div>
             <div class="service-row">
                 <div class="service-left">
                     <div class="service-icon-box">🎧</div>
-                    <div>
-                        <div class="service-name">Сведение</div>
-                        <div class="service-desc">Обработка голоса, громкость, чистота</div>
-                    </div>
+                    <div><div class="service-name">Сведение</div><div class="service-desc">Обработка голоса, громкость, чистота</div></div>
                 </div>
                 <div class="service-price">от 1000 ₽</div>
             </div>
             <div class="service-row">
                 <div class="service-left">
                     <div class="service-icon-box">💿</div>
-                    <div>
-                        <div class="service-name">Мастеринг</div>
-                        <div class="service-desc">Финальная обработка трека</div>
-                    </div>
+                    <div><div class="service-name">Мастеринг</div><div class="service-desc">Финальная обработка трека</div></div>
                 </div>
                 <div class="service-price">от 500 ₽</div>
             </div>
@@ -727,62 +571,37 @@
         <div class="section-header">Оборудование</div>
         <div class="card">
             <div class="gear-category">🎤 Микрофоны</div>
-            <div class="gear-grid" style="margin-bottom: 16px;">
+            <div class="gear-grid" style="margin-bottom:16px;">
                 <span class="gear-chip">Rode NT1-A</span>
                 <span class="gear-chip">Audio-Technica AT2020</span>
             </div>
             <div class="gear-category">🎛️ Звуковая карта</div>
-            <div class="gear-grid" style="margin-bottom: 16px;">
-                <span class="gear-chip">Audient iD4 MKII</span>
-            </div>
+            <div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">Audient iD4 MKII</span></div>
             <div class="gear-category">🔥 Ламповый предусилитель</div>
-            <div class="gear-grid" style="margin-bottom: 16px;">
-                <span class="gear-chip">Alctron TMP-6</span>
-            </div>
+            <div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">Alctron TMP-6</span></div>
             <div class="gear-category">🔊 Мониторы</div>
-            <div class="gear-grid" style="margin-bottom: 16px;">
+            <div class="gear-grid" style="margin-bottom:16px;">
                 <span class="gear-chip">JBL</span>
                 <span class="gear-chip">EURO SOUND</span>
             </div>
             <div class="gear-category">🎧 Наушники</div>
-            <div class="gear-grid" style="margin-bottom: 16px;">
-                <span class="gear-chip">AKG</span>
-            </div>
+            <div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">AKG</span></div>
             <div class="gear-category">💻 Софт</div>
-            <div class="gear-grid">
-                <span class="gear-chip">Cubase 12 Pro</span>
-            </div>
+            <div class="gear-grid"><span class="gear-chip">Cubase 12 Pro</span></div>
         </div>
 
         <div id="contact-section" class="section-header">Контакты</div>
         <div class="card">
-            <div class="contact-link">
-                <span class="contact-label">📍 Адрес</span>
-                <span class="contact-value" style="color: var(--ios-text);">Иркутск, ул. Румянцева, 5/1</span>
-            </div>
-            <a href="tel:+79939424102" class="contact-link">
-                <span class="contact-label">📞 Телефон</span>
-                <span class="contact-value">+7 (993) 942-41-02</span>
-            </a>
-            <a href="https://t.me/KONTINGENT38" class="contact-link">
-                <span class="contact-label">📱 Телеграм</span>
-                <span class="contact-value">@KONTINGENT38</span>
-            </a>
-            <a href="https://vk.com/clubmeloman_sound" class="contact-link">
-                <span class="contact-label">📱 ВКонтакте</span>
-                <span class="contact-value">@clubmeloman_sound</span>
-            </a>
-            <a href="https://go.2gis.com/1M4Ns" target="_blank" class="map-link">
-                🗺️ Открыть в 2ГИС — ул. Румянцева, 5/1
-            </a>
+            <div class="contact-link"><span class="contact-label">📍 Адрес</span><span class="contact-value" style="color:var(--ios-text);">Иркутск, ул. Румянцева, 5/1</span></div>
+            <a href="tel:+79939424102" class="contact-link"><span class="contact-label">📞 Телефон</span><span class="contact-value">+7 (993) 942-41-02</span></a>
+            <a href="https://t.me/KONTINGENT38" class="contact-link"><span class="contact-label">📱 Телеграм</span><span class="contact-value">@KONTINGENT38</span></a>
+            <a href="https://vk.com/clubmeloman_sound" class="contact-link"><span class="contact-label">📱 ВКонтакте</span><span class="contact-value">@clubmeloman_sound</span></a>
+            <a href="https://go.2gis.com/1M4Ns" target="_blank" class="map-link">🗺️ Открыть в 2ГИС — ул. Румянцева, 5/1</a>
         </div>
 
         <button class="calendar-btn" onclick="openCalendarModal()">📅 Посмотреть свободные даты</button>
         <button class="action-btn" onclick="openBookingModal()">Забронировать запись</button>
-
-        <footer>
-            Meloman Sound. Иркутск, Румянцева 5/1. 2026 год.
-        </footer>
+        <footer>Meloman Sound. Иркутск, Румянцева 5/1. 2026 год.</footer>
     </div>
 
     <div class="modal-overlay" id="calendarModal">
@@ -804,47 +623,18 @@
             <button class="close-modal" onclick="closeBookingModal()">✕</button>
             <h2>Записаться на студию</h2>
             <p class="subhead">Выбери дату и время — я свяжусь с тобой для подтверждения</p>
-
             <div class="success-msg" id="successMsg">✅ Заявка отправлена! Дата отмечена в календаре.</div>
             <div class="error-msg" id="errorMsg">
                 ⚠️ Автоотправка не сработала.<br>Напиши мне вручную:<br>
                 📱 <a href="https://t.me/KONTINGENT38">Телеграм @KONTINGENT38</a><br>
                 📞 <a href="tel:+79939424102">Позвонить +7 (993) 942-41-02</a>
             </div>
-
             <form id="bookingForm" onsubmit="sendBooking(event)">
-                <div class="form-group">
-                    <div class="form-label">Твоё имя</div>
-                    <input type="text" class="form-input" id="clientName" placeholder="Иван" required>
-                </div>
-                <div class="form-group">
-                    <div class="form-label">Номер телефона</div>
-                    <input type="tel" class="form-input" id="clientPhone" placeholder="+7 (999) 123-45-67" required>
-                </div>
-                <div class="form-group">
-                    <div class="form-label">Дата записи</div>
-                    <input type="date" class="form-input" id="bookingDate" required onchange="checkDate()">
-                    <div class="date-warning" id="dateWarning">⚠️ Эта дата уже занята! Выбери другую.</div>
-                </div>
-                <div class="form-group">
-                    <div class="form-label">Время записи</div>
-                    <select class="form-input" id="bookingTime" required>
-                        <option value="">Выбери время</option>
-                        <option value="10:00">10:00</option>
-                        <option value="11:00">11:00</option>
-                        <option value="12:00">12:00</option>
-                        <option value="13:00">13:00</option>
-                        <option value="14:00">14:00</option>
-                        <option value="15:00">15:00</option>
-                        <option value="16:00">16:00</option>
-                        <option value="17:00">17:00</option>
-                        <option value="18:00">18:00</option>
-                        <option value="19:00">19:00</option>
-                        <option value="20:00">20:00</option>
-                        <option value="21:00">21:00</option>
-                    </select>
-                </div>
-                <button type="submit" class="action-btn" id="submitBtn" style="margin-bottom: 0;">Отправить заявку</button>
+                <div class="form-group"><div class="form-label">Твоё имя</div><input type="text" class="form-input" id="clientName" placeholder="Иван" required></div>
+                <div class="form-group"><div class="form-label">Номер телефона</div><input type="tel" class="form-input" id="clientPhone" placeholder="+7 (999) 123-45-67" required></div>
+                <div class="form-group"><div class="form-label">Дата записи</div><input type="date" class="form-input" id="bookingDate" required onchange="checkDate()"><div class="date-warning" id="dateWarning">⚠️ Эта дата уже занята! Выбери другую.</div></div>
+                <div class="form-group"><div class="form-label">Время записи</div><select class="form-input" id="bookingTime" required><option value="">Выбери время</option><option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option><option value="19:00">19:00</option><option value="20:00">20:00</option><option value="21:00">21:00</option></select></div>
+                <button type="submit" class="action-btn" id="submitBtn" style="margin-bottom:0;">Отправить заявку</button>
             </form>
         </div>
     </div>
@@ -895,17 +685,15 @@
         }
 
         function loadBookedDates() {
-            fetch(JSONBIN_URL + '/latest', {
-                headers: { 'X-Master-Key': JSONBIN_KEY }
-            })
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                var allDates = data.record.dates || [];
-                var todayStr = new Date().toISOString().split('T')[0];
-                bookedDates = allDates.filter(function(d) { return d >= todayStr; });
+            fetch(JSONBIN_URL + '/latest', { headers: { 'X-Master-Key': JSONBIN_KEY } })
+            .then(r => r.json())
+            .then(data => {
+                const allDates = data.record.dates || [];
+                const todayStr = new Date().toISOString().split('T')[0];
+                bookedDates = allDates.filter(d => d >= todayStr);
                 if (bookedDates.length !== allDates.length) saveBookedDates();
             })
-            .catch(function() { bookedDates = []; });
+            .catch(() => { bookedDates = []; });
         }
 
         function saveBookedDates() {
@@ -913,19 +701,18 @@
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
                 body: JSON.stringify({ dates: bookedDates })
-            }).catch(function() {});
+            }).catch(() => {});
         }
 
         function renderCalendarModal() {
             const monthLabel = document.getElementById('calMonthLabel');
             const daysGrid = document.getElementById('calDaysGrid');
-            const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+            const months = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
             monthLabel.textContent = months[calCurrentMonth] + ' ' + calCurrentYear;
             daysGrid.innerHTML = '';
-            ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].forEach(function(d) {
+            ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(d => {
                 const div = document.createElement('div');
-                div.className = 'day-name';
-                div.textContent = d;
+                div.className = 'day-name'; div.textContent = d;
                 daysGrid.appendChild(div);
             });
             const firstDay = new Date(calCurrentYear, calCurrentMonth, 1).getDay();
@@ -935,9 +722,8 @@
             const todayStr = new Date().toISOString().split('T')[0];
             for (let d = 1; d <= daysInMonth; d++) {
                 const div = document.createElement('div');
-                div.className = 'day';
-                div.textContent = d;
-                const dateStr = calCurrentYear + '-' + String(calCurrentMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+                div.className = 'day'; div.textContent = d;
+                const dateStr = calCurrentYear + '-' + String(calCurrentMonth + 1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
                 if (bookedDates.indexOf(dateStr) !== -1) div.classList.add('booked');
                 else if (dateStr >= todayStr) div.classList.add('free');
                 if (dateStr === todayStr) div.classList.add('today');
@@ -1021,49 +807,37 @@
             bookedDates.push(date);
             saveBookedDates();
             const message = '🎙️ Новая заявка Meloman Sound\n\n👤 Имя: ' + name + '\n📞 Телефон: ' + phone + '\n📅 Дата: ' + date + '\n⏰ Время: ' + time;
-            const urls = [
-                'https://api.telegram-bot.com/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage',
-                'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage'
-            ];
-            function trySend(index) {
-                if (index >= urls.length) {
+
+            // Новый способ отправки через прокси
+            const proxyUrl = 'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage';
+            
+            fetch(proxyUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.ok) {
                     successMsg.style.display = 'block';
                     document.getElementById('bookingForm').reset();
                     dateInput.classList.remove('booked-date');
                     warning.classList.remove('show');
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Отправить заявку';
-                    setTimeout(function() { closeBookingModal(); }, 2500);
-                    return;
+                    setTimeout(() => closeBookingModal(), 2500);
+                } else {
+                    errorMsg.style.display = 'block';
                 }
-                fetch(urls[index], {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
-                })
-                .then(function(r) { return r.json(); })
-                .then(function(data) {
-                    if (data.ok) {
-                        successMsg.style.display = 'block';
-                        document.getElementById('bookingForm').reset();
-                        dateInput.classList.remove('booked-date');
-                        warning.classList.remove('show');
-                        setTimeout(function() { closeBookingModal(); }, 2500);
-                    } else { trySend(index + 1); }
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Отправить заявку';
-                })
-                .catch(function() {
-                    trySend(index + 1);
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Отправить заявку';
-                });
-            }
-            trySend(0);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Отправить заявку';
+            })
+            .catch(() => {
+                errorMsg.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Отправить заявку';
+            });
         }
 
         loadBookedDates();
     </script>
-
 </body>
 </html>
