@@ -58,6 +58,11 @@
     </div>
 
     <script>
+        // Регистрируем Service Worker для iOS
+        if('serviceWorker' in navigator){
+            navigator.serviceWorker.register('/meloman-sound/sw.js').catch(()=>{});
+        }
+
         const JSONBIN_KEY='$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';
         const JSONBIN_URL='https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
         
@@ -98,14 +103,12 @@
             if('Notification' in window){
                 Notification.requestPermission().then(perm => {
                     if(perm === 'granted'){
-                        alert('✅ Уведомления включены! Теперь ты будешь получать их даже когда телефон заблокирован.');
-                        new Notification('Готово!',{body:'Уведомления работают 🔔', icon:'🎙️'});
+                        new Notification('✅ Готово!',{body:'Уведомления включены! При новой заявке ты получишь уведомление.', icon:'🎙️', vibrate:[200,100,200]});
+                        alert('✅ Уведомления включены!');
                     } else {
-                        alert('❌ Уведомления отклонены. Зайди в настройки браузера и разреши уведомления.');
+                        alert('❌ Зайди в Настройки → Safari → Уведомления и разреши для этого сайта.');
                     }
                 });
-            } else {
-                alert('Твой браузер не поддерживает уведомления. Добавь сайт на главный экран как приложение.');
             }
         }
 
@@ -114,7 +117,6 @@
             document.getElementById('popupPhone').textContent = '📞 ' + phone;
             document.getElementById('popupDate').textContent = '📅 ' + date + ' в ' + time;
             document.getElementById('popupOverlay').classList.add('show');
-            // Вибрация если поддерживается
             if('vibrate' in navigator) navigator.vibrate([200,100,200]);
         }
 
@@ -126,6 +128,23 @@
             document.title = count > 0 ? '(' + count + ') Meloman Sound | Админ-панель' : 'Meloman Sound | Админ-панель';
             if('setAppBadge' in navigator){
                 navigator.setAppBadge(count || 0).catch(()=>{});
+            }
+        }
+
+        function sendPushNotification(name, phone, date, time){
+            if('Notification' in window && Notification.permission === 'granted'){
+                navigator.serviceWorker.ready.then(reg => {
+                    reg.showNotification('Новая заявка!', {
+                        body: name + ' — ' + date + ' в ' + time,
+                        icon: '🎙️',
+                        badge: '🎙️',
+                        tag: 'booking',
+                        vibrate: [200,100,200,100,200],
+                        requireInteraction: true
+                    });
+                }).catch(()=>{
+                    new Notification('Новая заявка!',{body: name + ' — ' + date + ' в ' + time, icon:'🎙️', tag:'booking', vibrate:[200,100,200]});
+                });
             }
         }
 
@@ -142,20 +161,7 @@
                     const last = bookings[count-1];
                     beep();
                     showPopup(last.name, last.phone, last.date, last.time);
-                    if('Notification' in window && Notification.permission === 'granted'){
-                        navigator.serviceWorker.ready.then(reg => {
-                            reg.showNotification('Новая заявка!', {
-                                body: last.name + ' — ' + last.date + ' в ' + last.time,
-                                icon: '🎙️',
-                                badge: '🎙️',
-                                tag: 'booking',
-                                vibrate: [200,100,200],
-                                requireInteraction: true
-                            });
-                        }).catch(()=>{
-                            new Notification('Новая заявка!',{body: last.name + ' — ' + last.date + ' в ' + last.time, icon:'🎙️', tag:'booking'});
-                        });
-                    }
+                    sendPushNotification(last.name, last.phone, last.date, last.time);
                 }
                 lastCount = count;
                 localStorage.setItem('lastBookingCount', count);
