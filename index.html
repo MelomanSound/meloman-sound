@@ -144,30 +144,56 @@
                 try {
                     const ctx = new (window.AudioContext || window.webkitAudioContext)();
                     if (ctx.state === 'suspended') ctx.resume();
-                    const gain = ctx.createGain();
-                    gain.gain.value = 0.2;
-                    gain.connect(ctx.destination);
+                    const masterGain = ctx.createGain();
+                    masterGain.gain.value = 0.12;
+                    masterGain.connect(ctx.destination);
                     
-                    function playChord() {
+                    const melody = [
+                        {freq: 261.63, dur: 1.5}, {freq: 329.63, dur: 1.5}, {freq: 392.00, dur: 2},
+                        {freq: 349.23, dur: 1}, {freq: 329.63, dur: 1}, {freq: 293.66, dur: 2},
+                        {freq: 261.63, dur: 1.5}, {freq: 392.00, dur: 1.5}, {freq: 349.23, dur: 2},
+                        {freq: 329.63, dur: 1}, {freq: 293.66, dur: 1}, {freq: 261.63, dur: 3},
+                        {freq: 392.00, dur: 1.5}, {freq: 440.00, dur: 1.5}, {freq: 392.00, dur: 2},
+                        {freq: 349.23, dur: 1}, {freq: 329.63, dur: 1}, {freq: 293.66, dur: 2},
+                        {freq: 329.63, dur: 1.5}, {freq: 349.23, dur: 1.5}, {freq: 392.00, dur: 2},
+                        {freq: 329.63, dur: 1}, {freq: 293.66, dur: 1}, {freq: 261.63, dur: 3}
+                    ];
+                    
+                    let noteIndex = 0;
+                    
+                    function playMelody() {
                         if (!musicPlaying) return;
+                        const note = melody[noteIndex % melody.length];
                         const now = ctx.currentTime;
-                        [523.25, 659.25, 783.99].forEach(freq => {
-                            const osc = ctx.createOscillator();
-                            const g = ctx.createGain();
-                            osc.connect(g); g.connect(gain);
-                            osc.type = 'sine';
-                            osc.frequency.value = freq;
-                            g.gain.value = 0;
-                            g.gain.linearRampToValueAtTime(0.3, now + 0.1);
-                            g.gain.linearRampToValueAtTime(0, now + 2.5);
-                            osc.start(now); osc.stop(now + 2.5);
-                        });
-                        if (musicPlaying) setTimeout(playChord, 3000);
+                        
+                        const osc = ctx.createOscillator();
+                        const noteGain = ctx.createGain();
+                        const filter = ctx.createBiquadFilter();
+                        
+                        osc.connect(filter);
+                        filter.connect(noteGain);
+                        noteGain.connect(masterGain);
+                        
+                        osc.type = 'sine';
+                        filter.type = 'lowpass';
+                        filter.frequency.value = 800;
+                        
+                        osc.frequency.value = note.freq;
+                        noteGain.gain.value = 0;
+                        noteGain.gain.linearRampToValueAtTime(0.4, now + 0.08);
+                        noteGain.gain.linearRampToValueAtTime(0.25, now + note.dur * 0.6);
+                        noteGain.gain.linearRampToValueAtTime(0, now + note.dur);
+                        
+                        osc.start(now);
+                        osc.stop(now + note.dur + 0.1);
+                        
+                        noteIndex++;
+                        if (musicPlaying) setTimeout(playMelody, note.dur * 1000);
                     }
                     
-                    musicAudio = { ctx, gain };
+                    musicAudio = { ctx, masterGain };
                     musicPlaying = true;
-                    playChord();
+                    playMelody();
                     btn.textContent = '🎶';
                     btn.classList.add('playing');
                 } catch(e) { btn.textContent = '🔇'; }
