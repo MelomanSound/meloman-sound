@@ -24,10 +24,7 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-        .booking-info {
-            flex: 1;
-            min-width: 200px;
-        }
+        .booking-info { flex: 1; min-width: 200px; }
         .booking-info strong { color: #007AFF; }
         .booking-info .date { font-size: 14px; color: #636366; margin-top: 4px; }
         .new-badge {
@@ -81,22 +78,22 @@
 <body>
 
     <h1>🎙️ Заявки Meloman Sound <span class="counter" id="counter">0</span></h1>
-    <button class="refresh-btn" onclick="loadBookings()">🔄 Обновить</button>
+    <button class="refresh-btn" onclick="loadData()">🔄 Обновить</button>
     <div id="bookingsList"></div>
 
     <script>
         const JSONBIN_KEY = '$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';
-        const BOOKINGS_URL = 'https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
+        const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
 
-        let bookings = [];
+        let allData = { dates: [], bookings: [] };
 
-        function loadBookings() {
-            fetch(BOOKINGS_URL + '/latest', {
+        function loadData() {
+            fetch(JSONBIN_URL + '/latest', {
                 headers: { 'X-Master-Key': JSONBIN_KEY }
             })
             .then(r => r.json())
             .then(data => {
-                bookings = data.record.bookings || [];
+                allData = data.record || { dates: [], bookings: [] };
                 renderBookings();
             })
             .catch(() => {
@@ -104,45 +101,20 @@
             });
         }
 
-        function saveBookings() {
-            fetch(BOOKINGS_URL, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': JSONBIN_KEY
-                },
-                body: JSON.stringify({
-                    dates: (data.record && data.record.dates) ? data.record.dates : [],
-                    bookings: bookings
-                })
-            }).catch(() => {});
-        }
-
         function deleteBooking(index) {
             if (confirm('Удалить эту заявку?')) {
-                bookings.splice(index, 1);
-                
-                // Получаем текущие даты и обновляем всё вместе
-                fetch(BOOKINGS_URL + '/latest', {
-                    headers: { 'X-Master-Key': JSONBIN_KEY }
+                allData.bookings.splice(index, 1);
+
+                fetch(JSONBIN_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_KEY
+                    },
+                    body: JSON.stringify(allData)
                 })
-                .then(r => r.json())
-                .then(data => {
-                    const dates = data.record.dates || [];
-                    return fetch(BOOKINGS_URL, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Master-Key': JSONBIN_KEY
-                        },
-                        body: JSON.stringify({
-                            dates: dates,
-                            bookings: bookings
-                        })
-                    });
-                })
-                .then(() => loadBookings())
-                .catch(() => loadBookings());
+                .then(() => loadData())
+                .catch(() => loadData());
             }
         }
 
@@ -150,6 +122,7 @@
             const list = document.getElementById('bookingsList');
             const counter = document.getElementById('counter');
             
+            const bookings = allData.bookings || [];
             counter.textContent = bookings.length;
 
             if (bookings.length === 0) {
@@ -172,9 +145,8 @@
             }).reverse().join('');
         }
 
-        // Автообновление каждые 30 секунд
-        setInterval(loadBookings, 30000);
-        loadBookings();
+        setInterval(loadData, 30000);
+        loadData();
     </script>
 </body>
 </html>
