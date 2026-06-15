@@ -7,215 +7,82 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Meloman Sound | Студия звукозаписи Иркутск</title>
     <style>
-        :root {
-            --ios-bg: #F2F2F7;
-            --ios-text: #1C1C1E;
-            --ios-secondary: #636366;
-            --ios-accent: #007AFF;
-            --ios-separator: #E5E5EA;
-        }
-
-        body.dark {
-            --ios-bg: #1C1C1E;
-            --ios-text: #FFFFFF;
-            --ios-secondary: #AEAEB2;
-            --ios-accent: #0A84FF;
-            --ios-separator: #3A3A3C;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--ios-bg);
-            color: var(--ios-text);
-            line-height: 1.4;
-            -webkit-font-smoothing: antialiased;
-            transition: background-color 0.3s, color 0.3s;
-            overflow-x: hidden;
-        }
-
-        .music-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.5;
-        }
-
+        :root { --ios-bg: #F2F2F7; --ios-text: #1C1C1E; --ios-secondary: #636366; --ios-accent: #007AFF; --ios-separator: #E5E5EA; }
+        body.dark { --ios-bg: #1C1C1E; --ios-text: #FFFFFF; --ios-secondary: #AEAEB2; --ios-accent: #0A84FF; --ios-separator: #3A3A3C; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--ios-bg); color: var(--ios-text); line-height: 1.4; -webkit-font-smoothing: antialiased; transition: background-color 0.3s, color 0.3s; overflow-x: hidden; }
+        .music-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.5; }
         body.dark .music-bg { opacity: 0.3; }
-
-        .note {
-            position: absolute;
-            font-size: 30px;
-            animation: float linear infinite;
-            color: var(--ios-accent);
-        }
-
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg) scale(0); opacity: 0; }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.2; }
-            100% { transform: translateY(-100px) rotate(360deg) scale(1.5); opacity: 0; }
-        }
-
-        .wave-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 80px;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.35;
-        }
-
+        .note { position: absolute; font-size: 30px; animation: float linear infinite; color: var(--ios-accent); }
+        @keyframes float { 0% { transform: translateY(100vh) rotate(0deg) scale(0); opacity: 0; } 10% { opacity: 0.7; } 90% { opacity: 0.2; } 100% { transform: translateY(-100px) rotate(360deg) scale(1.5); opacity: 0; } }
+        .wave-container { position: fixed; bottom: 0; left: 0; width: 100%; height: 80px; pointer-events: none; z-index: 0; opacity: 0.35; }
         body.dark .wave-container { opacity: 0.2; }
-
-        .wave {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 200%;
-            height: 100%;
-            background: linear-gradient(90deg, var(--ios-accent) 0%, transparent 20%, transparent 40%, var(--ios-accent) 60%, transparent 80%, var(--ios-accent) 100%);
-            background-size: 50% 100%;
-            animation: wave 8s linear infinite;
-            border-radius: 50% 50% 0 0;
-        }
-
+        .wave { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; background: linear-gradient(90deg, var(--ios-accent) 0%, transparent 20%, transparent 40%, var(--ios-accent) 60%, transparent 80%, var(--ios-accent) 100%); background-size: 50% 100%; animation: wave 8s linear infinite; border-radius: 50% 50% 0 0; }
         .wave:nth-child(2) { animation-duration: 12s; animation-delay: -4s; opacity: 0.5; background-size: 70% 100%; }
         .wave:nth-child(3) { animation-duration: 6s; animation-delay: -2s; opacity: 0.3; background-size: 30% 100%; }
-
-        @keyframes wave {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        nav {
-            background: rgba(242, 242, 247, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 0.5px solid var(--ios-separator);
-            padding: 12px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
+        @keyframes wave { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        nav { background: rgba(242, 242, 247, 0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 100; border-bottom: 0.5px solid var(--ios-separator); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
         body.dark nav { background: rgba(44, 44, 46, 0.5); }
-
         .logo { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: var(--ios-text); }
         .logo span { font-weight: 400; font-size: 13px; color: var(--ios-secondary); letter-spacing: 2px; display: block; }
         .nav-buttons { display: flex; gap: 8px; align-items: center; }
-
-        .header-btn {
-            background: var(--ios-accent); color: #FFFFFF; border: none;
-            padding: 10px 16px; border-radius: 100px; font-weight: 600; font-size: 14px; cursor: pointer;
-        }
-
-        .theme-btn {
-            background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            color: var(--ios-text); border: 0.5px solid var(--ios-separator);
-            padding: 10px 12px; border-radius: 100px; font-size: 16px; cursor: pointer;
-        }
-
+        .header-btn { background: var(--ios-accent); color: #FFFFFF; border: none; padding: 10px 16px; border-radius: 100px; font-weight: 600; font-size: 14px; cursor: pointer; }
+        .theme-btn { background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--ios-text); border: 0.5px solid var(--ios-separator); padding: 10px 12px; border-radius: 100px; font-size: 16px; cursor: pointer; }
         body.dark .theme-btn { background: rgba(44, 44, 46, 0.3); }
         .container { padding: 0 16px; position: relative; z-index: 1; }
         .hero { padding: 20px 0; text-align: center; }
-
         .hero-logo { width: 100%; max-width: 300px; height: auto; margin-bottom: 20px; background: transparent; }
-
         .hero h1 { font-size: 34px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; line-height: 1.1; text-align: left; }
         .hero .accent { color: var(--ios-accent); }
         .hero p { font-size: 17px; color: var(--ios-secondary); margin-bottom: 24px; text-align: left; }
-
-        .card {
-            background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-            border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 0.5px solid rgba(0,0,0,0.04);
-        }
+        .card { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 0.5px solid rgba(0,0,0,0.04); }
         body.dark .card { background: rgba(44, 44, 46, 0.2); border: 0.5px solid rgba(255,255,255,0.04); }
-
         .section-header { font-size: 22px; font-weight: 700; margin: 32px 0 12px 0; letter-spacing: -0.3px; }
-
         .service-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 0.5px solid var(--ios-separator); }
         .service-row:last-child { border-bottom: none; }
         .service-left { display: flex; align-items: center; gap: 12px; }
-
-        .service-icon-box {
-            width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center;
-            justify-content: center; font-size: 22px; background: rgba(242, 242, 247, 0.4);
-        }
+        .service-icon-box { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; background: rgba(242, 242, 247, 0.4); }
         body.dark .service-icon-box { background: rgba(58, 58, 60, 0.4); }
-
         .service-name { font-weight: 600; font-size: 17px; }
         .service-desc { font-size: 13px; color: var(--ios-secondary); }
         .service-price { font-weight: 700; color: var(--ios-accent); font-size: 17px; }
-
         .gear-grid { display: flex; flex-wrap: wrap; gap: 12px; }
         .gear-chip { background: rgba(242, 242, 247, 0.4); padding: 8px 16px; border-radius: 100px; font-size: 14px; font-weight: 500; color: var(--ios-text); }
         body.dark .gear-chip { background: rgba(58, 58, 60, 0.4); }
         .gear-category { font-weight: 700; font-size: 14px; color: var(--ios-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-
         .contact-link { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 0.5px solid var(--ios-separator); text-decoration: none; color: var(--ios-accent); font-size: 17px; }
         .contact-link:last-child { border-bottom: none; }
         .contact-label { color: var(--ios-text); font-weight: 500; }
         .contact-value { font-weight: 400; }
-
         .map-link { display: flex; align-items: center; justify-content: center; background: rgba(229, 229, 234, 0.3); border-radius: 12px; height: 150px; color: var(--ios-accent); font-size: 15px; font-weight: 600; margin-top: 16px; text-decoration: none; }
         body.dark .map-link { background: rgba(58, 58, 60, 0.3); }
-
         .action-btn { display: block; background: var(--ios-accent); color: #FFFFFF; text-align: center; padding: 16px; border-radius: 16px; font-weight: 700; font-size: 17px; margin: 24px 0 40px; border: none; width: 100%; cursor: pointer; }
-
         .calendar-btn { display: block; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); color: var(--ios-accent); text-align: center; padding: 14px; border-radius: 16px; font-weight: 600; font-size: 15px; margin: 0 0 24px; border: 0.5px solid rgba(0,0,0,0.04); width: 100%; cursor: pointer; }
         body.dark .calendar-btn { background: rgba(44, 44, 46, 0.2); border: 0.5px solid rgba(255,255,255,0.04); }
-
         footer { text-align: center; padding: 24px 16px 40px; color: #8E8E93; font-size: 13px; position: relative; z-index: 1; }
-
         .form-group { margin-bottom: 16px; }
         .form-label { font-size: 13px; color: var(--ios-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; font-weight: 600; }
-
         .form-input { width: 100%; padding: 14px 16px; border: 1px solid var(--ios-separator); border-radius: 12px; font-size: 17px; font-family: inherit; background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); color: var(--ios-text); -webkit-appearance: none; appearance: none; }
         body.dark .form-input { background: rgba(44, 44, 46, 0.3); }
         .form-input:focus { outline: none; border-color: var(--ios-accent); background: rgba(255, 255, 255, 0.5); }
         body.dark .form-input:focus { background: rgba(44, 44, 46, 0.5); }
         .form-input.booked-date { border-color: #FF3B30; }
-
         select.form-input { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23636366' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
-
         .date-warning { color: #FF3B30; font-size: 13px; font-weight: 600; margin-top: 4px; display: none; }
         .date-warning.show { display: block; }
-
         .success-msg { background: #34C759; color: #FFFFFF; padding: 14px 20px; border-radius: 12px; font-weight: 600; text-align: center; margin-bottom: 16px; display: none; }
-
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.active { display: flex; }
-
         .modal { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 20px; padding: 24px; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; border: 0.5px solid rgba(0,0,0,0.08); }
         body.dark .modal { background: rgba(44, 44, 46, 0.85); border: 0.5px solid rgba(255,255,255,0.08); }
-
         .modal h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; text-align: left; color: var(--ios-text); }
         .modal .subhead { margin-bottom: 20px; color: var(--ios-secondary); }
-
         .close-modal { background: rgba(242, 242, 247, 0.5); border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; cursor: pointer; float: right; display: flex; align-items: center; justify-content: center; color: var(--ios-secondary); }
         body.dark .close-modal { background: rgba(58, 58, 60, 0.5); }
-
         .calendar-modal { text-align: center; }
         .calendar-modal .month-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 16px; }
         .calendar-modal .month-nav button { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--ios-accent); padding: 8px; }
         .calendar-modal .month-nav span { font-size: 16px; font-weight: 700; color: var(--ios-text); }
-
         .calendar-modal .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
         .calendar-modal .day { padding: 10px; border-radius: 8px; font-size: 15px; color: var(--ios-text); }
         .calendar-modal .day.booked { background: #FF3B30; color: #FFFFFF; font-weight: 700; }
@@ -223,66 +90,30 @@
         .calendar-modal .day.free { background: rgba(232, 245, 233, 0.5); color: #2E7D32; font-weight: 500; }
         body.dark .calendar-modal .day.free { background: rgba(27, 94, 32, 0.5); color: #A5D6A7; }
         .calendar-modal .day-name { font-size: 12px; color: var(--ios-secondary); padding: 8px 0; font-weight: 600; }
-
         @media (max-width: 380px) { .hero h1 { font-size: 28px; } }
     </style>
 </head>
 <body>
-
     <div class="music-bg" id="musicBg"></div>
-    <div class="wave-container">
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-    </div>
-
-    <nav>
-        <div class="logo">MELOMAN<span>sound</span></div>
-        <div class="nav-buttons">
-            <button class="theme-btn" onclick="toggleTheme()">🌙</button>
-            <button class="header-btn" onclick="openBookingModal()">Запись</button>
-        </div>
-    </nav>
-
+    <div class="wave-container"><div class="wave"></div><div class="wave"></div><div class="wave"></div></div>
+    <nav><div class="logo">MELOMAN<span>sound</span></div><div class="nav-buttons"><button class="theme-btn" onclick="toggleTheme()">🌙</button><button class="header-btn" onclick="openBookingModal()">Запись</button></div></nav>
     <div class="container">
-        <div class="hero">
-            <img src="1I.jpg" alt="Meloman Sound" class="hero-logo">
-            <h1>Твой звук <span class="accent">рождается здесь</span></h1>
-            <p>Профессиональная студия звукозаписи в Иркутске — запись, сведение, мастеринг.</p>
-        </div>
-
+        <div class="hero"><img src="1I.jpg" alt="Meloman Sound" class="hero-logo"><h1>Твой звук <span class="accent">рождается здесь</span></h1><p>Профессиональная студия звукозаписи в Иркутске — запись, сведение, мастеринг.</p></div>
         <div class="section-header">Услуги</div>
         <div class="card">
-            <div class="service-row">
-                <div class="service-left"><div class="service-icon-box">🎤</div><div><div class="service-name">Запись вокала</div><div class="service-desc">Чистый звук, профессиональный микрофон</div></div></div>
-                <div class="service-price">от 500 ₽/ч</div>
-            </div>
-            <div class="service-row">
-                <div class="service-left"><div class="service-icon-box">🎧</div><div><div class="service-name">Сведение</div><div class="service-desc">Обработка голоса, громкость, чистота</div></div></div>
-                <div class="service-price">от 1000 ₽</div>
-            </div>
-            <div class="service-row">
-                <div class="service-left"><div class="service-icon-box">💿</div><div><div class="service-name">Мастеринг</div><div class="service-desc">Финальная обработка трека</div></div></div>
-                <div class="service-price">от 500 ₽</div>
-            </div>
+            <div class="service-row"><div class="service-left"><div class="service-icon-box">🎤</div><div><div class="service-name">Запись вокала</div><div class="service-desc">Чистый звук, профессиональный микрофон</div></div></div><div class="service-price">от 500 ₽/ч</div></div>
+            <div class="service-row"><div class="service-left"><div class="service-icon-box">🎧</div><div><div class="service-name">Сведение</div><div class="service-desc">Обработка голоса, громкость, чистота</div></div></div><div class="service-price">от 1000 ₽</div></div>
+            <div class="service-row"><div class="service-left"><div class="service-icon-box">💿</div><div><div class="service-name">Мастеринг</div><div class="service-desc">Финальная обработка трека</div></div></div><div class="service-price">от 500 ₽</div></div>
         </div>
-
         <div class="section-header">Оборудование</div>
         <div class="card">
-            <div class="gear-category">🎤 Микрофоны</div>
-            <div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">Rode NT1-A</span><span class="gear-chip">Audio-Technica AT2020</span></div>
-            <div class="gear-category">🎛️ Звуковая карта</div>
-            <div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">Audient iD4 MKII</span></div>
-            <div class="gear-category">🔥 Ламповый предусилитель</div>
-            <div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">Alctron TMP-6</span></div>
-            <div class="gear-category">🔊 Мониторы</div>
-            <div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">JBL</span><span class="gear-chip">EURO SOUND</span></div>
-            <div class="gear-category">🎧 Наушники</div>
-            <div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">AKG</span></div>
-            <div class="gear-category">💻 Софт</div>
-            <div class="gear-grid"><span class="gear-chip">Cubase 12 Pro</span></div>
+            <div class="gear-category">🎤 Микрофоны</div><div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">Rode NT1-A</span><span class="gear-chip">Audio-Technica AT2020</span></div>
+            <div class="gear-category">🎛️ Звуковая карта</div><div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">Audient iD4 MKII</span></div>
+            <div class="gear-category">🔥 Ламповый предусилитель</div><div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">Alctron TMP-6</span></div>
+            <div class="gear-category">🔊 Мониторы</div><div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">JBL</span><span class="gear-chip">EURO SOUND</span></div>
+            <div class="gear-category">🎧 Наушники</div><div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">AKG</span></div>
+            <div class="gear-category">💻 Софт</div><div class="gear-grid"><span class="gear-chip">Cubase 12 Pro</span></div>
         </div>
-
         <div id="contact-section" class="section-header">Контакты</div>
         <div class="card">
             <div class="contact-link"><span class="contact-label">📍 Адрес</span><span class="contact-value" style="color:var(--ios-text);">Иркутск, ул. Румянцева, 5/1</span></div>
@@ -291,197 +122,57 @@
             <a href="https://vk.com/clubmeloman_sound" class="contact-link"><span class="contact-label">📱 ВКонтакте</span><span class="contact-value">@clubmeloman_sound</span></a>
             <a href="https://go.2gis.com/1M4Ns" target="_blank" class="map-link">🗺️ Открыть в 2ГИС — ул. Румянцева, 5/1</a>
         </div>
-
         <button class="calendar-btn" onclick="openCalendarModal()">📅 Посмотреть свободные даты</button>
         <button class="action-btn" onclick="openBookingModal()">Забронировать запись</button>
         <footer>Meloman Sound. Иркутск, Румянцева 5/1. 2026 год.</footer>
     </div>
-
-    <div class="modal-overlay" id="calendarModal">
-        <div class="modal calendar-modal">
-            <button class="close-modal" onclick="closeCalendarModal()">✕</button>
-            <h2>📅 Занятые даты</h2>
-            <p class="subhead">🔴 Красные — занято | 🟢 Зелёные — свободно</p>
-            <div class="month-nav"><button onclick="changeMonth(-1)">◀</button><span id="calMonthLabel">Июнь 2026</span><button onclick="changeMonth(1)">▶</button></div>
-            <div class="days" id="calDaysGrid"></div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="bookingModal">
-        <div class="modal">
-            <button class="close-modal" onclick="closeBookingModal()">✕</button>
-            <h2>Записаться на студию</h2>
-            <p class="subhead">Выбери дату и время — я свяжусь с тобой для подтверждения</p>
-            <div class="success-msg" id="successMsg">✅ Заявка отправлена! Скоро свяжусь с тобой.</div>
-            <form id="bookingForm" onsubmit="sendBooking(event)">
-                <div class="form-group"><div class="form-label">Твоё имя</div><input type="text" class="form-input" id="clientName" placeholder="Иван" required></div>
-                <div class="form-group"><div class="form-label">Номер телефона</div><input type="tel" class="form-input" id="clientPhone" placeholder="+7 (999) 123-45-67" required></div>
-                <div class="form-group"><div class="form-label">Дата записи</div><input type="date" class="form-input" id="bookingDate" required onchange="checkDate()"><div class="date-warning" id="dateWarning">⚠️ Эта дата уже занята! Выбери другую.</div></div>
-                <div class="form-group"><div class="form-label">Время записи</div><select class="form-input" id="bookingTime" required><option value="">Выбери время</option><option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option><option value="19:00">19:00</option><option value="20:00">20:00</option><option value="21:00">21:00</option></select></div>
-                <button type="submit" class="action-btn" id="submitBtn" style="margin-bottom:0;">Отправить заявку</button>
-            </form>
-        </div>
-    </div>
-
+    <div class="modal-overlay" id="calendarModal"><div class="modal calendar-modal"><button class="close-modal" onclick="closeCalendarModal()">✕</button><h2>📅 Занятые даты</h2><p class="subhead">🔴 Красные — занято | 🟢 Зелёные — свободно</p><div class="month-nav"><button onclick="changeMonth(-1)">◀</button><span id="calMonthLabel">Июнь 2026</span><button onclick="changeMonth(1)">▶</button></div><div class="days" id="calDaysGrid"></div></div></div>
+    <div class="modal-overlay" id="bookingModal"><div class="modal"><button class="close-modal" onclick="closeBookingModal()">✕</button><h2>Записаться на студию</h2><p class="subhead">Выбери дату и время — я свяжусь с тобой для подтверждения</p><div class="success-msg" id="successMsg">✅ Заявка отправлена! Скоро свяжусь.</div><form id="bookingForm" onsubmit="sendBooking(event)"><div class="form-group"><div class="form-label">Твоё имя</div><input type="text" class="form-input" id="clientName" placeholder="Иван" required></div><div class="form-group"><div class="form-label">Номер телефона</div><input type="tel" class="form-input" id="clientPhone" placeholder="+7 (999) 123-45-67" required></div><div class="form-group"><div class="form-label">Дата записи</div><input type="date" class="form-input" id="bookingDate" required onchange="checkDate()"><div class="date-warning" id="dateWarning">⚠️ Эта дата уже занята! Выбери другую.</div></div><div class="form-group"><div class="form-label">Время записи</div><select class="form-input" id="bookingTime" required><option value="">Выбери время</option><option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option><option value="19:00">19:00</option><option value="20:00">20:00</option><option value="21:00">21:00</option></select></div><button type="submit" class="action-btn" id="submitBtn" style="margin-bottom:0;">Отправить заявку</button></form></div></div>
     <script>
-        const notes = ['🎵', '🎶', '♪', '♫', '♬', '🎼', '🎹', '🎸'];
-        const musicBg = document.getElementById('musicBg');
-        for (let i = 0; i < 20; i++) {
-            const note = document.createElement('span');
-            note.className = 'note';
-            note.textContent = notes[Math.floor(Math.random() * notes.length)];
-            note.style.left = Math.random() * 100 + '%';
-            note.style.fontSize = (20 + Math.random() * 30) + 'px';
-            note.style.animationDuration = (8 + Math.random() * 15) + 's';
-            note.style.animationDelay = Math.random() * 10 + 's';
-            musicBg.appendChild(note);
-        }
-
-        const JSONBIN_KEY = '$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';
-        const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
-
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('bookingDate').setAttribute('min', today);
-
-        let bookedDates = [];
-        let calCurrentMonth = new Date().getMonth();
-        let calCurrentYear = new Date().getFullYear();
-
-        function toggleTheme() {
-            const body = document.body;
-            const btn = document.querySelector('.theme-btn');
-            if (body.classList.contains('dark')) {
-                body.classList.remove('dark'); btn.textContent = '🌙'; localStorage.setItem('theme', 'light');
-            } else {
-                body.classList.add('dark'); btn.textContent = '☀️'; localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark');
-            document.querySelector('.theme-btn').textContent = '☀️';
-        }
-
-        function loadBookedDates() {
-            fetch(JSONBIN_URL + '/latest', { headers: { 'X-Master-Key': JSONBIN_KEY } })
-            .then(r => r.json())
-            .then(data => {
-                const allDates = data.record.dates || [];
-                const todayStr = new Date().toISOString().split('T')[0];
-                bookedDates = allDates.filter(d => d >= todayStr);
-                if (bookedDates.length !== allDates.length) {
-                    const bookings = data.record.bookings || [];
-                    fetch(JSONBIN_URL, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
-                        body: JSON.stringify({ dates: bookedDates, bookings: bookings })
-                    }).catch(() => {});
-                }
-            })
-            .catch(() => { bookedDates = []; });
-        }
-
-        function saveBookedDates(bookings) {
-            fetch(JSONBIN_URL, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
-                body: JSON.stringify({ dates: bookedDates, bookings: bookings || [] })
-            }).catch(() => {});
-        }
-
-        function renderCalendarModal() {
-            const monthLabel = document.getElementById('calMonthLabel');
-            const daysGrid = document.getElementById('calDaysGrid');
-            const months = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
-            monthLabel.textContent = months[calCurrentMonth] + ' ' + calCurrentYear;
-            daysGrid.innerHTML = '';
-            ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(d => {
-                const div = document.createElement('div'); div.className = 'day-name'; div.textContent = d; daysGrid.appendChild(div);
-            });
-            const firstDay = new Date(calCurrentYear, calCurrentMonth, 1).getDay();
-            const daysInMonth = new Date(calCurrentYear, calCurrentMonth + 1, 0).getDate();
-            let startDay = firstDay === 0 ? 6 : firstDay - 1;
-            for (let i = 0; i < startDay; i++) { const div = document.createElement('div'); daysGrid.appendChild(div); }
-            const todayStr = new Date().toISOString().split('T')[0];
-            for (let d = 1; d <= daysInMonth; d++) {
-                const div = document.createElement('div'); div.className = 'day'; div.textContent = d;
-                const dateStr = calCurrentYear + '-' + String(calCurrentMonth + 1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
-                if (bookedDates.indexOf(dateStr) !== -1) div.classList.add('booked');
-                else if (dateStr >= todayStr) div.classList.add('free');
-                if (dateStr === todayStr) div.classList.add('today');
-                daysGrid.appendChild(div);
-            }
-        }
-
-        function changeMonth(dir) {
-            calCurrentMonth += dir;
-            if (calCurrentMonth > 11) { calCurrentMonth = 0; calCurrentYear++; }
-            if (calCurrentMonth < 0) { calCurrentMonth = 11; calCurrentYear--; }
-            renderCalendarModal();
-        }
-
-        function openCalendarModal() { renderCalendarModal(); document.getElementById('calendarModal').classList.add('active'); document.body.style.overflow = 'hidden'; }
-        function closeCalendarModal() { document.getElementById('calendarModal').classList.remove('active'); document.body.style.overflow = ''; }
-        document.getElementById('calendarModal').addEventListener('click', function(e) { if (e.target === this) closeCalendarModal(); });
-
-        function checkDate() {
-            const dateInput = document.getElementById('bookingDate');
-            const warning = document.getElementById('dateWarning');
-            if (bookedDates.indexOf(dateInput.value) !== -1) { dateInput.classList.add('booked-date'); warning.classList.add('show'); }
-            else { dateInput.classList.remove('booked-date'); warning.classList.remove('show'); }
-        }
-
-        function openBookingModal() { document.getElementById('bookingModal').classList.add('active'); document.body.style.overflow = 'hidden'; document.getElementById('successMsg').style.display = 'none'; }
-        function closeBookingModal() { document.getElementById('bookingModal').classList.remove('active'); document.body.style.overflow = ''; document.getElementById('successMsg').style.display = 'none'; document.getElementById('dateWarning').classList.remove('show'); document.getElementById('bookingDate').classList.remove('booked-date'); }
-        document.getElementById('bookingModal').addEventListener('click', function(e) { if (e.target === this) closeBookingModal(); });
-
-        function sendBooking(e) {
+        const notes = ['🎵','🎶','♪','♫','♬','🎼','🎹','🎸'];const musicBg=document.getElementById('musicBg');for(let i=0;i<20;i++){const note=document.createElement('span');note.className='note';note.textContent=notes[Math.floor(Math.random()*notes.length)];note.style.left=Math.random()*100+'%';note.style.fontSize=(20+Math.random()*30)+'px';note.style.animationDuration=(8+Math.random()*15)+'s';note.style.animationDelay=Math.random()*10+'s';musicBg.appendChild(note)}
+        const JSONBIN_KEY='$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';const JSONBIN_URL='https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
+        const today=new Date().toISOString().split('T')[0];document.getElementById('bookingDate').setAttribute('min',today);
+        let bookedDates=[];let calCurrentMonth=new Date().getMonth();let calCurrentYear=new Date().getFullYear();
+        function toggleTheme(){const body=document.body;const btn=document.querySelector('.theme-btn');if(body.classList.contains('dark')){body.classList.remove('dark');btn.textContent='🌙';localStorage.setItem('theme','light')}else{body.classList.add('dark');btn.textContent='☀️';localStorage.setItem('theme','dark')}}
+        if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');document.querySelector('.theme-btn').textContent='☀️'}
+        function loadBookedDates(){fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}}).then(r=>r.json()).then(data=>{const allDates=data.record.dates||[];const todayStr=new Date().toISOString().split('T')[0];bookedDates=allDates.filter(d=>d>=todayStr)}).catch(()=>{bookedDates=[]})}
+        function renderCalendarModal(){const monthLabel=document.getElementById('calMonthLabel');const daysGrid=document.getElementById('calDaysGrid');const months=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];monthLabel.textContent=months[calCurrentMonth]+' '+calCurrentYear;daysGrid.innerHTML='';['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(d=>{const div=document.createElement('div');div.className='day-name';div.textContent=d;daysGrid.appendChild(div)});const firstDay=new Date(calCurrentYear,calCurrentMonth,1).getDay();const daysInMonth=new Date(calCurrentYear,calCurrentMonth+1,0).getDate();let startDay=firstDay===0?6:firstDay-1;for(let i=0;i<startDay;i++){const div=document.createElement('div');daysGrid.appendChild(div)}const todayStr=new Date().toISOString().split('T')[0];for(let d=1;d<=daysInMonth;d++){const div=document.createElement('div');div.className='day';div.textContent=d;const dateStr=calCurrentYear+'-'+String(calCurrentMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');if(bookedDates.indexOf(dateStr)!==-1)div.classList.add('booked');else if(dateStr>=todayStr)div.classList.add('free');if(dateStr===todayStr)div.classList.add('today');daysGrid.appendChild(div)}}
+        function changeMonth(dir){calCurrentMonth+=dir;if(calCurrentMonth>11){calCurrentMonth=0;calCurrentYear++}if(calCurrentMonth<0){calCurrentMonth=11;calCurrentYear--}renderCalendarModal()}
+        function openCalendarModal(){renderCalendarModal();document.getElementById('calendarModal').classList.add('active');document.body.style.overflow='hidden'}
+        function closeCalendarModal(){document.getElementById('calendarModal').classList.remove('active');document.body.style.overflow=''}
+        document.getElementById('calendarModal').addEventListener('click',function(e){if(e.target===this)closeCalendarModal()})
+        function checkDate(){const dateInput=document.getElementById('bookingDate');const warning=document.getElementById('dateWarning');if(bookedDates.indexOf(dateInput.value)!==-1){dateInput.classList.add('booked-date');warning.classList.add('show')}else{dateInput.classList.remove('booked-date');warning.classList.remove('show')}}
+        function openBookingModal(){document.getElementById('bookingModal').classList.add('active');document.body.style.overflow='hidden';document.getElementById('successMsg').style.display='none'}
+        function closeBookingModal(){document.getElementById('bookingModal').classList.remove('active');document.body.style.overflow='';document.getElementById('successMsg').style.display='none';document.getElementById('dateWarning').classList.remove('show');document.getElementById('bookingDate').classList.remove('booked-date')}
+        document.getElementById('bookingModal').addEventListener('click',function(e){if(e.target===this)closeBookingModal()})
+        function sendBooking(e){
             e.preventDefault();
-            const submitBtn = document.getElementById('submitBtn');
-            const successMsg = document.getElementById('successMsg');
-            const dateInput = document.getElementById('bookingDate');
-            const warning = document.getElementById('dateWarning');
-            
-            successMsg.style.display = 'none';
-            const name = document.getElementById('clientName').value.trim();
-            const phone = document.getElementById('clientPhone').value.trim();
-            const date = dateInput.value;
-            const time = document.getElementById('bookingTime').value;
-            if (!name || !phone || !date || !time) return;
-            if (bookedDates.indexOf(date) !== -1) { dateInput.classList.add('booked-date'); warning.classList.add('show'); return; }
-
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Отправляю...';
+            const submitBtn=document.getElementById('submitBtn');const successMsg=document.getElementById('successMsg');
+            const dateInput=document.getElementById('bookingDate');const warning=document.getElementById('dateWarning');
+            successMsg.style.display='none';
+            const name=document.getElementById('clientName').value.trim();const phone=document.getElementById('clientPhone').value.trim();
+            const date=dateInput.value;const time=document.getElementById('bookingTime').value;
+            if(!name||!phone||!date||!time)return;
+            if(bookedDates.indexOf(date)!==-1){dateInput.classList.add('booked-date');warning.classList.add('show');return}
+            submitBtn.disabled=true;submitBtn.textContent='Отправляю...';
             bookedDates.push(date);
-
-            fetch(JSONBIN_URL + '/latest', { headers: { 'X-Master-Key': JSONBIN_KEY } })
-            .then(r => r.json())
-            .then(data => {
-                const bookings = data.record.bookings || [];
-                bookings.push({ name: name, phone: phone, date: date, time: time, new: true });
-                return fetch(JSONBIN_URL, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
-                    body: JSON.stringify({ dates: bookedDates, bookings: bookings })
-                });
+            fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}}).then(r=>r.json()).then(data=>{
+                const bookings=data.record.bookings||[];
+                bookings.push({name:name,phone:phone,date:date,time:time,new:true});
+                return fetch(JSONBIN_URL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY},body:JSON.stringify({dates:bookedDates,bookings:bookings})})
+            }).then(()=>{
+                successMsg.style.display='block';document.getElementById('bookingForm').reset();
+                dateInput.classList.remove('booked-date');warning.classList.remove('show');
+                submitBtn.disabled=false;submitBtn.textContent='Отправить заявку';
+                setTimeout(()=>closeBookingModal(),2500)
+            }).catch(()=>{
+                fetch(JSONBIN_URL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY},body:JSON.stringify({dates:bookedDates,bookings:[]})}).catch(()=>{});
+                successMsg.style.display='block';document.getElementById('bookingForm').reset();
+                dateInput.classList.remove('booked-date');warning.classList.remove('show');
+                submitBtn.disabled=false;submitBtn.textContent='Отправить заявку';
+                setTimeout(()=>closeBookingModal(),2500)
             })
-            .then(() => {
-                successMsg.style.display = 'block';
-                document.getElementById('bookingForm').reset();
-                dateInput.classList.remove('booked-date'); warning.classList.remove('show');
-                submitBtn.disabled = false; submitBtn.textContent = 'Отправить заявку';
-                setTimeout(() => closeBookingModal(), 2500);
-            })
-            .catch(() => {
-                saveBookedDates([]);
-                successMsg.style.display = 'block';
-                document.getElementById('bookingForm').reset();
-                dateInput.classList.remove('booked-date'); warning.classList.remove('show');
-                submitBtn.disabled = false; submitBtn.textContent = 'Отправить заявку';
-                setTimeout(() => closeBookingModal(), 2500);
-            });
         }
-
         loadBookedDates();
     </script>
 </body>
