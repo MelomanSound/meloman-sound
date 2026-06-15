@@ -119,8 +119,6 @@
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-            border: 0.5px solid rgba(0,0,0,0.04);
         }
 
         .section-header {
@@ -307,11 +305,28 @@
             background: #FFFFFF;
         }
 
+        .form-input.booked-date {
+            border-color: #FF3B30;
+            background: #FFF5F5;
+        }
+
         select.form-input {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23636366' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 16px center;
             padding-right: 40px;
+        }
+
+        .date-warning {
+            color: #FF3B30;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .date-warning.show {
+            display: block;
         }
 
         .success-msg {
@@ -397,7 +412,6 @@
             color: var(--ios-secondary);
         }
 
-        /* Мини-календарь */
         .mini-calendar {
             position: fixed;
             bottom: 20px;
@@ -612,7 +626,8 @@
                 </div>
                 <div class="form-group">
                     <div class="form-label">Дата записи</div>
-                    <input type="date" class="form-input" id="bookingDate" required>
+                    <input type="date" class="form-input" id="bookingDate" required onchange="checkDate()">
+                    <div class="date-warning" id="dateWarning">⚠️ Эта дата уже занята! Выбери другую.</div>
                 </div>
                 <div class="form-group">
                     <div class="form-label">Время записи</div>
@@ -641,13 +656,42 @@
         const TELEGRAM_BOT_TOKEN = '8438188364:AAE4251bkdhzWEnsRW2owDTkgmVRAYHiGVA';
         const TELEGRAM_CHAT_ID = '581535353';
 
+        const JSONBIN_KEY = '$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';
+        const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
+
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('bookingDate').setAttribute('min', today);
 
-        // Загружаем занятые даты из localStorage
-        let bookedDates = JSON.parse(localStorage.getItem('bookedDates') || '[]');
+        let bookedDates = [];
 
-        // Мини-календарь
+        function loadBookedDates() {
+            fetch(JSONBIN_URL + '/latest', {
+                headers: { 'X-Master-Key': JSONBIN_KEY }
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                bookedDates = data.record.dates || [];
+                renderMiniCalendar();
+            })
+            .catch(function() {
+                bookedDates = JSON.parse(localStorage.getItem('bookedDates') || '[]');
+                renderMiniCalendar();
+            });
+        }
+
+        function saveBookedDates() {
+            localStorage.setItem('bookedDates', JSON.stringify(bookedDates));
+            
+            fetch(JSONBIN_URL, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': JSONBIN_KEY
+                },
+                body: JSON.stringify({ dates: bookedDates })
+            }).catch(function() {});
+        }
+
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
 
@@ -660,7 +704,6 @@
 
             daysGrid.innerHTML = '';
             
-            // Дни недели
             const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
             dayNames.forEach(function(d) {
                 const div = document.createElement('div');
@@ -669,18 +712,15 @@
                 daysGrid.appendChild(div);
             });
 
-            // Первый день месяца
             const firstDay = new Date(currentYear, currentMonth, 1).getDay();
             const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
             
-            // Пустые ячейки
             let startDay = firstDay === 0 ? 6 : firstDay - 1;
             for (let i = 0; i < startDay; i++) {
                 const div = document.createElement('div');
                 daysGrid.appendChild(div);
             }
 
-            // Дни месяца
             const todayStr = new Date().toISOString().split('T')[0];
             for (let d = 1; d <= daysInMonth; d++) {
                 const div = document.createElement('div');
@@ -714,7 +754,19 @@
             renderMiniCalendar();
         }
 
-        renderMiniCalendar();
+        function checkDate() {
+            const dateInput = document.getElementById('bookingDate');
+            const warning = document.getElementById('dateWarning');
+            const selectedDate = dateInput.value;
+
+            if (bookedDates.indexOf(selectedDate) !== -1) {
+                dateInput.classList.add('booked-date');
+                warning.classList.add('show');
+            } else {
+                dateInput.classList.remove('booked-date');
+                warning.classList.remove('show');
+            }
+        }
 
         function openModal() {
             document.getElementById('bookingModal').classList.add('active');
@@ -726,6 +778,8 @@
             document.body.style.overflow = '';
             document.getElementById('successMsg').style.display = 'none';
             document.getElementById('errorMsg').style.display = 'none';
+            document.getElementById('dateWarning').classList.remove('show');
+            document.getElementById('bookingDate').classList.remove('booked-date');
         }
 
         document.getElementById('bookingModal').addEventListener('click', function(e) {
@@ -738,26 +792,31 @@
             const submitBtn = document.getElementById('submitBtn');
             const successMsg = document.getElementById('successMsg');
             const errorMsg = document.getElementById('errorMsg');
+            const dateInput = document.getElementById('bookingDate');
+            const warning = document.getElementById('dateWarning');
 
             successMsg.style.display = 'none';
             errorMsg.style.display = 'none';
 
             const name = document.getElementById('clientName').value.trim();
             const phone = document.getElementById('clientPhone').value.trim();
-            const date = document.getElementById('bookingDate').value;
+            const date = dateInput.value;
             const time = document.getElementById('bookingTime').value;
 
             if (!name || !phone || !date || !time) return;
 
+            if (bookedDates.indexOf(date) !== -1) {
+                dateInput.classList.add('booked-date');
+                warning.classList.add('show');
+                return;
+            }
+
             submitBtn.disabled = true;
             submitBtn.textContent = 'Отправляю...';
 
-            // Добавляем дату в занятые
-            if (bookedDates.indexOf(date) === -1) {
-                bookedDates.push(date);
-                localStorage.setItem('bookedDates', JSON.stringify(bookedDates));
-                renderMiniCalendar();
-            }
+            bookedDates.push(date);
+            saveBookedDates();
+            renderMiniCalendar();
 
             const message = '🎙️ Новая заявка Meloman Sound\n\n👤 Имя: ' + name + '\n📞 Телефон: ' + phone + '\n📅 Дата: ' + date + '\n⏰ Время: ' + time;
 
@@ -768,9 +827,10 @@
 
             function trySend(index) {
                 if (index >= urls.length) {
-                    // Всё равно показываем успех, дата уже сохранена
                     successMsg.style.display = 'block';
                     document.getElementById('bookingForm').reset();
+                    dateInput.classList.remove('booked-date');
+                    warning.classList.remove('show');
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Отправить заявку';
                     setTimeout(function() { closeModal(); }, 2500);
@@ -790,6 +850,8 @@
                     if (data.ok) {
                         successMsg.style.display = 'block';
                         document.getElementById('bookingForm').reset();
+                        dateInput.classList.remove('booked-date');
+                        warning.classList.remove('show');
                         setTimeout(function() { closeModal(); }, 2500);
                     } else {
                         trySend(index + 1);
@@ -806,6 +868,8 @@
 
             trySend(0);
         }
+
+        loadBookedDates();
     </script>
 
 </body>
