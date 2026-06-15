@@ -4,151 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙️</text></svg>">
-    <title>Meloman Sound | Админ-панель</title>
+    <title>Meloman Sound | Админка</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #F2F2F7; padding: 20px; padding-bottom: 100px; overflow-x: hidden; }
-        .music-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.4; }
-        .note { position: absolute; font-size: 30px; animation: float linear infinite; color: #007AFF; }
-        @keyframes float { 0% { transform: translateY(100vh) rotate(0deg) scale(0); opacity: 0; } 10% { opacity: 0.6; } 90% { opacity: 0.15; } 100% { transform: translateY(-100px) rotate(360deg) scale(1.5); opacity: 0; } }
-        .wave-container { position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; pointer-events: none; z-index: 0; opacity: 0.25; }
-        .wave { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; background: linear-gradient(90deg, #007AFF 0%, transparent 20%, transparent 40%, #007AFF 60%, transparent 80%, #007AFF 100%); background-size: 50% 100%; animation: wave 8s linear infinite; border-radius: 50% 50% 0 0; }
-        .wave:nth-child(2) { animation-duration: 12s; animation-delay: -4s; opacity: 0.5; background-size: 70% 100%; }
-        .wave:nth-child(3) { animation-duration: 6s; animation-delay: -2s; opacity: 0.3; background-size: 30% 100%; }
-        @keyframes wave { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .login-screen { text-align: center; padding-top: 100px; position: relative; z-index: 1; }
-        .login-screen h2 { margin-bottom: 20px; color: #1C1C1E; }
-        .login-input { width: 100%; max-width: 300px; padding: 16px; border: 1px solid #E5E5EA; border-radius: 14px; font-size: 17px; text-align: center; margin-bottom: 12px; background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-        .login-btn { background: #007AFF; color: #FFF; border: none; padding: 16px 40px; border-radius: 100px; font-weight: 700; font-size: 17px; cursor: pointer; width: 100%; max-width: 300px; }
-        .login-error { color: #FF3B30; font-size: 14px; margin-top: 8px; display: none; }
-        .admin-content { display: none; position: relative; z-index: 1; }
-        h1 { margin-bottom: 8px; color: #1C1C1E; font-size: 24px; }
-        .booking-card { background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 16px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border: 0.5px solid rgba(0,0,0,0.04); }
-        .booking-info { flex: 1; min-width: 180px; }
-        .booking-info strong { color: #007AFF; font-size: 16px; }
-        .booking-info .date { font-size: 14px; color: #636366; margin-top: 4px; }
-        .new-badge { background: #FF3B30; color: #FFF; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 700; margin-left: 8px; animation: pulse 1s infinite; }
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-        .top-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-        .refresh-btn { background: #007AFF; color: #FFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; }
-        .sound-btn { color: #FFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; }
-        .sound-on { background: #34C759; } .sound-off { background: #8E8E93; }
-        .notify-btn { color: #FFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; background: #FF9500; }
-        .logout-btn { color: #FFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; background: #8E8E93; }
-        .delete-btn { background: #FF3B30; color: #FFF; border: none; padding: 10px 16px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 13px; white-space: nowrap; }
-        .empty { text-align: center; color: #8E8E93; padding: 40px; font-size: 16px; }
-        .counter { background: #FF3B30; color: #FFF; padding: 4px 10px; border-radius: 100px; font-size: 13px; font-weight: 700; margin-left: 8px; }
-        .status { font-size: 13px; margin-bottom: 16px; font-weight: 600; }
-        .popup-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center; }
-        .popup-overlay.show { display: flex; }
-        .popup-box { background: #FFF; border-radius: 24px; padding: 30px 24px; text-align: center; max-width: 350px; width: 90%; animation: popIn 0.4s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 70% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }
-        .popup-icon { font-size: 60px; margin-bottom: 12px; }
-        .popup-title { font-size: 22px; font-weight: 800; color: #1C1C1E; margin-bottom: 6px; }
-        .popup-name { font-size: 18px; color: #007AFF; font-weight: 700; margin-bottom: 4px; }
-        .popup-detail { font-size: 14px; color: #636366; margin-bottom: 2px; }
-        .popup-close { background: #007AFF; color: #FFF; border: none; padding: 14px 40px; border-radius: 100px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 16px; }
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,sans-serif;background:#F2F2F7;padding:20px;padding-bottom:100px}
+        .login-screen{text-align:center;padding-top:100px}.login-screen h2{margin-bottom:20px}
+        .login-input{width:100%;max-width:300px;padding:16px;border:1px solid #E5E5EA;border-radius:14px;font-size:17px;text-align:center;margin-bottom:12px;background:rgba(255,255,255,0.5);backdrop-filter:blur(10px)}
+        .login-btn{background:#007AFF;color:#FFF;border:none;padding:16px 40px;border-radius:100px;font-weight:700;font-size:17px;cursor:pointer}
+        .login-error{color:#FF3B30;font-size:14px;margin-top:8px;display:none}
+        .admin-content{display:none}h1{margin-bottom:8px;color:#1C1C1E}
+        .booking-card{background:rgba(255,255,255,0.6);backdrop-filter:blur(10px);border-radius:16px;padding:16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+        .booking-info strong{color:#007AFF}.booking-info .date{font-size:14px;color:#636366;margin-top:4px}
+        .new-badge{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:12px;font-weight:700;margin-left:8px;animation:pulse 1s infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+        .top-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+        .refresh-btn{background:#007AFF;color:#FFF;border:none;padding:12px 20px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px}
+        .sound-btn{color:#FFF;border:none;padding:12px 20px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px}
+        .sound-on{background:#34C759}.sound-off{background:#8E8E93}
+        .notify-btn{color:#FFF;border:none;padding:12px 20px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px;background:#FF9500}
+        .logout-btn{color:#FFF;border:none;padding:12px 20px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px;background:#8E8E93}
+        .delete-btn{background:#FF3B30;color:#FFF;border:none;padding:10px 16px;border-radius:100px;font-weight:600;cursor:pointer;font-size:13px;white-space:nowrap}
+        .empty{text-align:center;color:#8E8E93;padding:40px}
+        .counter{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:13px;font-weight:700;margin-left:8px}
+        .status{font-size:13px;margin-bottom:16px;font-weight:600}
+        .popup-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center}
+        .popup-overlay.show{display:flex}
+        .popup-box{background:#FFF;border-radius:24px;padding:30px 24px;text-align:center;max-width:350px;width:90%;animation:popIn .4s ease}
+        @keyframes popIn{0%{transform:scale(.5);opacity:0}70%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+        .popup-icon{font-size:60px;margin-bottom:12px}.popup-title{font-size:22px;font-weight:800;margin-bottom:6px}
+        .popup-name{font-size:18px;color:#007AFF;font-weight:700}.popup-detail{font-size:14px;color:#636366;margin-bottom:2px}
+        .popup-close{background:#007AFF;color:#FFF;border:none;padding:14px 40px;border-radius:100px;font-weight:700;font-size:16px;cursor:pointer;margin-top:16px}
     </style>
 </head>
 <body>
-    <div class="music-bg" id="musicBg"></div>
-    <div class="wave-container"><div class="wave"></div><div class="wave"></div><div class="wave"></div></div>
-
     <div class="login-screen" id="loginScreen">
         <h2>🔐 Вход в админку</h2>
-        <input type="password" class="login-input" id="passwordInput" placeholder="Введите пароль" autofocus>
-        <button class="login-btn" onclick="login()">Войти</button>
-        <p class="login-error" id="loginError">❌ Неверный пароль</p>
-    </div>
-
-    <div class="admin-content" id="adminContent">
-        <h1>🎙️ Заявки Meloman Sound <span class="counter" id="counter">0</span></h1>
-        <p class="status" id="status">🟢 Отслеживание...</p>
-        <div class="top-bar">
-            <button class="refresh-btn" onclick="loadBookings()">🔄 Обновить</button>
-            <button class="sound-btn sound-on" id="soundBtn" onclick="toggleSound()">🔊 Звук ВКЛ</button>
-            <button class="notify-btn" onclick="requestNotification()">🔔 Уведомления</button>
-            <button class="logout-btn" onclick="logout()">🚪 Выйти</button>
-        </div>
-        <div id="bookingsList"></div>
-        <div class="popup-overlay" id="popupOverlay">
-            <div class="popup-box">
-                <div class="popup-icon">🔔</div>
-                <div class="popup-title">Новая заявка!</div>
-                <div class="popup-name" id="popupName"></div>
-                <div class="popup-detail" id="popupPhone"></div>
-                <div class="popup-detail" id="popupDate"></div>
-                <button class="popup-close" onclick="closePopup()">OK</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const notes=['🎵','🎶','♪','♫','♬','🎼','🎹','🎸'];
-        const mbg=document.getElementById('musicBg');
-        for(let i=0;i<15;i++){const n=document.createElement('span');n.className='note';n.textContent=notes[Math.floor(Math.random()*notes.length)];n.style.left=Math.random()*100+'%';n.style.fontSize=(20+Math.random()*30)+'px';n.style.animationDuration=(8+Math.random()*15)+'s';n.style.animationDelay=Math.random()*10+'s';mbg.appendChild(n)}
-
-        const SHEET_ID='2PACX-1vQM52dVK-JTBpUGtduZTkBLei3HybWFG0VEhaWER0g_XsRn-xgXh-pF_u9iepH_gMUmWDOye_3EUsHn';
-        const CSV_URL='https://docs.google.com/spreadsheets/d/e/'+SHEET_ID+'/pub?output=csv';
-        const ADMIN_PASSWORD='meloman2026';
-
-        if(localStorage.getItem('admin_logged')==='true'){
-            document.getElementById('loginScreen').style.display='none';
-            document.getElementById('adminContent').style.display='block';
-            startAdmin();
-        }
-
-        function login(){
-            if(document.getElementById('passwordInput').value===ADMIN_PASSWORD){
-                localStorage.setItem('admin_logged','true');
-                document.getElementById('loginScreen').style.display='none';
-                document.getElementById('adminContent').style.display='block';
-                startAdmin();
-            }else{document.getElementById('loginError').style.display='block'}
-        }
-        function logout(){localStorage.removeItem('admin_logged');location.reload()}
-        document.getElementById('passwordInput').addEventListener('keydown',function(e){if(e.key==='Enter')login()});
-
-        function startAdmin(){
-            let lastCount=parseInt(localStorage.getItem('lastBCount')||'0');
-            let soundOn=localStorage.getItem('soundOn')!=='false';
-
-            function updateSoundBtn(){
-                const b=document.getElementById('soundBtn');
-                if(soundOn){b.textContent='🔊 Звук ВКЛ';b.className='sound-btn sound-on'}
-                else{b.textContent='🔇 Звук ВЫКЛ';b.className='sound-btn sound-off'}
-            }
-            updateSoundBtn();
-
-            window.toggleSound=function(){soundOn=!soundOn;localStorage.setItem('soundOn',soundOn);updateSoundBtn();if(soundOn)beep()}
-            window.beep=function(){if(!soundOn)return;try{const c=new(window.AudioContext||window.webkitAudioContext)();if(c.state==='suspended')c.resume();const o=c.createOscillator();const g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.value=0.5;o.start();setTimeout(()=>{o.frequency.value=1100},100);setTimeout(()=>{o.frequency.value=660},250);setTimeout(()=>{o.stop();c.close()},450)}catch(e){}}
-            window.requestNotification=function(){if('Notification' in window){Notification.requestPermission().then(p=>{if(p==='granted')new Notification('✅ Готово!',{body:'Уведомления включены!',icon:'🎙️',vibrate:[200,100,200]})})}}
-            window.showPopup=function(name,phone,date,time){document.getElementById('popupName').textContent='👤 '+name;document.getElementById('popupPhone').textContent='📞 '+phone;document.getElementById('popupDate').textContent='📅 '+date+' | ⏰ '+time;document.getElementById('popupOverlay').classList.add('show');if('vibrate' in navigator)navigator.vibrate([200,100,200])}
-            window.closePopup=function(){document.getElementById('popupOverlay').classList.remove('show')}
-            window.updateBadge=function(c){document.title=c>0?'('+c+') Заявки':'Заявки';if('setAppBadge' in navigator){navigator.setAppBadge(c||0).catch(()=>{})}}
-            window.sendPush=function(name,phone,date,time){if('Notification' in window&&Notification.permission==='granted'){new Notification('Новая заявка!',{body:name+' — '+date+' в '+time,icon:'🎙️',tag:'booking',vibrate:[200,100,200]})}}
-
-            window.loadBookings=function(){
-                fetch(CSV_URL).then(r=>r.text()).then(t=>{
-                    const rows=t.trim().split('\n').slice(1);
-                    const count=rows.length;
-                    document.getElementById('counter').textContent=count;
-                    updateBadge(count);
-                    if(count>lastCount&&lastCount>0){
-                        const last=rows[rows.length-1].split(',');
-                        beep();showPopup(last[0],last[1],last[2],last[3]);
-                        sendPush(last[0],last[1],last[2],last[3]);
-                    }
-                    lastCount=count;localStorage.setItem('lastBCount',count);
-                    if(!count){document.getElementById('bookingsList').innerHTML='<div class="empty">📭 Пока нет заявок</div>';document.getElementById('status').textContent='🟢 Ожидание...';return}
-                    document.getElementById('bookingsList').innerHTML=rows.map(r=>{const c=r.split(',');return'<div class="booking-card"><div class="booking-info"><strong>'+c[0]+'</strong><div class="date">📞 '+c[1]+'</div><div class="date">📅 '+c[2]+' | ⏰ '+c[3]+'</div></div></div>'}).reverse().join('');
-                    document.getElementById('status').textContent='🟢 Отслеживание...';
-                }).catch(()=>{document.getElementById('status').textContent='🔴 Ошибка'})
-            }
-            setInterval(loadBookings,10000);loadBookings();
-        }
-    </script>
-</body>
-</html>
+        <input type="password" class="login-input" id="passwordInput"
