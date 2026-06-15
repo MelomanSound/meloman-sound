@@ -31,7 +31,8 @@
         body.dark .theme-btn { background: rgba(44, 44, 46, 0.3); }
         .container { padding: 0 16px; position: relative; z-index: 1; }
         .hero { padding: 20px 0; text-align: center; }
-        .hero-logo { width: 100%; max-width: 300px; height: auto; margin-bottom: 20px; background: transparent; }
+        .hero-logo { width: 100%; max-width: 400px; height: auto; margin-bottom: 20px; background: transparent; filter: none; transition: filter 0.3s; }
+        body.dark .hero-logo { filter: brightness(0) invert(1); }
         .hero h1 { font-size: 34px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; line-height: 1.1; text-align: left; }
         .hero .accent { color: var(--ios-accent); }
         .hero p { font-size: 17px; color: var(--ios-secondary); margin-bottom: 24px; text-align: left; }
