@@ -90,9 +90,11 @@
         .calendar-modal .day.free { background: rgba(232, 245, 233, 0.5); color: #2E7D32; font-weight: 500; }
         body.dark .calendar-modal .day.free { background: rgba(27, 94, 32, 0.5); color: #A5D6A7; }
         .calendar-modal .day-name { font-size: 12px; color: var(--ios-secondary); padding: 8px 0; font-weight: 600; }
-        .music-toggle { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; border-radius: 50%; background: var(--ios-accent); color: #FFFFFF; border: none; font-size: 22px; cursor: pointer; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: 0.3s; }
+        .music-wrapper { position: fixed; bottom: 20px; right: 20px; display: flex; align-items: center; gap: 8px; z-index: 100; }
+        .music-toggle { width: 50px; height: 50px; border-radius: 50%; background: var(--ios-accent); color: #FFFFFF; border: none; font-size: 22px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: 0.3s; flex-shrink: 0; }
         .music-toggle.playing { background: #34C759; animation: musicPulse 2s infinite; }
         @keyframes musicPulse { 0%,100% { box-shadow: 0 4px 12px rgba(52,199,89,0.3); } 50% { box-shadow: 0 4px 25px rgba(52,199,89,0.6); } }
+        .music-label { font-size: 10px; color: var(--ios-secondary); text-align: right; line-height: 1.2; max-width: 80px; }
         @media (max-width: 380px) { .hero h1 { font-size: 28px; } }
     </style>
 </head>
@@ -132,76 +134,39 @@
     <div class="modal-overlay" id="calendarModal"><div class="modal calendar-modal"><button class="close-modal" onclick="closeCalendarModal()">✕</button><h2>📅 Занятые даты</h2><p class="subhead">🔴 Красные — занято | 🟢 Зелёные — свободно</p><div class="month-nav"><button onclick="changeMonth(-1)">◀</button><span id="calMonthLabel">Июнь 2026</span><button onclick="changeMonth(1)">▶</button></div><div class="days" id="calDaysGrid"></div></div></div>
     <div class="modal-overlay" id="bookingModal"><div class="modal"><button class="close-modal" onclick="closeBookingModal()">✕</button><h2>Записаться на студию</h2><p class="subhead">Выбери дату и время — я свяжусь с тобой для подтверждения</p><div class="success-msg" id="successMsg">✅ Заявка отправлена! Скоро свяжусь.</div><form id="bookingForm" onsubmit="sendBooking(event)"><div class="form-group"><div class="form-label">Твоё имя</div><input type="text" class="form-input" id="clientName" placeholder="Иван" required></div><div class="form-group"><div class="form-label">Номер телефона</div><input type="tel" class="form-input" id="clientPhone" placeholder="+7 (999) 123-45-67" required></div><div class="form-group"><div class="form-label">Дата записи</div><input type="date" class="form-input" id="bookingDate" required onchange="checkDate()"><div class="date-warning" id="dateWarning">⚠️ Эта дата уже занята! Выбери другую.</div></div><div class="form-group"><div class="form-label">Время записи</div><select class="form-input" id="bookingTime" required><option value="">Выбери время</option><option value="10:00">10:00</option><option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00">17:00</option><option value="18:00">18:00</option><option value="19:00">19:00</option><option value="20:00">20:00</option><option value="21:00">21:00</option></select></div><button type="submit" class="action-btn" id="submitBtn" style="margin-bottom:0;">Отправить заявку</button></form></div></div>
 
-    <button class="music-toggle" id="musicToggle" onclick="toggleMusic()" title="Включить музыку">🎵</button>
+    <div class="music-wrapper">
+        <div class="music-label" id="musicLabel">Включай<br>и бронируй<br>с кайфом</div>
+        <button class="music-toggle" id="musicToggle" onclick="toggleMusic()" title="Включить музыку">🎵</button>
+    </div>
+
+    <audio id="bgMusic" loop preload="auto">
+        <source src="Aural%20Drift%20-%20Chillouten%20[audiovk.com].mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         let musicPlaying = false;
-        let musicAudio = null;
 
         function toggleMusic() {
+            const audio = document.getElementById('bgMusic');
             const btn = document.getElementById('musicToggle');
+            const label = document.getElementById('musicLabel');
+            
             if (!musicPlaying) {
-                try {
-                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                    if (ctx.state === 'suspended') ctx.resume();
-                    const masterGain = ctx.createGain();
-                    masterGain.gain.value = 0.12;
-                    masterGain.connect(ctx.destination);
-                    
-                    const melody = [
-                        {freq: 261.63, dur: 1.5}, {freq: 329.63, dur: 1.5}, {freq: 392.00, dur: 2},
-                        {freq: 349.23, dur: 1}, {freq: 329.63, dur: 1}, {freq: 293.66, dur: 2},
-                        {freq: 261.63, dur: 1.5}, {freq: 392.00, dur: 1.5}, {freq: 349.23, dur: 2},
-                        {freq: 329.63, dur: 1}, {freq: 293.66, dur: 1}, {freq: 261.63, dur: 3},
-                        {freq: 392.00, dur: 1.5}, {freq: 440.00, dur: 1.5}, {freq: 392.00, dur: 2},
-                        {freq: 349.23, dur: 1}, {freq: 329.63, dur: 1}, {freq: 293.66, dur: 2},
-                        {freq: 329.63, dur: 1.5}, {freq: 349.23, dur: 1.5}, {freq: 392.00, dur: 2},
-                        {freq: 329.63, dur: 1}, {freq: 293.66, dur: 1}, {freq: 261.63, dur: 3}
-                    ];
-                    
-                    let noteIndex = 0;
-                    
-                    function playMelody() {
-                        if (!musicPlaying) return;
-                        const note = melody[noteIndex % melody.length];
-                        const now = ctx.currentTime;
-                        
-                        const osc = ctx.createOscillator();
-                        const noteGain = ctx.createGain();
-                        const filter = ctx.createBiquadFilter();
-                        
-                        osc.connect(filter);
-                        filter.connect(noteGain);
-                        noteGain.connect(masterGain);
-                        
-                        osc.type = 'sine';
-                        filter.type = 'lowpass';
-                        filter.frequency.value = 800;
-                        
-                        osc.frequency.value = note.freq;
-                        noteGain.gain.value = 0;
-                        noteGain.gain.linearRampToValueAtTime(0.4, now + 0.08);
-                        noteGain.gain.linearRampToValueAtTime(0.25, now + note.dur * 0.6);
-                        noteGain.gain.linearRampToValueAtTime(0, now + note.dur);
-                        
-                        osc.start(now);
-                        osc.stop(now + note.dur + 0.1);
-                        
-                        noteIndex++;
-                        if (musicPlaying) setTimeout(playMelody, note.dur * 1000);
-                    }
-                    
-                    musicAudio = { ctx, masterGain };
+                audio.play().then(() => {
                     musicPlaying = true;
-                    playMelody();
                     btn.textContent = '🎶';
                     btn.classList.add('playing');
-                } catch(e) { btn.textContent = '🔇'; }
+                    label.textContent = 'Качает...';
+                }).catch(() => {
+                    btn.textContent = '🔇';
+                    label.textContent = 'Нажми ещё раз';
+                });
             } else {
-                if (musicAudio && musicAudio.ctx) musicAudio.ctx.close();
+                audio.pause();
                 musicPlaying = false;
                 btn.textContent = '🎵';
                 btn.classList.remove('playing');
+                label.textContent = 'Включай\nи бронируй\nс кайфом';
             }
         }
 
