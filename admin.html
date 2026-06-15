@@ -6,36 +6,153 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Meloman Sound | Админка</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,sans-serif;background:#F2F2F7;padding:20px;padding-bottom:100px}
-        .login-screen{text-align:center;padding-top:100px}.login-screen h2{margin-bottom:20px}
-        .login-input{width:100%;max-width:300px;padding:16px;border:1px solid #E5E5EA;border-radius:14px;font-size:17px;text-align:center;margin-bottom:12px;background:rgba(255,255,255,0.5);backdrop-filter:blur(10px)}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,sans-serif;background:#F2F2F7;padding:20px}
+        .login-screen{text-align:center;padding-top:80px}
+        .login-screen h2{margin-bottom:20px;color:#1C1C1E}
+        .login-input{width:100%;max-width:300px;padding:16px;border:1px solid #E5E5EA;border-radius:14px;font-size:17px;text-align:center;margin-bottom:12px;background:#FFF}
         .login-btn{background:#007AFF;color:#FFF;border:none;padding:16px 40px;border-radius:100px;font-weight:700;font-size:17px;cursor:pointer}
         .login-error{color:#FF3B30;font-size:14px;margin-top:8px;display:none}
-        .admin-content{display:none}h1{margin-bottom:8px;color:#1C1C1E}
-        .booking-card{background:rgba(255,255,255,0.6);backdrop-filter:blur(10px);border-radius:16px;padding:16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-        .booking-info strong{color:#007AFF}.booking-info .date{font-size:14px;color:#636366;margin-top:4px}
-        .new-badge{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:12px;font-weight:700;margin-left:8px;animation:pulse 1s infinite}
-        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+        .admin-content{display:none}
+        h1{margin-bottom:8px;color:#1C1C1E}
+        .booking-card{background:#FFF;border-radius:16px;padding:16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+        .booking-info strong{color:#007AFF;font-size:16px}
+        .booking-info div{font-size:14px;color:#636366;margin-top:4px}
         .top-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-        .refresh-btn{background:#007AFF;color:#FFF;border:none;padding:12px 20px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px}
-        .sound-btn{color:#FFF;border:none;padding:12px 20px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px}
-        .sound-on{background:#34C759}.sound-off{background:#8E8E93}
-        .notify-btn{color:#FFF;border:none;padding:12px 20px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px;background:#FF9500}
-        .logout-btn{color:#FFF;border:none;padding:12px 20px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px;background:#8E8E93}
-        .delete-btn{background:#FF3B30;color:#FFF;border:none;padding:10px 16px;border-radius:100px;font-weight:600;cursor:pointer;font-size:13px;white-space:nowrap}
-        .empty{text-align:center;color:#8E8E93;padding:40px}
+        .btn{color:#FFF;border:none;padding:12px 20px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px}
+        .refresh-btn{background:#007AFF}
+        .logout-btn{background:#8E8E93}
+        .delete-btn{background:#FF3B30;font-size:13px;padding:8px 14px;white-space:nowrap}
+        .empty{text-align:center;color:#8E8E93;padding:40px;font-size:16px}
         .counter{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:13px;font-weight:700;margin-left:8px}
         .status{font-size:13px;margin-bottom:16px;font-weight:600}
-        .popup-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center}
-        .popup-overlay.show{display:flex}
-        .popup-box{background:#FFF;border-radius:24px;padding:30px 24px;text-align:center;max-width:350px;width:90%;animation:popIn .4s ease}
-        @keyframes popIn{0%{transform:scale(.5);opacity:0}70%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
-        .popup-icon{font-size:60px;margin-bottom:12px}.popup-title{font-size:22px;font-weight:800;margin-bottom:6px}
-        .popup-name{font-size:18px;color:#007AFF;font-weight:700}.popup-detail{font-size:14px;color:#636366;margin-bottom:2px}
-        .popup-close{background:#007AFF;color:#FFF;border:none;padding:14px 40px;border-radius:100px;font-weight:700;font-size:16px;cursor:pointer;margin-top:16px}
     </style>
 </head>
 <body>
-    <div class="login-screen" id="loginScreen">
-        <h2>🔐 Вход в админку</h2>
-        <input type="password" class="login-input" id="passwordInput"
+
+<div class="login-screen" id="loginScreen">
+    <h2>🔐 Вход в админку</h2>
+    <input type="password" class="login-input" id="passwordInput" placeholder="Введите пароль">
+    <br>
+    <button class="login-btn" onclick="login()">Войти</button>
+    <p class="login-error" id="loginError">❌ Неверный пароль</p>
+</div>
+
+<div class="admin-content" id="adminContent">
+    <h1>🎙️ Заявки <span class="counter" id="counter">0</span></h1>
+    <p class="status" id="status">🟢 Отслеживание...</p>
+    <div class="top-bar">
+        <button class="btn refresh-btn" onclick="loadBookings()">🔄 Обновить</button>
+        <button class="btn logout-btn" onclick="logout()">🚪 Выйти</button>
+    </div>
+    <div id="bookingsList"></div>
+</div>
+
+<script>
+const ADMIN_PASSWORD = 'meloman2026';
+const JSONBIN_KEY = '$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';
+const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
+
+if(localStorage.getItem('admin_logged') === 'true'){
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+    startAdmin();
+}
+
+function login(){
+    const pass = document.getElementById('passwordInput').value;
+    if(pass === ADMIN_PASSWORD){
+        localStorage.setItem('admin_logged', 'true');
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        document.getElementById('loginError').style.display = 'none';
+        startAdmin();
+    } else {
+        document.getElementById('loginError').style.display = 'block';
+        document.getElementById('passwordInput').value = '';
+    }
+}
+
+function logout(){
+    localStorage.removeItem('admin_logged');
+    location.reload();
+}
+
+document.getElementById('passwordInput').addEventListener('keydown', function(e){
+    if(e.key === 'Enter') login();
+});
+
+function startAdmin(){
+    let lastCount = parseInt(localStorage.getItem('lastBCount') || '0');
+
+    function loadBookings(){
+        document.getElementById('status').textContent = '🔄 Загрузка...';
+        
+        fetch(JSONBIN_URL + '/latest', {
+            headers: { 'X-Master-Key': JSONBIN_KEY }
+        })
+        .then(r => r.json())
+        .then(data => {
+            const bookings = (data.record && data.record.bookings) ? data.record.bookings : [];
+            const count = bookings.length;
+            document.getElementById('counter').textContent = count;
+
+            if(count === 0){
+                document.getElementById('bookingsList').innerHTML = '<div class="empty">📭 Пока нет заявок</div>';
+            } else {
+                document.getElementById('bookingsList').innerHTML = bookings.map((b, i) => {
+                    return '<div class="booking-card">' +
+                        '<div class="booking-info">' +
+                        '<strong>' + b.name + '</strong>' +
+                        '<div>📞 ' + b.phone + '</div>' +
+                        '<div>📅 ' + b.date + ' | ⏰ ' + b.time + '</div>' +
+                        '</div>' +
+                        '<button class="btn delete-btn" onclick="deleteBooking(' + i + ')">🗑 Удалить</button>' +
+                        '</div>';
+                }).reverse().join('');
+            }
+
+            lastCount = count;
+            localStorage.setItem('lastBCount', count);
+            document.getElementById('status').textContent = '🟢 Отслеживание...';
+        })
+        .catch(() => {
+            document.getElementById('status').textContent = '🔴 Ошибка соединения';
+        });
+    }
+
+    window.deleteBooking = function(index){
+        if(!confirm('Удалить заявку?')) return;
+
+        fetch(JSONBIN_URL + '/latest', {
+            headers: { 'X-Master-Key': JSONBIN_KEY }
+        })
+        .then(r => r.json())
+        .then(data => {
+            const record = data.record || {};
+            const dates = record.dates || [];
+            const bookings = record.bookings || [];
+            const deletedDate = bookings[index].date;
+            const newDates = dates.filter(d => d !== deletedDate);
+            bookings.splice(index, 1);
+
+            return fetch(JSONBIN_URL, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': JSONBIN_KEY
+                },
+                body: JSON.stringify({ dates: newDates, bookings: bookings })
+            });
+        })
+        .then(() => loadBookings())
+        .catch(() => loadBookings());
+    }
+
+    window.loadBookings = loadBookings;
+    setInterval(loadBookings, 10000);
+    loadBookings();
+}
+</script>
+</body>
+</html>
