@@ -139,39 +139,38 @@
         let musicPlaying = false;
         let musicAudio = null;
 
-        function createAudio() {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const gain = ctx.createGain();
-            gain.gain.value = 0.08;
-            gain.connect(ctx.destination);
-            const notes = [262, 330, 392, 330, 294, 349, 440, 349, 330, 392, 523, 392, 349, 440, 330, 294];
-            let noteIndex = 0;
-            function playNote() {
-                if (!musicPlaying) return;
-                const osc = ctx.createOscillator();
-                const noteGain = ctx.createGain();
-                osc.connect(noteGain);
-                noteGain.connect(gain);
-                osc.type = 'sine';
-                osc.frequency.value = notes[noteIndex % notes.length];
-                noteGain.gain.value = 0;
-                noteGain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.1);
-                noteGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5);
-                osc.start();
-                osc.stop(ctx.currentTime + 1.8);
-                noteIndex++;
-                setTimeout(playNote, 1500);
-            }
-            playNote();
-            return { ctx, gain };
-        }
-
         function toggleMusic() {
             const btn = document.getElementById('musicToggle');
             if (!musicPlaying) {
                 try {
-                    musicAudio = createAudio();
+                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    const gain = ctx.createGain();
+                    gain.gain.value = 0.15;
+                    gain.connect(ctx.destination);
+                    
+                    const notes = [523.25, 587.33, 659.25, 587.33, 493.88, 440, 392, 349.23, 392, 440, 493.88, 440, 392, 349.23, 329.63, 293.66];
+                    let noteIndex = 0;
+                    
+                    function playNote() {
+                        if (!musicPlaying) return;
+                        const osc = ctx.createOscillator();
+                        const noteGain = ctx.createGain();
+                        osc.connect(noteGain);
+                        noteGain.connect(gain);
+                        osc.type = 'triangle';
+                        osc.frequency.value = notes[noteIndex % notes.length];
+                        noteGain.gain.value = 0;
+                        noteGain.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.05);
+                        noteGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.2);
+                        osc.start();
+                        osc.stop(ctx.currentTime + 1.3);
+                        noteIndex++;
+                        if (musicPlaying) setTimeout(playNote, 1200);
+                    }
+                    
+                    musicAudio = { ctx, gain };
                     musicPlaying = true;
+                    playNote();
                     btn.textContent = '🎶';
                     btn.classList.add('playing');
                 } catch(e) {
