@@ -135,7 +135,6 @@
     <button class="music-toggle" id="musicToggle" onclick="toggleMusic()" title="Включить музыку">🎵</button>
 
     <script>
-        // Музыка
         let musicPlaying = false;
         let musicAudio = null;
 
@@ -144,49 +143,42 @@
             if (!musicPlaying) {
                 try {
                     const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    if (ctx.state === 'suspended') ctx.resume();
                     const gain = ctx.createGain();
-                    gain.gain.value = 0.15;
+                    gain.gain.value = 0.2;
                     gain.connect(ctx.destination);
                     
-                    const notes = [523.25, 587.33, 659.25, 587.33, 493.88, 440, 392, 349.23, 392, 440, 493.88, 440, 392, 349.23, 329.63, 293.66];
-                    let noteIndex = 0;
-                    
-                    function playNote() {
+                    function playChord() {
                         if (!musicPlaying) return;
-                        const osc = ctx.createOscillator();
-                        const noteGain = ctx.createGain();
-                        osc.connect(noteGain);
-                        noteGain.connect(gain);
-                        osc.type = 'triangle';
-                        osc.frequency.value = notes[noteIndex % notes.length];
-                        noteGain.gain.value = 0;
-                        noteGain.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.05);
-                        noteGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.2);
-                        osc.start();
-                        osc.stop(ctx.currentTime + 1.3);
-                        noteIndex++;
-                        if (musicPlaying) setTimeout(playNote, 1200);
+                        const now = ctx.currentTime;
+                        [523.25, 659.25, 783.99].forEach(freq => {
+                            const osc = ctx.createOscillator();
+                            const g = ctx.createGain();
+                            osc.connect(g); g.connect(gain);
+                            osc.type = 'sine';
+                            osc.frequency.value = freq;
+                            g.gain.value = 0;
+                            g.gain.linearRampToValueAtTime(0.3, now + 0.1);
+                            g.gain.linearRampToValueAtTime(0, now + 2.5);
+                            osc.start(now); osc.stop(now + 2.5);
+                        });
+                        if (musicPlaying) setTimeout(playChord, 3000);
                     }
                     
                     musicAudio = { ctx, gain };
                     musicPlaying = true;
-                    playNote();
+                    playChord();
                     btn.textContent = '🎶';
                     btn.classList.add('playing');
-                } catch(e) {
-                    btn.textContent = '🔇';
-                }
+                } catch(e) { btn.textContent = '🔇'; }
             } else {
-                if (musicAudio && musicAudio.ctx) {
-                    musicAudio.ctx.close();
-                }
+                if (musicAudio && musicAudio.ctx) musicAudio.ctx.close();
                 musicPlaying = false;
                 btn.textContent = '🎵';
                 btn.classList.remove('playing');
             }
         }
 
-        // Анимация
         const notesArr=['🎵','🎶','♪','♫','♬','🎼','🎹','🎸'];const musicBgEl=document.getElementById('musicBg');for(let i=0;i<20;i++){const note=document.createElement('span');note.className='note';note.textContent=notesArr[Math.floor(Math.random()*notesArr.length)];note.style.left=Math.random()*100+'%';note.style.fontSize=(20+Math.random()*30)+'px';note.style.animationDuration=(8+Math.random()*15)+'s';note.style.animationDelay=Math.random()*10+'s';musicBgEl.appendChild(note)}
         const JSONBIN_KEY='$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';const JSONBIN_URL='https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
         const today=new Date().toISOString().split('T')[0];document.getElementById('bookingDate').setAttribute('min',today);
