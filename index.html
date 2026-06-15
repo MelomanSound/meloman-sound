@@ -176,7 +176,21 @@
         let bookedDates=[];let calCurrentMonth=new Date().getMonth();let calCurrentYear=new Date().getFullYear();
         function toggleTheme(){const body=document.body;const btn=document.querySelector('.theme-btn');if(body.classList.contains('dark')){body.classList.remove('dark');btn.textContent='🌙';localStorage.setItem('theme','light')}else{body.classList.add('dark');btn.textContent='☀️';localStorage.setItem('theme','dark')}}
         if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');document.querySelector('.theme-btn').textContent='☀️'}
-        function loadBookedDates(){fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}}).then(r=>r.json()).then(data=>{const allDates=data.record.dates||[];const now=new Date();const firstDayOfMonth=new Date(now.getFullYear(),now.getMonth(),1).toISOString().split('T')[0];const filtered=allDates.filter(d=>d>=firstDayOfMonth);bookedDates=filtered.length>0?filtered:allDates}).catch(()=>{bookedDates=[]})}
+        function loadBookedDates(){
+            const localDates = JSON.parse(localStorage.getItem('meloman_dates')||'[]');
+            bookedDates = localDates;
+            fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}})
+            .then(r=>r.json())
+            .then(data=>{
+                const allDates=data.record.dates||[];
+                const now=new Date();const firstDayOfMonth=new Date(now.getFullYear(),now.getMonth(),1).toISOString().split('T')[0];
+                const serverDates=allDates.filter(d=>d>=firstDayOfMonth);
+                const merged = [...new Set([...bookedDates, ...serverDates])];
+                bookedDates = merged;
+                localStorage.setItem('meloman_dates', JSON.stringify(merged));
+            })
+            .catch(()=>{});
+        }
         function renderCalendarModal(){const monthLabel=document.getElementById('calMonthLabel');const daysGrid=document.getElementById('calDaysGrid');const months=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];monthLabel.textContent=months[calCurrentMonth]+' '+calCurrentYear;daysGrid.innerHTML='';['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(d=>{const div=document.createElement('div');div.className='day-name';div.textContent=d;daysGrid.appendChild(div)});const firstDay=new Date(calCurrentYear,calCurrentMonth,1).getDay();const daysInMonth=new Date(calCurrentYear,calCurrentMonth+1,0).getDate();let startDay=firstDay===0?6:firstDay-1;for(let i=0;i<startDay;i++){const div=document.createElement('div');daysGrid.appendChild(div)}const todayStr=new Date().toISOString().split('T')[0];for(let d=1;d<=daysInMonth;d++){const div=document.createElement('div');div.className='day';div.textContent=d;const dateStr=calCurrentYear+'-'+String(calCurrentMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');if(bookedDates.indexOf(dateStr)!==-1)div.classList.add('booked');else if(dateStr>=todayStr)div.classList.add('free');if(dateStr===todayStr)div.classList.add('today');daysGrid.appendChild(div)}}
         function changeMonth(dir){calCurrentMonth+=dir;if(calCurrentMonth>11){calCurrentMonth=0;calCurrentYear++}if(calCurrentMonth<0){calCurrentMonth=11;calCurrentYear--}renderCalendarModal()}
         function openCalendarModal(){renderCalendarModal();document.getElementById('calendarModal').classList.add('active');document.body.style.overflow='hidden'}
@@ -195,21 +209,14 @@
             const date=dateInput.value;const time=document.getElementById('bookingTime').value;
             if(!name||!phone||!date||!time)return;
             if(bookedDates.indexOf(date)!==-1){dateInput.classList.add('booked-date');warning.classList.add('show');return}
+            submitBtn.disabled=true;submitBtn.textContent='Отправляю...';
             
             bookedDates.push(date);
-            successMsg.style.display='block';
-            document.getElementById('bookingForm').reset();
-            dateInput.classList.remove('booked-date');warning.classList.remove('show');
-            submitBtn.disabled=true;submitBtn.textContent='Отправлено!';
-            setTimeout(()=>{closeBookingModal();submitBtn.disabled=false;submitBtn.textContent='Отправить заявку'},2000);
+            localStorage.setItem('meloman_dates', JSON.stringify(bookedDates));
             
-            const controller = new AbortController();
-            const timeout = setTimeout(() => controller.abort(), 5000);
-            
-            fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY},signal:controller.signal})
+            fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}})
             .then(r=>r.json())
             .then(data=>{
-                clearTimeout(timeout);
                 const record=data.record||{};
                 const dates=record.dates||[];
                 const bookings=record.bookings||[];
@@ -217,7 +224,18 @@
                 bookings.push({name:name,phone:phone,date:date,time:time,new:true});
                 return fetch(JSONBIN_URL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY},body:JSON.stringify({dates:dates,bookings:bookings})});
             })
-            .catch(()=>{});
+            .then(()=>{
+                successMsg.style.display='block';document.getElementById('bookingForm').reset();
+                dateInput.classList.remove('booked-date');warning.classList.remove('show');
+                submitBtn.disabled=false;submitBtn.textContent='Отправить заявку';
+                setTimeout(()=>closeBookingModal(),2000);
+            })
+            .catch(()=>{
+                successMsg.style.display='block';document.getElementById('bookingForm').reset();
+                dateInput.classList.remove('booked-date');warning.classList.remove('show');
+                submitBtn.disabled=false;submitBtn.textContent='Отправить заявку';
+                setTimeout(()=>closeBookingModal(),2000);
+            });
         }
         loadBookedDates();
     </script>
