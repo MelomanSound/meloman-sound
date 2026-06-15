@@ -9,7 +9,6 @@
     <style>
         :root {
             --ios-bg: #F2F2F7;
-            --ios-card: #FFFFFF;
             --ios-text: #1C1C1E;
             --ios-secondary: #636366;
             --ios-accent: #007AFF;
@@ -18,7 +17,6 @@
 
         body.dark {
             --ios-bg: #1C1C1E;
-            --ios-card: #2C2C2E;
             --ios-text: #FFFFFF;
             --ios-secondary: #AEAEB2;
             --ios-accent: #0A84FF;
@@ -42,7 +40,6 @@
             overflow-x: hidden;
         }
 
-        /* Анимация фона */
         .music-bg {
             position: fixed;
             top: 0;
@@ -51,11 +48,11 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.3;
+            opacity: 0.4;
         }
 
         body.dark .music-bg {
-            opacity: 0.2;
+            opacity: 0.25;
         }
 
         .note {
@@ -71,7 +68,7 @@
                 opacity: 0;
             }
             10% {
-                opacity: 0.6;
+                opacity: 0.7;
             }
             90% {
                 opacity: 0.2;
@@ -82,7 +79,6 @@
             }
         }
 
-        /* Звуковые волны внизу */
         .wave-container {
             position: fixed;
             bottom: 0;
@@ -91,11 +87,11 @@
             height: 80px;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.25;
+            opacity: 0.3;
         }
 
         body.dark .wave-container {
-            opacity: 0.15;
+            opacity: 0.2;
         }
 
         .wave {
@@ -131,16 +127,12 @@
         }
 
         @keyframes wave {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
         nav {
-            background: rgba(242, 242, 247, 0.8);
+            background: rgba(242, 242, 247, 0.7);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             position: sticky;
@@ -154,7 +146,7 @@
         }
 
         body.dark nav {
-            background: rgba(44, 44, 46, 0.8);
+            background: rgba(44, 44, 46, 0.7);
         }
 
         .logo {
@@ -196,14 +188,20 @@
         }
 
         .theme-btn {
-            background: var(--ios-card);
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             color: var(--ios-text);
-            border: 1px solid var(--ios-separator);
+            border: 0.5px solid var(--ios-separator);
             padding: 10px 12px;
             border-radius: 100px;
             font-size: 16px;
             cursor: pointer;
             transition: 0.2s;
+        }
+
+        body.dark .theme-btn {
+            background: rgba(44, 44, 46, 0.5);
         }
 
         .theme-btn:active {
@@ -250,11 +248,19 @@
         }
 
         .card {
-            background: var(--ios-card);
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
             transition: background-color 0.3s;
+            border: 0.5px solid rgba(0,0,0,0.06);
+        }
+
+        body.dark .card {
+            background: rgba(44, 44, 46, 0.5);
+            border: 0.5px solid rgba(255,255,255,0.06);
         }
 
         .section-header {
@@ -290,11 +296,11 @@
             align-items: center;
             justify-content: center;
             font-size: 22px;
-            background: #F2F2F7;
+            background: rgba(242, 242, 247, 0.6);
         }
 
         body.dark .service-icon-box {
-            background: #3A3A3C;
+            background: rgba(58, 58, 60, 0.6);
         }
 
         .service-name {
@@ -320,7 +326,7 @@
         }
 
         .gear-chip {
-            background: #F2F2F7;
+            background: rgba(242, 242, 247, 0.6);
             padding: 8px 16px;
             border-radius: 100px;
             font-size: 14px;
@@ -330,7 +336,7 @@
         }
 
         body.dark .gear-chip {
-            background: #3A3A3C;
+            background: rgba(58, 58, 60, 0.6);
         }
 
         .gear-category {
@@ -370,7 +376,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #E5E5EA;
+            background: rgba(229, 229, 234, 0.5);
             border-radius: 12px;
             height: 150px;
             color: var(--ios-accent);
@@ -382,7 +388,7 @@
         }
 
         body.dark .map-link {
-            background: #3A3A3C;
+            background: rgba(58, 58, 60, 0.5);
         }
 
         .action-btn {
@@ -404,7 +410,9 @@
 
         .calendar-btn {
             display: block;
-            background: var(--ios-card);
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             color: var(--ios-accent);
             text-align: center;
             padding: 14px;
@@ -414,9 +422,14 @@
             text-decoration: none;
             margin: 0 0 24px;
             transition: 0.2s;
-            border: 1px solid var(--ios-separator);
+            border: 0.5px solid rgba(0,0,0,0.06);
             width: 100%;
             cursor: pointer;
+        }
+
+        body.dark .calendar-btn {
+            background: rgba(44, 44, 46, 0.5);
+            border: 0.5px solid rgba(255,255,255,0.06);
         }
 
         footer {
@@ -448,16 +461,26 @@
             border-radius: 12px;
             font-size: 17px;
             font-family: inherit;
-            background: var(--ios-bg);
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             color: var(--ios-text);
             -webkit-appearance: none;
             appearance: none;
         }
 
+        body.dark .form-input {
+            background: rgba(44, 44, 46, 0.4);
+        }
+
         .form-input:focus {
             outline: none;
             border-color: var(--ios-accent);
-            background: var(--ios-card);
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        body.dark .form-input:focus {
+            background: rgba(44, 44, 46, 0.6);
         }
 
         .form-input.booked-date {
@@ -495,7 +518,9 @@
         }
 
         .error-msg {
-            background: #FFF3CD;
+            background: rgba(255, 243, 205, 0.8);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             color: #856404;
             padding: 14px 20px;
             border-radius: 12px;
@@ -508,7 +533,7 @@
         }
 
         body.dark .error-msg {
-            background: #3A3A3C;
+            background: rgba(58, 58, 60, 0.8);
             color: #FFD60A;
         }
 
@@ -524,7 +549,9 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             z-index: 200;
             align-items: center;
             justify-content: center;
@@ -536,13 +563,21 @@
         }
 
         .modal {
-            background: var(--ios-card);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 24px;
             width: 100%;
             max-width: 400px;
             max-height: 90vh;
             overflow-y: auto;
+            border: 0.5px solid rgba(0,0,0,0.08);
+        }
+
+        body.dark .modal {
+            background: rgba(44, 44, 46, 0.9);
+            border: 0.5px solid rgba(255,255,255,0.08);
         }
 
         .modal h2 {
@@ -559,7 +594,7 @@
         }
 
         .close-modal {
-            background: #F2F2F7;
+            background: rgba(242, 242, 247, 0.6);
             border: none;
             width: 36px;
             height: 36px;
@@ -574,7 +609,7 @@
         }
 
         body.dark .close-modal {
-            background: #3A3A3C;
+            background: rgba(58, 58, 60, 0.6);
         }
 
         .calendar-modal {
@@ -630,13 +665,13 @@
         }
 
         .calendar-modal .day.free {
-            background: #E8F5E9;
+            background: rgba(232, 245, 233, 0.7);
             color: #2E7D32;
             font-weight: 500;
         }
 
         body.dark .calendar-modal .day.free {
-            background: #1B5E20;
+            background: rgba(27, 94, 32, 0.7);
             color: #A5D6A7;
         }
 
@@ -656,7 +691,6 @@
 </head>
 <body>
 
-    <!-- Анимация фона -->
     <div class="music-bg" id="musicBg"></div>
     <div class="wave-container">
         <div class="wave"></div>
@@ -841,10 +875,8 @@
     </div>
 
     <script>
-        // Создаём летающие ноты
         const notes = ['🎵', '🎶', '♪', '♫', '♬', '🎼', '🎹', '🎸'];
         const musicBg = document.getElementById('musicBg');
-
         for (let i = 0; i < 20; i++) {
             const note = document.createElement('span');
             note.className = 'note';
