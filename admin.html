@@ -21,7 +21,7 @@
         .login-screen { text-align: center; padding-top: 100px; position: relative; z-index: 1; }
         .login-screen h2 { margin-bottom: 20px; color: #1C1C1E; }
         .login-input { width: 100%; max-width: 300px; padding: 16px; border: 1px solid #E5E5EA; border-radius: 14px; font-size: 17px; text-align: center; margin-bottom: 12px; background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-        .login-btn { background: #007AFF; color: #FFFFFF; border: none; padding: 16px 40px; border-radius: 100px; font-weight: 700; font-size: 17px; cursor: pointer; width: 100%; max-width: 300px; }
+        .login-btn { background: #007AFF; color: #FFF; border: none; padding: 16px 40px; border-radius: 100px; font-weight: 700; font-size: 17px; cursor: pointer; width: 100%; max-width: 300px; }
         .login-error { color: #FF3B30; font-size: 14px; margin-top: 8px; display: none; }
         .admin-content { display: none; position: relative; z-index: 1; }
         h1 { margin-bottom: 8px; color: #1C1C1E; font-size: 24px; }
@@ -29,28 +29,27 @@
         .booking-info { flex: 1; min-width: 180px; }
         .booking-info strong { color: #007AFF; font-size: 16px; }
         .booking-info .date { font-size: 14px; color: #636366; margin-top: 4px; }
-        .new-badge { background: #FF3B30; color: #FFFFFF; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 700; margin-left: 8px; animation: pulse 1s infinite; }
+        .new-badge { background: #FF3B30; color: #FFF; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 700; margin-left: 8px; animation: pulse 1s infinite; }
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
         .top-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-        .refresh-btn { background: #007AFF; color: #FFFFFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; }
-        .sound-btn { color: #FFFFFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; }
-        .sound-on { background: #34C759; }
-        .sound-off { background: #8E8E93; }
-        .notify-btn { color: #FFFFFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; background: #FF9500; }
-        .logout-btn { color: #FFFFFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; background: #8E8E93; }
-        .delete-btn { background: #FF3B30; color: #FFFFFF; border: none; padding: 10px 16px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 13px; white-space: nowrap; }
+        .refresh-btn { background: #007AFF; color: #FFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; }
+        .sound-btn { color: #FFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; }
+        .sound-on { background: #34C759; } .sound-off { background: #8E8E93; }
+        .notify-btn { color: #FFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; background: #FF9500; }
+        .logout-btn { color: #FFF; border: none; padding: 12px 20px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 15px; background: #8E8E93; }
+        .delete-btn { background: #FF3B30; color: #FFF; border: none; padding: 10px 16px; border-radius: 100px; font-weight: 600; cursor: pointer; font-size: 13px; white-space: nowrap; }
         .empty { text-align: center; color: #8E8E93; padding: 40px; font-size: 16px; }
-        .counter { background: #FF3B30; color: #FFFFFF; padding: 4px 10px; border-radius: 100px; font-size: 13px; font-weight: 700; margin-left: 8px; }
+        .counter { background: #FF3B30; color: #FFF; padding: 4px 10px; border-radius: 100px; font-size: 13px; font-weight: 700; margin-left: 8px; }
         .status { font-size: 13px; margin-bottom: 16px; font-weight: 600; }
         .popup-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center; }
         .popup-overlay.show { display: flex; }
-        .popup-box { background: #FFFFFF; border-radius: 24px; padding: 30px 24px; text-align: center; max-width: 350px; width: 90%; animation: popIn 0.4s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .popup-box { background: #FFF; border-radius: 24px; padding: 30px 24px; text-align: center; max-width: 350px; width: 90%; animation: popIn 0.4s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
         @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 70% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }
         .popup-icon { font-size: 60px; margin-bottom: 12px; }
         .popup-title { font-size: 22px; font-weight: 800; color: #1C1C1E; margin-bottom: 6px; }
         .popup-name { font-size: 18px; color: #007AFF; font-weight: 700; margin-bottom: 4px; }
         .popup-detail { font-size: 14px; color: #636366; margin-bottom: 2px; }
-        .popup-close { background: #007AFF; color: #FFFFFF; border: none; padding: 14px 40px; border-radius: 100px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 16px; }
+        .popup-close { background: #007AFF; color: #FFF; border: none; padding: 14px 40px; border-radius: 100px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 16px; }
     </style>
 </head>
 <body>
@@ -60,7 +59,6 @@
     <div class="login-screen" id="loginScreen">
         <h2>🔐 Вход в админку</h2>
         <input type="password" class="login-input" id="passwordInput" placeholder="Введите пароль" autofocus>
-        <br>
         <button class="login-btn" onclick="login()">Войти</button>
         <p class="login-error" id="loginError">❌ Неверный пароль</p>
     </div>
@@ -75,16 +73,26 @@
             <button class="logout-btn" onclick="logout()">🚪 Выйти</button>
         </div>
         <div id="bookingsList"></div>
-        <div class="popup-overlay" id="popupOverlay"><div class="popup-box"><div class="popup-icon">🔔</div><div class="popup-title">Новая заявка!</div><div class="popup-name" id="popupName"></div><div class="popup-detail" id="popupPhone"></div><div class="popup-detail" id="popupDate"></div><button class="popup-close" onclick="closePopup()">OK</button></div></div>
+        <div class="popup-overlay" id="popupOverlay">
+            <div class="popup-box">
+                <div class="popup-icon">🔔</div>
+                <div class="popup-title">Новая заявка!</div>
+                <div class="popup-name" id="popupName"></div>
+                <div class="popup-detail" id="popupPhone"></div>
+                <div class="popup-detail" id="popupDate"></div>
+                <button class="popup-close" onclick="closePopup()">OK</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        const notes = ['🎵','🎶','♪','♫','♬','🎼','🎹','🎸'];
-        const musicBg = document.getElementById('musicBg');
-        for(let i=0;i<15;i++){const note=document.createElement('span');note.className='note';note.textContent=notes[Math.floor(Math.random()*notes.length)];note.style.left=Math.random()*100+'%';note.style.fontSize=(20+Math.random()*30)+'px';note.style.animationDuration=(8+Math.random()*15)+'s';note.style.animationDelay=Math.random()*10+'s';musicBg.appendChild(note)}
+        const notes=['🎵','🎶','♪','♫','♬','🎼','🎹','🎸'];
+        const mbg=document.getElementById('musicBg');
+        for(let i=0;i<15;i++){const n=document.createElement('span');n.className='note';n.textContent=notes[Math.floor(Math.random()*notes.length)];n.style.left=Math.random()*100+'%';n.style.fontSize=(20+Math.random()*30)+'px';n.style.animationDuration=(8+Math.random()*15)+'s';n.style.animationDelay=Math.random()*10+'s';mbg.appendChild(n)}
 
-        const STORE_URL = 'https://www.jsonstore.io/8b6c7e5d4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d';
-        const ADMIN_PASSWORD = 'meloman2026';
+        const SHEET_ID='2PACX-1vQM52dVK-JTBpUGtduZTkBLei3HybWFG0VEhaWER0g_XsRn-xgXh-pF_u9iepH_gMUmWDOye_3EUsHn';
+        const CSV_URL='https://docs.google.com/spreadsheets/d/e/'+SHEET_ID+'/pub?output=csv';
+        const ADMIN_PASSWORD='meloman2026';
 
         if(localStorage.getItem('admin_logged')==='true'){
             document.getElementById('loginScreen').style.display='none';
@@ -97,66 +105,49 @@
                 localStorage.setItem('admin_logged','true');
                 document.getElementById('loginScreen').style.display='none';
                 document.getElementById('adminContent').style.display='block';
-                document.getElementById('loginError').style.display='none';
                 startAdmin();
-            } else {
-                document.getElementById('loginError').style.display='block';
-                document.getElementById('passwordInput').value='';
-            }
+            }else{document.getElementById('loginError').style.display='block'}
         }
-
-        function logout(){localStorage.removeItem('admin_logged');location.reload();}
-        document.getElementById('passwordInput').addEventListener('keydown',function(e){if(e.key==='Enter')login();});
+        function logout(){localStorage.removeItem('admin_logged');location.reload()}
+        document.getElementById('passwordInput').addEventListener('keydown',function(e){if(e.key==='Enter')login()});
 
         function startAdmin(){
-            if('serviceWorker' in navigator){navigator.serviceWorker.register('/meloman-sound/sw.js').catch(()=>{});}
-            let lastCount=parseInt(localStorage.getItem('lastBookingCount')||'0');
+            let lastCount=parseInt(localStorage.getItem('lastBCount')||'0');
             let soundOn=localStorage.getItem('soundOn')!=='false';
 
-            window.updateSoundBtn=function(){
-                const btn=document.getElementById('soundBtn');
-                if(soundOn){btn.textContent='🔊 Звук ВКЛ';btn.className='sound-btn sound-on';}
-                else{btn.textContent='🔇 Звук ВЫКЛ';btn.className='sound-btn sound-off';}
+            function updateSoundBtn(){
+                const b=document.getElementById('soundBtn');
+                if(soundOn){b.textContent='🔊 Звук ВКЛ';b.className='sound-btn sound-on'}
+                else{b.textContent='🔇 Звук ВЫКЛ';b.className='sound-btn sound-off'}
             }
             updateSoundBtn();
 
-            window.toggleSound=function(){soundOn=!soundOn;localStorage.setItem('soundOn',soundOn);updateSoundBtn();if(soundOn)beep();}
-            window.beep=function(){if(!soundOn)return;try{const ctx=new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();const osc=ctx.createOscillator();const gain=ctx.createGain();osc.connect(gain);gain.connect(ctx.destination);osc.frequency.value=880;gain.gain.value=0.5;osc.start();setTimeout(()=>{osc.frequency.value=1100},100);setTimeout(()=>{osc.frequency.value=660},250);setTimeout(()=>{osc.stop();ctx.close()},450);}catch(e){}}
-            window.requestNotification=function(){if('Notification' in window){Notification.requestPermission().then(perm=>{if(perm==='granted'){new Notification('✅ Готово!',{body:'Уведомления включены!',icon:'🎙️',vibrate:[200,100,200]});}});}}
-            window.showPopup=function(name,phone,date,time){document.getElementById('popupName').textContent='👤 '+name;document.getElementById('popupPhone').textContent='📞 '+phone;document.getElementById('popupDate').textContent='📅 '+date+' в '+time;document.getElementById('popupOverlay').classList.add('show');if('vibrate' in navigator)navigator.vibrate([200,100,200]);}
-            window.closePopup=function(){document.getElementById('popupOverlay').classList.remove('show');}
-            window.updateBadge=function(count){document.title=count>0?'('+count+') Meloman Sound | Админ-панель':'Meloman Sound | Админ-панель';if('setAppBadge' in navigator){navigator.setAppBadge(count||0).catch(()=>{});}}
-            window.sendPushNotification=function(name,phone,date,time){if('Notification' in window&&Notification.permission==='granted'){navigator.serviceWorker.ready.then(reg=>{reg.showNotification('Новая заявка!',{body:name+' — '+date+' в '+time,icon:'🎙️',badge:'🎙️',tag:'booking',vibrate:[200,100,200,100,200],requireInteraction:true});}).catch(()=>{new Notification('Новая заявка!',{body:name+' — '+date+' в '+time,icon:'🎙️',tag:'booking',vibrate:[200,100,200]});});}}
+            window.toggleSound=function(){soundOn=!soundOn;localStorage.setItem('soundOn',soundOn);updateSoundBtn();if(soundOn)beep()}
+            window.beep=function(){if(!soundOn)return;try{const c=new(window.AudioContext||window.webkitAudioContext)();if(c.state==='suspended')c.resume();const o=c.createOscillator();const g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.value=0.5;o.start();setTimeout(()=>{o.frequency.value=1100},100);setTimeout(()=>{o.frequency.value=660},250);setTimeout(()=>{o.stop();c.close()},450)}catch(e){}}
+            window.requestNotification=function(){if('Notification' in window){Notification.requestPermission().then(p=>{if(p==='granted')new Notification('✅ Готово!',{body:'Уведомления включены!',icon:'🎙️',vibrate:[200,100,200]})})}}
+            window.showPopup=function(name,phone,date,time){document.getElementById('popupName').textContent='👤 '+name;document.getElementById('popupPhone').textContent='📞 '+phone;document.getElementById('popupDate').textContent='📅 '+date+' | ⏰ '+time;document.getElementById('popupOverlay').classList.add('show');if('vibrate' in navigator)navigator.vibrate([200,100,200])}
+            window.closePopup=function(){document.getElementById('popupOverlay').classList.remove('show')}
+            window.updateBadge=function(c){document.title=c>0?'('+c+') Заявки':'Заявки';if('setAppBadge' in navigator){navigator.setAppBadge(c||0).catch(()=>{})}}
+            window.sendPush=function(name,phone,date,time){if('Notification' in window&&Notification.permission==='granted'){new Notification('Новая заявка!',{body:name+' — '+date+' в '+time,icon:'🎙️',tag:'booking',vibrate:[200,100,200]})}}
 
             window.loadBookings=function(){
-                fetch(STORE_URL+'/meloman-dates')
-                .then(r=>r.json())
-                .then(data=>{
-                    const dates=data.result&&data.result.dates?data.result.dates:[];
-                    const count=dates.length;
+                fetch(CSV_URL).then(r=>r.text()).then(t=>{
+                    const rows=t.trim().split('\n').slice(1);
+                    const count=rows.length;
                     document.getElementById('counter').textContent=count;
                     updateBadge(count);
-                    if(count>lastCount&&lastCount>0){beep();showPopup('Клиент','','Последняя занятая дата','');sendPushNotification('Новая заявка','','Занята дата','');}
-                    lastCount=count;
-                    localStorage.setItem('lastBookingCount',count);
-                    if(count===0){document.getElementById('bookingsList').innerHTML='<div class="empty">📭 Пока нет заявок</div>';document.getElementById('status').textContent='🟢 Ожидание заявок...';return;}
-                    document.getElementById('bookingsList').innerHTML=dates.map((d,i)=>'<div class="booking-card"><div class="booking-info"><strong>📅 '+d+'</strong></div><button class="delete-btn" onclick="deleteDate('+i+')">🗑 Удалить</button></div>').reverse().join('');
+                    if(count>lastCount&&lastCount>0){
+                        const last=rows[rows.length-1].split(',');
+                        beep();showPopup(last[0],last[1],last[2],last[3]);
+                        sendPush(last[0],last[1],last[2],last[3]);
+                    }
+                    lastCount=count;localStorage.setItem('lastBCount',count);
+                    if(!count){document.getElementById('bookingsList').innerHTML='<div class="empty">📭 Пока нет заявок</div>';document.getElementById('status').textContent='🟢 Ожидание...';return}
+                    document.getElementById('bookingsList').innerHTML=rows.map(r=>{const c=r.split(',');return'<div class="booking-card"><div class="booking-info"><strong>'+c[0]+'</strong><div class="date">📞 '+c[1]+'</div><div class="date">📅 '+c[2]+' | ⏰ '+c[3]+'</div></div></div>'}).reverse().join('');
                     document.getElementById('status').textContent='🟢 Отслеживание...';
-                })
-                .catch(()=>{document.getElementById('status').textContent='🔴 Ошибка соединения';});
+                }).catch(()=>{document.getElementById('status').textContent='🔴 Ошибка'})
             }
-
-            window.deleteDate=function(index){
-                if(!confirm('Удалить дату и освободить?'))return;
-                fetch(STORE_URL+'/meloman-dates').then(r=>r.json()).then(data=>{
-                    const dates=data.result&&data.result.dates?data.result.dates:[];
-                    dates.splice(index,1);
-                    return fetch(STORE_URL+'/meloman-dates',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({dates:dates})});
-                }).then(()=>loadBookings()).catch(()=>loadBookings());
-            }
-
-            setInterval(loadBookings,5000);
-            loadBookings();
+            setInterval(loadBookings,10000);loadBookings();
         }
     </script>
 </body>
