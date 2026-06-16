@@ -3,118 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" href="1I.jpg">
     <title>Meloman Sound | Админка</title>
     <style>
-        :root { --bg: #F2F2F7; --text: #1C1C1E; --sec: #636366; --acc: #007AFF; }
-        body.dark { --bg: #1C1C1E; --text: #FFF; --sec: #AEAEB2; --acc: #0A84FF; }
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text);padding:20px}
-        .login-screen{text-align:center;padding-top:80px}.login-screen h2{margin-bottom:20px}
-        .login-input{width:100%;max-width:300px;padding:16px;border:1px solid #E5E5EA;border-radius:14px;font-size:17px;text-align:center;margin-bottom:12px;background:#FFF;color:#1C1C1E}
-        .login-btn{background:var(--acc);color:#FFF;border:none;padding:16px 40px;border-radius:100px;font-weight:700;font-size:17px;cursor:pointer}
-        .login-error{color:#FF3B30;display:none;margin-top:8px}
-        .admin-content{display:none}
-        h1{margin-bottom:20px}
-        .booking-card{background:#FFF;border-radius:16px;padding:16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
-        body.dark .booking-card{background:#2C2C2E}
-        .booking-info strong{color:var(--acc);font-size:16px}
-        .booking-info div{font-size:14px;color:var(--sec);margin-top:4px}
-        .delete-btn{background:#FF3B30;color:#FFF;border:none;padding:10px 18px;border-radius:100px;font-weight:600;cursor:pointer;font-size:14px}
-        .refresh-btn{background:var(--acc);color:#FFF;border:none;padding:12px 24px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px;margin-bottom:20px}
-        .logout-btn{background:#8E8E93;color:#FFF;border:none;padding:12px 24px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px;margin-left:10px}
-        .empty{text-align:center;color:var(--sec);padding:40px}
-        .counter{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:13px;margin-left:8px}
-        .status{font-size:13px;margin-bottom:16px;color:var(--sec)}
+        body{font-family:-apple-system,sans-serif;background:#F2F2F7;padding:20px}
+        .login-screen{text-align:center;padding-top:80px}
+        input{padding:16px;border:1px solid #E5E5EA;border-radius:14px;font-size:17px;text-align:center;margin:8px;width:260px}
+        button{background:#007AFF;color:#FFF;border:none;padding:14px 30px;border-radius:100px;font-weight:700;font-size:16px;cursor:pointer;margin:4px}
+        .card{background:#FFF;border-radius:16px;padding:16px;margin:8px 0;display:flex;justify-content:space-between;align-items:center}
+        .counter{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:13px}
+        .delete-btn{background:#FF3B30;color:#FFF;border:none;padding:8px 16px;border-radius:100px;cursor:pointer}
+        .empty{text-align:center;color:#8E8E93;padding:40px}
     </style>
 </head>
 <body>
-
-<div class="login-screen" id="loginScreen">
-    <h2>🔐 Вход в админку</h2>
-    <input type="password" class="login-input" id="passwordInput" placeholder="Введите пароль">
-    <br><button class="login-btn" onclick="login()">Войти</button>
-    <p class="login-error" id="loginError">❌ Неверный пароль</p>
+<div id="loginScreen">
+    <h2>🔐 Вход</h2>
+    <input type="password" id="passInput" placeholder="Пароль"><br>
+    <button onclick="login()">Войти</button>
+    <p id="loginError" style="color:#FF3B30;display:none">❌ Неверный пароль</p>
 </div>
-
-<div class="admin-content" id="adminContent">
+<div id="adminContent" style="display:none">
     <h1>🎙️ Заявки <span class="counter" id="counter">0</span></h1>
-    <p class="status" id="status">🟢 Отслеживание...</p>
-    <button class="refresh-btn" onclick="loadBookings()">🔄 Обновить</button>
-    <button class="logout-btn" onclick="logout()">🚪 Выйти</button>
+    <input type="password" id="tokenInput" placeholder="Вставь GitHub токен">
+    <button onclick="saveToken()">💾 Сохранить токен</button>
+    <button onclick="loadBookings()">🔄 Обновить</button>
+    <button onclick="logout()">🚪 Выйти</button>
     <div id="bookingsList"></div>
 </div>
-
 <script>
-const PASSWORD='meloman2026';
-const API_URL='https://script.google.com/macros/s/AKfycbywYd7XxQbTt5EplXPAi58dRtSu2uXwOvrUQ5O61N8HKcJO8oTXf6o-aH2oVTUUBSD4/exec';
-
-if(localStorage.getItem('admin_logged')==='true'){
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('adminContent').style.display='block';
-    startAdmin();
-}
-
-function login(){
-    if(document.getElementById('passwordInput').value===PASSWORD){
-        localStorage.setItem('admin_logged','true');
-        document.getElementById('loginScreen').style.display='none';
-        document.getElementById('adminContent').style.display='block';
-        startAdmin();
-    }else{document.getElementById('loginError').style.display='block'}
-}
-
+const PASS='meloman2026';
+const REPO='melomansound/meloman-sound';
+if(localStorage.getItem('admin_logged')==='true'){document.getElementById('loginScreen').style.display='none';document.getElementById('adminContent').style.display='block';document.getElementById('tokenInput').value=localStorage.getItem('gh_token')||''}
+function login(){if(document.getElementById('passInput').value===PASS){localStorage.setItem('admin_logged','true');document.getElementById('loginScreen').style.display='none';document.getElementById('adminContent').style.display='block'}else{document.getElementById('loginError').style.display='block'}}
 function logout(){localStorage.removeItem('admin_logged');location.reload()}
-document.getElementById('passwordInput').addEventListener('keydown',function(e){if(e.key==='Enter')login()});
-
-function startAdmin(){
-    let lastCount=0;
-    let allBookings=[];
-
-    window.loadBookings=function(){
-        fetch(API_URL).then(r=>r.json()).then(data=>{
-            allBookings=data.bookings||[];
-            const count=allBookings.length;
-            document.getElementById('counter').textContent=count;
-            if(count>lastCount&&lastCount>0){
-                try{new(window.AudioContext||window.webkitAudioContext)()}catch(e){}
-            }
-            lastCount=count;
-            if(!count){
-                document.getElementById('bookingsList').innerHTML='<div class="empty">📭 Пока нет заявок</div>';
-                document.getElementById('status').textContent='🟢 Ожидание...';
-                return;
-            }
-            document.getElementById('bookingsList').innerHTML=allBookings.map((b,i)=>
-                `<div class="booking-card">
-                    <div class="booking-info">
-                        <strong>${b.name}</strong>
-                        <div>📞 ${b.phone}</div>
-                        <div>📅 ${b.date} | ⏰ ${b.time}</div>
-                    </div>
-                    <button class="delete-btn" onclick="deleteBooking(${i})">🗑 Удалить</button>
-                </div>`
-            ).reverse().join('');
-            document.getElementById('status').textContent='🟢 Отслеживание...';
-        }).catch(()=>{document.getElementById('status').textContent='🔴 Ошибка'})
-    }
-
-    window.deleteBooking=function(index){
-        if(!confirm('Удалить заявку?'))return;
-        
-        fetch(API_URL,{
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({action:'delete',index:index})
-        })
-        .then(()=>loadBookings())
-        .catch(()=>alert('Ошибка удаления'));
-    }
-
-    setInterval(loadBookings,5000);
-    loadBookings();
+function saveToken(){const t=document.getElementById('tokenInput').value.trim();if(t){localStorage.setItem('gh_token',t);alert('✅ Токен сохранён!')}}
+function loadBookings(){
+    const token=localStorage.getItem('gh_token');
+    if(!token){alert('Сначала вставь и сохрани токен GitHub!');return}
+    fetch(`https://api.github.com/repos/${REPO}/issues?state=open&labels=booking`,{headers:{'Authorization':`token ${token}`}})
+    .then(r=>r.json()).then(issues=>{
+        document.getElementById('counter').textContent=issues.length;
+        if(!issues.length){document.getElementById('bookingsList').innerHTML='<div class="empty">📭 Пусто</div>';return}
+        document.getElementById('bookingsList').innerHTML=issues.map(i=>{
+            const b=i.body||'';
+            return `<div class="card"><div><strong>${(b.match(/👤 Имя: (.+)/)||['','-'])[1]}</strong><div>📞 ${(b.match(/📞 Телефон: (.+)/)||['','-'])[1]}</div><div>📅 ${(b.match(/📅 Дата: (.+)/)||['','-'])[1]} | ⏰ ${(b.match(/⏰ Время: (.+)/)||['','-'])[1]}</div></div><button class="delete-btn" onclick="deleteBooking(${i.number})">🗑</button></div>`;
+        }).reverse().join('');
+    }).catch(()=>alert('Ошибка загрузки'))
 }
+function deleteBooking(n){if(!confirm('Удалить?'))return;const token=localStorage.getItem('gh_token');fetch(`https://api.github.com/repos/${REPO}/issues/${n}`,{method:'PATCH',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'},body:JSON.stringify({state:'closed'})}).then(()=>loadBookings()).catch(()=>alert('Ошибка'))}
+setInterval(loadBookings,5000);
 </script>
 </body>
 </html>
