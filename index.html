@@ -148,7 +148,16 @@
         function toggleTheme(){const b=document.body;const btn=document.querySelector('.theme-btn');if(b.classList.contains('dark')){b.classList.remove('dark');btn.textContent='🌙'}else{b.classList.add('dark');btn.textContent='☀️'}}
         if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');document.querySelector('.theme-btn').textContent='☀️'}
         
-        function loadBookedDates(){fetch(`https://api.github.com/repos/${REPO}/issues?state=open&labels=booking`).then(r=>r.json()).then(d=>{const dates=d.map(i=>{const m=i.title.match(/📅 (\d{4}-\d{2}-\d{2})/);return m?m[1]:null}).filter(d=>d);if(dates.length>0){bookedDates=dates;localStorage.setItem('mdates',JSON.stringify(bookedDates))}}).catch(()=>{})}
+        function loadBookedDates(){
+            fetch(`https://api.github.com/repos/${REPO}/issues?state=open&labels=booking`)
+            .then(r=>r.json())
+            .then(d=>{
+                const dates=d.map(i=>{const m=i.title.match(/📅 (\d{4}-\d{2}-\d{2})/);return m?m[1]:null}).filter(d=>d);
+                bookedDates=dates;
+                localStorage.setItem('mdates',JSON.stringify(bookedDates));
+            }).catch(()=>{});
+        }
+        
         function renderCalendarModal(){const ml=document.getElementById('calMonthLabel');const dg=document.getElementById('calDaysGrid');const months=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];ml.textContent=months[cm]+' '+cy;dg.innerHTML='';['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(d=>{const div=document.createElement('div');div.className='day-name';div.textContent=d;dg.appendChild(div)});const fd=new Date(cy,cm,1).getDay();const dim=new Date(cy,cm+1,0).getDate();let sd=fd===0?6:fd-1;for(let i=0;i<sd;i++){const div=document.createElement('div');dg.appendChild(div)}const ts=new Date().toISOString().split('T')[0];for(let d=1;d<=dim;d++){const div=document.createElement('div');div.className='day';div.textContent=d;const ds=cy+'-'+String(cm+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');if(bookedDates.indexOf(ds)!==-1)div.classList.add('booked');else if(ds>=ts)div.classList.add('free');if(ds===ts)div.classList.add('today');dg.appendChild(div)}}
         function changeMonth(dir){cm+=dir;if(cm>11){cm=0;cy++}if(cm<0){cm=11;cy--}renderCalendarModal()}
         function openCalendarModal(){renderCalendarModal();document.getElementById('calendarModal').classList.add('active');document.body.style.overflow='hidden'}
