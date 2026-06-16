@@ -51,6 +51,8 @@
         .date-warning { color: #FF3B30; font-size: 13px; font-weight: 600; margin-top: 4px; display: none; }
         .date-warning.show { display: block; }
         .success-msg { background: #34C759; color: #FFF; padding: 14px 20px; border-radius: 12px; font-weight: 600; text-align: center; margin-bottom: 16px; display: none; }
+        .social-links { display: flex; gap: 8px; justify-content: center; margin-bottom: 16px; }
+        .social-link { background: rgba(255,255,255,0.3); backdrop-filter: blur(5px); padding: 8px 16px; border-radius: 100px; color: var(--acc); text-decoration: none; font-size: 13px; font-weight: 600; }
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(8px); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.active { display: flex; }
         .modal { background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); border-radius: 20px; padding: 24px; width: 100%; max-width: 400px; }
@@ -78,7 +80,7 @@
 </head>
 <body>
     <div class="music-bg" id="musicBg"></div>
-    <nav><div class="logo">MELOMAN<span>sound</span></div><div><button class="theme-btn" onclick="toggleTheme()">🌙</button><button class="header-btn" onclick="openBookingModal()">Запись</button></div></nav>
+    <nav><div class="logo">MELOMAN<span>sound</span></div><div><button class="theme-btn" onclick="toggleTheme()">🌙</button><button class="header-btn" onclick="scrollToBooking()">Запись</button></div></nav>
     <div class="container">
         <div class="hero"><img src="1I.jpg" alt="Meloman Sound" class="hero-logo"><h1>Твой звук <span class="accent">рождается здесь</span></h1><p>Профессиональная студия звукозаписи в Иркутске — запись, сведение, мастеринг.</p></div>
         
@@ -96,7 +98,7 @@
         <div class="section-header">Оборудование</div>
         <div class="card">
             <div class="gear-category">🎤 Микрофоны</div><div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">Rode NT1-A</span><span class="gear-chip">Audio-Technica AT2020</span></div>
-            <div class="gear-category">🎛️ Звуковая карта</div><div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">Audient iD4 MKII</span></div>
+            <div class="gear-category">🎛️ Звуковая карта</div><div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">Audient iD14 MKII</span></div>
             <div class="gear-category">🔥 Ламповый предусилитель</div><div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">Alctron TMP-6</span></div>
             <div class="gear-category">🔊 Мониторы</div><div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">JBL</span><span class="gear-chip">EURO SOUND</span></div>
             <div class="gear-category">🎧 Наушники</div><div class="gear-grid" style="margin-bottom:16px;"><span class="gear-chip">AKG</span></div>
@@ -110,12 +112,20 @@
             <a href="https://vk.com/clubmeloman_sound" class="contact-link"><span class="contact-label">📱 ВКонтакте</span><span class="contact-value">@clubmeloman_sound</span></a>
             <a href="https://go.2gis.com/1M4Ns" target="_blank" class="map-link">🗺️ Открыть в 2ГИС</a>
         </div>
+        
+        <p style="text-align:center;color:var(--acc);font-weight:600;margin-bottom:12px;">📅 Посмотри свободные даты</p>
         <button class="calendar-btn" onclick="openCalendarModal()">📅 Свободные даты</button>
-        <button class="action-btn" onclick="openBookingModal()">Забронировать запись</button>
+        <button class="action-btn" id="bookingSection" onclick="openBookingModal()">Забронировать запись</button>
         <footer>Meloman Sound. Иркутск, Румянцева 5/1. 2026</footer>
     </div>
     <div class="modal-overlay" id="calendarModal"><div class="modal calendar-modal"><button class="close-modal" onclick="closeCalendarModal()">✕</button><h2>📅 Занятые даты</h2><p>🔴 Занято | 🟢 Свободно</p><div class="month-nav"><button onclick="changeMonth(-1)">◀</button><span id="calMonthLabel">Июнь 2026</span><button onclick="changeMonth(1)">▶</button></div><div class="days" id="calDaysGrid"></div></div></div>
-    <div class="modal-overlay" id="bookingModal"><div class="modal"><button class="close-modal" onclick="closeBookingModal()">✕</button><h2>Записаться</h2><p>Выбери дату и время — я свяжусь с тобой</p><div class="success-msg" id="successMsg">✅ Заявка отправлена!</div><form id="bookingForm" onsubmit="sendBooking(event)"><div class="form-group"><div class="form-label">Имя</div><input type="text" class="form-input" id="clientName" placeholder="Иван" required></div><div class="form-group"><div class="form-label">Телефон</div><input type="tel" class="form-input" id="clientPhone" placeholder="+7 (999) 123-45-67" required></div><div class="form-group"><div class="form-label">Дата</div><input type="date" class="form-input" id="bookingDate" required onchange="checkDate()"><div class="date-warning" id="dateWarning">⚠️ Эта дата уже занята!</div></div><div class="form-group"><div class="form-label">Время</div><select class="form-input" id="bookingTime" required><option value="">Выбери</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option></select></div><button type="submit" class="action-btn" id="submitBtn">Отправить заявку</button></form></div></div>
+    <div class="modal-overlay" id="bookingModal"><div class="modal"><button class="close-modal" onclick="closeBookingModal()">✕</button><h2>Записаться</h2><p>Выбери дату и время — я свяжусь с тобой</p>
+        <div class="social-links">
+            <a href="https://t.me/KONTINGENT38" target="_blank" class="social-link">📱 Telegram</a>
+            <a href="https://vk.com/clubmeloman_sound" target="_blank" class="social-link">💬 ВКонтакте</a>
+        </div>
+        <div class="success-msg" id="successMsg">✅ Заявка отправлена!</div>
+        <form id="bookingForm" onsubmit="sendBooking(event)"><div class="form-group"><div class="form-label">Имя</div><input type="text" class="form-input" id="clientName" placeholder="Иван" required></div><div class="form-group"><div class="form-label">Телефон</div><input type="tel" class="form-input" id="clientPhone" placeholder="+7 (999) 123-45-67" required></div><div class="form-group"><div class="form-label">Дата</div><input type="date" class="form-input" id="bookingDate" required onchange="checkDate()"><div class="date-warning" id="dateWarning">⚠️ Эта дата уже занята!</div></div><div class="form-group"><div class="form-label">Время</div><select class="form-input" id="bookingTime" required><option value="">Выбери</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option></select></div><button type="submit" class="action-btn" id="submitBtn">Отправить заявку</button></form></div></div>
     <div class="music-wrapper"><div class="music-label">Включай<br>и бронируй<br>с кайфом</div><button class="music-toggle" id="musicToggle" onclick="toggleMusic()">🎵</button></div>
     <audio id="bgMusic" loop preload="auto"><source src="Aural%20Drift%20-%20Chillouten%20[audiovk.com].mp3" type="audio/mpeg"></audio>
 
@@ -128,26 +138,14 @@
         let bookedDates=JSON.parse(localStorage.getItem('mdates')||'[]');
         let cm=new Date().getMonth();let cy=new Date().getFullYear();
         
-        // Показываем/скрываем админ-панель
         if(!localStorage.getItem('gh_token')){document.getElementById('adminBar').style.display='flex'}else{document.getElementById('adminBar').style.display='none'}
-        
-        function saveSiteToken(){
-            const t=document.getElementById('siteTokenInput').value.trim();
-            if(t){localStorage.setItem('gh_token',t);document.getElementById('adminBar').style.display='none';alert('✅ Токен сохранён!')}
-        }
+        function saveSiteToken(){const t=document.getElementById('siteTokenInput').value.trim();if(t){localStorage.setItem('gh_token',t);document.getElementById('adminBar').style.display='none';alert('✅ Токен сохранён!')}}
+        function scrollToBooking(){document.getElementById('bookingSection').scrollIntoView({behavior:'smooth'})}
         
         function toggleTheme(){const b=document.body;const btn=document.querySelector('.theme-btn');if(b.classList.contains('dark')){b.classList.remove('dark');btn.textContent='🌙'}else{b.classList.add('dark');btn.textContent='☀️'}}
         if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');document.querySelector('.theme-btn').textContent='☀️'}
         
-        function loadBookedDates(){
-            fetch(`https://api.github.com/repos/${REPO}/issues?state=open&labels=booking`)
-            .then(r=>r.json())
-            .then(d=>{
-                const dates=d.map(i=>{const m=i.title.match(/📅 (\d{4}-\d{2}-\d{2})/);return m?m[1]:null}).filter(d=>d);
-                if(dates.length>0){bookedDates=dates;localStorage.setItem('mdates',JSON.stringify(bookedDates));}
-            }).catch(()=>{});
-        }
-        
+        function loadBookedDates(){fetch(`https://api.github.com/repos/${REPO}/issues?state=open&labels=booking`).then(r=>r.json()).then(d=>{const dates=d.map(i=>{const m=i.title.match(/📅 (\d{4}-\d{2}-\d{2})/);return m?m[1]:null}).filter(d=>d);if(dates.length>0){bookedDates=dates;localStorage.setItem('mdates',JSON.stringify(bookedDates))}}).catch(()=>{})}
         function renderCalendarModal(){const ml=document.getElementById('calMonthLabel');const dg=document.getElementById('calDaysGrid');const months=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];ml.textContent=months[cm]+' '+cy;dg.innerHTML='';['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(d=>{const div=document.createElement('div');div.className='day-name';div.textContent=d;dg.appendChild(div)});const fd=new Date(cy,cm,1).getDay();const dim=new Date(cy,cm+1,0).getDate();let sd=fd===0?6:fd-1;for(let i=0;i<sd;i++){const div=document.createElement('div');dg.appendChild(div)}const ts=new Date().toISOString().split('T')[0];for(let d=1;d<=dim;d++){const div=document.createElement('div');div.className='day';div.textContent=d;const ds=cy+'-'+String(cm+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');if(bookedDates.indexOf(ds)!==-1)div.classList.add('booked');else if(ds>=ts)div.classList.add('free');if(ds===ts)div.classList.add('today');dg.appendChild(div)}}
         function changeMonth(dir){cm+=dir;if(cm>11){cm=0;cy++}if(cm<0){cm=11;cy--}renderCalendarModal()}
         function openCalendarModal(){renderCalendarModal();document.getElementById('calendarModal').classList.add('active');document.body.style.overflow='hidden'}
@@ -166,24 +164,10 @@
             if(!name||!phone||!date||!time)return;
             if(bookedDates.indexOf(date)!==-1){document.getElementById('dateWarning').classList.add('show');return}
             sb.disabled=true;sb.textContent='Отправляю...';
-            
-            // Сохраняем локально
-            bookedDates.push(date);
-            localStorage.setItem('mdates',JSON.stringify(bookedDates));
-            
-            // Создаём Issue
+            bookedDates.push(date);localStorage.setItem('mdates',JSON.stringify(bookedDates));
             const token=localStorage.getItem('gh_token');
-            if(token){
-                fetch(`https://api.github.com/repos/${REPO}/issues`,{
-                    method:'POST',
-                    headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'},
-                    body:JSON.stringify({title:`🎙️ ${name} | 📅 ${date} | ⏰ ${time}`,body:`👤 Имя: ${name}\n📞 Телефон: ${phone}\n📅 Дата: ${date}\n⏰ Время: ${time}`,labels:['booking']})
-                }).catch(()=>{});
-            }
-            
-            sm.style.display='block';document.getElementById('bookingForm').reset();
-            document.getElementById('dateWarning').classList.remove('show');
-            sb.disabled=false;sb.textContent='Отправить заявку';setTimeout(()=>closeBookingModal(),2000);
+            if(token){fetch(`https://api.github.com/repos/${REPO}/issues`,{method:'POST',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'},body:JSON.stringify({title:`🎙️ ${name} | 📅 ${date} | ⏰ ${time}`,body:`👤 Имя: ${name}\n📞 Телефон: ${phone}\n📅 Дата: ${date}\n⏰ Время: ${time}`,labels:['booking']})}).catch(()=>{})}
+            sm.style.display='block';document.getElementById('bookingForm').reset();document.getElementById('dateWarning').classList.remove('show');sb.disabled=false;sb.textContent='Отправить заявку';setTimeout(()=>closeBookingModal(),2000);
         }
         loadBookedDates();
     </script>
