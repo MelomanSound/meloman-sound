@@ -117,6 +117,8 @@
         const nb=['🎵','🎶','♪','♫','♬'];const mb=document.getElementById('musicBg');for(let i=0;i<20;i++){const n=document.createElement('span');n.className='note';n.textContent=nb[Math.floor(Math.random()*nb.length)];n.style.left=Math.random()*100+'%';n.style.fontSize=(20+Math.random()*30)+'px';n.style.animationDuration=(8+Math.random()*15)+'s';n.style.animationDelay=Math.random()*10+'s';mb.appendChild(n)}
         
         const API_URL='https://script.google.com/macros/s/AKfycbywYd7XxQbTt5EplXPAi58dRtSu2uXwOvrUQ5O61N8HKcJO8oTXf6o-aH2oVTUUBSD4/exec';
+        const TG_BOT_TOKEN='8438188364:AAE4251bkdhzWEnsRW2owDTkgmVRAYHiGVA';
+        const TG_CHAT_ID='581535353';
         const today=new Date().toISOString().split('T')[0];document.getElementById('bookingDate').setAttribute('min',today);
         let bookedDates=[];let cm=new Date().getMonth();let cy=new Date().getFullYear();
         
@@ -144,18 +146,23 @@
             if(bookedDates.indexOf(date)!==-1){di.classList.add('booked-date');w.classList.add('show');return}
             sb.disabled=true;sb.textContent='Отправляю...';
             
-            fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone,date,time})})
-            .then(r=>r.json()).then(d=>{
-                bookedDates=d.dates||bookedDates;localStorage.setItem('mdates',JSON.stringify(bookedDates));
-                sm.style.display='block';document.getElementById('bookingForm').reset();
-                di.classList.remove('booked-date');w.classList.remove('show');
-                sb.disabled=false;sb.textContent='Отправить заявку';setTimeout(()=>closeBookingModal(),2000);
-            }).catch(()=>{
-                bookedDates.push(date);localStorage.setItem('mdates',JSON.stringify(bookedDates));
-                sm.style.display='block';document.getElementById('bookingForm').reset();
-                di.classList.remove('booked-date');w.classList.remove('show');
-                sb.disabled=false;sb.textContent='Отправить заявку';setTimeout(()=>closeBookingModal(),2000);
-            });
+            // Сохраняем дату локально
+            bookedDates.push(date);
+            localStorage.setItem('mdates',JSON.stringify(bookedDates));
+            
+            // Отправляем в Google Script для сохранения
+            fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone,date,time})}).catch(()=>{});
+            
+            // Отправляем в Telegram
+            const msg=`🎙️ Новая заявка Meloman Sound\n\n👤 Имя: ${name}\n📞 Телефон: ${phone}\n📅 Дата: ${date}\n⏰ Время: ${time}`;
+            fetch(`https://telegram-bot-api.vercel.app/bot${TG_BOT_TOKEN}/sendMessage`,{
+                method:'POST',headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({chat_id:TG_CHAT_ID,text:msg})
+            }).catch(()=>{});
+            
+            sm.style.display='block';document.getElementById('bookingForm').reset();
+            di.classList.remove('booked-date');w.classList.remove('show');
+            sb.disabled=false;sb.textContent='Отправить заявку';setTimeout(()=>closeBookingModal(),2000);
         }
         loadBookedDates();
     </script>
