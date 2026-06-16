@@ -144,7 +144,11 @@
             if(bookedDates.indexOf(date)!==-1){di.classList.add('booked-date');w.classList.add('show');return}
             sb.disabled=true;sb.textContent='Отправляю...';
             
-            fetch(API_URL,{method:'POST',body:JSON.stringify({name,phone,date,time})})
+            fetch(API_URL,{
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({name,phone,date,time})
+            })
             .then(r=>r.json()).then(d=>{
                 bookedDates=d.dates||bookedDates;localStorage.setItem('mdates',JSON.stringify(bookedDates));
                 sm.style.display='block';document.getElementById('bookingForm').reset();
