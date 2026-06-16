@@ -24,7 +24,7 @@
         .login-error{color:#FF3B30;font-size:14px;margin-top:8px;display:none}
         .admin-content{display:none;position:relative;z-index:1}
         h1{margin-bottom:8px;color:var(--text)}
-        .booking-card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+        .booking-card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.05);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
         .booking-info strong{color:var(--acc);font-size:16px}.booking-info div{font-size:14px;color:var(--sec);margin-top:4px}
         .new-badge{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:12px;font-weight:700;margin-left:8px;animation:pulse 1s infinite}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
@@ -33,6 +33,8 @@
         .refresh-btn{background:var(--acc)}.sound-btn{color:#FFF}.sound-on{background:#34C759}.sound-off{background:#8E8E93}
         .notify-btn{background:#FF9500}.logout-btn{background:#8E8E93}.theme-btn{background:rgba(128,128,128,0.3);color:var(--text)}
         .delete-btn{background:#FF3B30;padding:8px 14px;font-size:13px;white-space:nowrap}
+        .delete-selected-btn{background:#FF3B30;padding:12px 24px;font-size:15px;margin-left:auto}
+        .select-all-btn{background:#8E8E93;padding:12px 20px;font-size:15px}
         .empty{text-align:center;color:var(--sec);padding:40px;font-size:16px}
         .counter{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:13px;font-weight:700;margin-left:8px}
         .status{font-size:13px;margin-bottom:16px;font-weight:600;color:var(--sec)}
@@ -43,6 +45,8 @@
         .popup-icon{font-size:60px;margin-bottom:12px}.popup-title{font-size:22px;font-weight:800;margin-bottom:6px;color:var(--text)}
         .popup-name{font-size:18px;color:var(--acc);font-weight:700}.popup-detail{font-size:14px;color:var(--sec);margin-bottom:2px}
         .popup-close{background:var(--acc);color:#FFF;border:none;padding:14px 40px;border-radius:100px;font-weight:700;font-size:16px;cursor:pointer;margin-top:16px}
+        .checkbox-cell{flex-shrink:0}
+        .checkbox{width:20px;height:20px;accent-color:var(--acc)}
     </style>
 </head>
 <body>
@@ -64,6 +68,8 @@
             <button class="btn notify-btn" onclick="requestNotification()">🔔 Уведомления</button>
             <button class="btn theme-btn" onclick="toggleTheme()">🌙</button>
             <button class="btn logout-btn" onclick="logout()">🚪 Выйти</button>
+            <button class="btn select-all-btn" onclick="toggleSelectAll()">☑️ Выбрать все</button>
+            <button class="btn delete-selected-btn" onclick="deleteSelected()">🗑 Удалить выбранные</button>
         </div>
         <div id="bookingsList"></div>
         <div class="popup-overlay" id="popupOverlay">
@@ -84,6 +90,8 @@
 
         const PASSWORD='meloman2026';
         const API_URL='https://script.google.com/macros/s/AKfycbyJuz8F6zL0M73F4oSRtWNAyrXuVHR_DKtTO7UaQ_0ktTtdP1nLWw1p-DxkyKZm2E77/exec';
+
+        let allBookings = []; // храним текущие заявки
 
         if(localStorage.getItem('admin_logged')==='true'){
             document.getElementById('loginScreen').style.display='none';
@@ -120,30 +128,63 @@
 
             window.loadBookings=function(){
                 fetch(API_URL).then(r=>r.json()).then(data=>{
-                    const bookings=data.bookings||[];const count=bookings.length;
+                    const bookings=data.bookings||[];
+                    allBookings = bookings;
+                    const count=bookings.length;
                     document.getElementById('counter').textContent=count;updateBadge(count);
                     if(count>lastCount&&lastCount>0){const b=bookings[count-1];beep();showPopup(b.name,b.phone,b.date,b.time);sendPush(b.name,b.phone,b.date,b.time)}
                     lastCount=count;
                     if(!count){document.getElementById('bookingsList').innerHTML='<div class="empty">📭 Пока нет заявок</div>';document.getElementById('status').textContent='🟢 Ожидание...';return}
-                    document.getElementById('bookingsList').innerHTML=bookings.map((b,i)=>'<div class="booking-card"><div class="booking-info"><strong>'+b.name+'</strong><div>📞 '+b.phone+'</div><div>📅 '+b.date+' | ⏰ '+b.time+'</div></div><button class="btn delete-btn" onclick="deleteBooking('+i+')">🗑 Удалить</button></div>').reverse().join('');
+                    renderBookings(bookings);
                     document.getElementById('status').textContent='🟢 Отслеживание...';
                 }).catch(()=>{document.getElementById('status').textContent='🔴 Ошибка'})
             }
 
-            window.deleteBooking = function(i) {
+            function renderBookings(bookings) {
+                document.getElementById('bookingsList').innerHTML = bookings.map((b,i)=>
+                    `<div class="booking-card">
+                        <div class="checkbox-cell"><input type="checkbox" class="checkbox" data-index="${i}"></div>
+                        <div class="booking-info"><strong>${b.name}</strong><div>📞 ${b.phone}</div><div>📅 ${b.date} | ⏰ ${b.time}</div></div>
+                        <button class="btn delete-btn" onclick="deleteSingle(${i})">🗑 Удалить</button>
+                    </div>`
+                ).reverse().join('');
+            }
+
+            window.deleteSingle = function(i) {
                 if (!confirm('Удалить заявку?')) return;
+                allBookings.splice(i, 1);
+                updateStore();
+            }
+
+            window.toggleSelectAll = function() {
+                const checkboxes = document.querySelectorAll('.checkbox');
+                const allChecked = [...checkboxes].every(cb => cb.checked);
+                checkboxes.forEach(cb => cb.checked = !allChecked);
+            }
+
+            window.deleteSelected = function() {
+                const checkboxes = document.querySelectorAll('.checkbox:checked');
+                if (checkboxes.length === 0) { alert('Выберите заявки'); return; }
+                if (!confirm(`Удалить ${checkboxes.length} заявок?`)) return;
                 
-                fetch(API_URL).then(r => r.json()).then(d => {
-                    d.bookings.splice(i, 1);
-                    return fetch(API_URL, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({ 
-                            action: 'update',
-                            dates: d.dates, 
-                            bookings: d.bookings 
-                        })
-                    });
+                const indexes = [...checkboxes].map(cb => parseInt(cb.dataset.index));
+                // Удаляем с конца, чтобы индексы не сбились
+                const sorted = indexes.sort((a,b) => b - a);
+                for (const idx of sorted) {
+                    if (idx >= 0 && idx < allBookings.length) allBookings.splice(idx, 1);
+                }
+                updateStore();
+            }
+
+            function updateStore() {
+                fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ 
+                        action: 'update',
+                        dates: [...new Set(allBookings.map(b => b.date))],
+                        bookings: allBookings 
+                    })
                 }).then(() => loadBookings()).catch(() => loadBookings());
             }
 
