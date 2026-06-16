@@ -48,6 +48,7 @@
         .optional { color: #FF3B30; font-size: 11px; font-weight: 400; text-transform: none; }
         .form-input { width: 100%; padding: 14px 16px; border: 1px solid var(--sep); border-radius: 12px; font-size: 17px; background: rgba(255,255,255,0.5); color: #1C1C1E; -webkit-appearance: none; }
         body.dark .form-input { background: rgba(255,255,255,0.15); color: #FFF; }
+        textarea.form-input { resize: vertical; min-height: 80px; }
         .form-input.booked-date { border-color: #FF3B30; }
         select.form-input { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23636366' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
         .date-warning { color: #FF3B30; font-size: 13px; font-weight: 600; margin-top: 4px; display: none; }
@@ -125,6 +126,7 @@
             <div class="form-group"><div class="form-label">Имя</div><input type="text" class="form-input" id="clientName" placeholder="Иван" required></div>
             <div class="form-group"><div class="form-label">Телефон</div><input type="tel" class="form-input" id="clientPhone" placeholder="+7 (999) 123-45-67" required></div>
             <div class="form-group"><div class="form-label">Соцсеть <span class="optional">(необязательно)</span></div><input type="text" class="form-input" id="clientSocial" placeholder="@username или ссылка"></div>
+            <div class="form-group"><div class="form-label">Пожелания <span class="optional">(необязательно)</span></div><textarea class="form-input" id="clientWishes" placeholder="Опиши что интересует..."></textarea></div>
             <div class="form-group"><div class="form-label">Дата</div><input type="date" class="form-input" id="bookingDate" required onchange="checkDate()"><div class="date-warning" id="dateWarning">⚠️ Эта дата уже занята!</div></div>
             <div class="form-group"><div class="form-label">Время</div><select class="form-input" id="bookingTime" required><option value="">Выбери</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option></select></div>
             <button type="submit" class="action-btn" id="submitBtn">Отправить заявку</button>
@@ -148,16 +150,7 @@
         function toggleTheme(){const b=document.body;const btn=document.querySelector('.theme-btn');if(b.classList.contains('dark')){b.classList.remove('dark');btn.textContent='🌙'}else{b.classList.add('dark');btn.textContent='☀️'}}
         if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');document.querySelector('.theme-btn').textContent='☀️'}
         
-        function loadBookedDates(){
-            fetch(`https://api.github.com/repos/${REPO}/issues?state=open&labels=booking`)
-            .then(r=>r.json())
-            .then(d=>{
-                const dates=d.map(i=>{const m=i.title.match(/📅 (\d{4}-\d{2}-\d{2})/);return m?m[1]:null}).filter(d=>d);
-                bookedDates=dates;
-                localStorage.setItem('mdates',JSON.stringify(bookedDates));
-            }).catch(()=>{});
-        }
-        
+        function loadBookedDates(){fetch(`https://api.github.com/repos/${REPO}/issues?state=open&labels=booking`).then(r=>r.json()).then(d=>{const dates=d.map(i=>{const m=i.title.match(/📅 (\d{4}-\d{2}-\d{2})/);return m?m[1]:null}).filter(d=>d);bookedDates=dates;localStorage.setItem('mdates',JSON.stringify(bookedDates))}).catch(()=>{})}
         function renderCalendarModal(){const ml=document.getElementById('calMonthLabel');const dg=document.getElementById('calDaysGrid');const months=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];ml.textContent=months[cm]+' '+cy;dg.innerHTML='';['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(d=>{const div=document.createElement('div');div.className='day-name';div.textContent=d;dg.appendChild(div)});const fd=new Date(cy,cm,1).getDay();const dim=new Date(cy,cm+1,0).getDate();let sd=fd===0?6:fd-1;for(let i=0;i<sd;i++){const div=document.createElement('div');dg.appendChild(div)}const ts=new Date().toISOString().split('T')[0];for(let d=1;d<=dim;d++){const div=document.createElement('div');div.className='day';div.textContent=d;const ds=cy+'-'+String(cm+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');if(bookedDates.indexOf(ds)!==-1)div.classList.add('booked');else if(ds>=ts)div.classList.add('free');if(ds===ts)div.classList.add('today');dg.appendChild(div)}}
         function changeMonth(dir){cm+=dir;if(cm>11){cm=0;cy++}if(cm<0){cm=11;cy--}renderCalendarModal()}
         function openCalendarModal(){renderCalendarModal();document.getElementById('calendarModal').classList.add('active');document.body.style.overflow='hidden'}
@@ -173,14 +166,16 @@
             const sb=document.getElementById('submitBtn');const sm=document.getElementById('successMsg');
             const name=document.getElementById('clientName').value.trim();const phone=document.getElementById('clientPhone').value.trim();
             const social=document.getElementById('clientSocial').value.trim();
+            const wishes=document.getElementById('clientWishes').value.trim();
             const date=document.getElementById('bookingDate').value;const time=document.getElementById('bookingTime').value;
             if(!name||!phone||!date||!time)return;
             if(bookedDates.indexOf(date)!==-1){document.getElementById('dateWarning').classList.add('show');return}
             sb.disabled=true;sb.textContent='Отправляю...';
             bookedDates.push(date);localStorage.setItem('mdates',JSON.stringify(bookedDates));
             const socialText=social?`\n🌐 Соцсеть: ${social}`:'';
+            const wishesText=wishes?`\n💬 Пожелания: ${wishes}`:'';
             const token=localStorage.getItem('gh_token');
-            if(token){fetch(`https://api.github.com/repos/${REPO}/issues`,{method:'POST',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'},body:JSON.stringify({title:`🎙️ ${name} | 📅 ${date} | ⏰ ${time}`,body:`👤 Имя: ${name}\n📞 Телефон: ${phone}${socialText}\n📅 Дата: ${date}\n⏰ Время: ${time}`,labels:['booking']})}).catch(()=>{})}
+            if(token){fetch(`https://api.github.com/repos/${REPO}/issues`,{method:'POST',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'},body:JSON.stringify({title:`🎙️ ${name} | 📅 ${date} | ⏰ ${time}`,body:`👤 Имя: ${name}\n📞 Телефон: ${phone}${socialText}${wishesText}\n📅 Дата: ${date}\n⏰ Время: ${time}`,labels:['booking']})}).catch(()=>{})}
             sm.style.display='block';document.getElementById('bookingForm').reset();document.getElementById('dateWarning').classList.remove('show');sb.disabled=false;sb.textContent='Отправить заявку';setTimeout(()=>closeBookingModal(),2000);
         }
         loadBookedDates();
