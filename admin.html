@@ -83,7 +83,6 @@
     </div>
 
     <script>
-        // Анимированный фон
         const notes=['🎵','🎶','♪','♫','♬'];const mbg=document.getElementById('musicBg');
         for(let i=0;i<12;i++){const n=document.createElement('span');n.className='note';n.textContent=notes[Math.floor(Math.random()*notes.length)];n.style.left=Math.random()*100+'%';n.style.fontSize=(20+Math.random()*30)+'px';n.style.animationDuration=(8+Math.random()*15)+'s';n.style.animationDelay=Math.random()*10+'s';mbg.appendChild(n)}
 
@@ -143,7 +142,13 @@
                     if(!count){document.getElementById('bookingsList').innerHTML='<div class="empty">📭 Пока нет заявок</div>';return}
                     document.getElementById('bookingsList').innerHTML=issues.map(i=>{
                         const b=i.body||'';
-                        return `<div class="booking-card"><div class="booking-info"><strong>${(b.match(/👤 Имя: (.+)/)||['','-'])[1]}</strong><div>📞 ${(b.match(/📞 Телефон: (.+)/)||['','-'])[1]}</div><div>📅 ${(b.match(/📅 Дата: (.+)/)||['','-'])[1]} | ⏰ ${(b.match(/⏰ Время: (.+)/)||['','-'])[1]}</div></div><button class="btn delete-btn" onclick="deleteBooking(${i.number})">🗑 Удалить</button></div>`;
+                        const name=(b.match(/👤 Имя: (.+)/)||['','-'])[1];
+                        const phone=(b.match(/📞 Телефон: (.+)/)||['','-'])[1];
+                        const social=(b.match(/🌐 Соцсеть: (.+)/)||['',''])[1];
+                        const date=(b.match(/📅 Дата: (.+)/)||['','-'])[1];
+                        const time=(b.match(/⏰ Время: (.+)/)||['','-'])[1];
+                        const socialLine=social?`<div>🌐 ${social}</div>`:'';
+                        return `<div class="booking-card"><div class="booking-info"><strong>${name}</strong><div>📞 ${phone}</div>${socialLine}<div>📅 ${date} | ⏰ ${time}</div></div><button class="btn delete-btn" onclick="deleteBooking(${i.number})">🗑 Удалить</button></div>`;
                     }).reverse().join('');
                 }).catch(()=>{document.getElementById('status').textContent='🔴 Ошибка'})
             }
