@@ -45,7 +45,6 @@
         footer { text-align: center; padding: 24px 16px 40px; color: #8E8E93; font-size: 13px; }
         .form-group { margin-bottom: 16px; }
         .form-label { font-size: 13px; color: var(--sec); text-transform: uppercase; font-weight: 600; }
-        .optional { color: #FF3B30; font-size: 11px; font-weight: 400; text-transform: none; }
         .form-input { width: 100%; padding: 14px 16px; border: 1px solid var(--sep); border-radius: 12px; font-size: 17px; background: rgba(255,255,255,0.5); color: #1C1C1E; -webkit-appearance: none; }
         body.dark .form-input { background: rgba(255,255,255,0.15); color: #FFF; }
         textarea.form-input { resize: vertical; min-height: 80px; }
@@ -125,8 +124,8 @@
         <form id="bookingForm" onsubmit="sendBooking(event)">
             <div class="form-group"><div class="form-label">Имя</div><input type="text" class="form-input" id="clientName" placeholder="Иван" required></div>
             <div class="form-group"><div class="form-label">Телефон</div><input type="tel" class="form-input" id="clientPhone" placeholder="+7 (999) 123-45-67" required></div>
-            <div class="form-group"><div class="form-label">Соцсеть <span class="optional">(необязательно)</span></div><input type="text" class="form-input" id="clientSocial" placeholder="@username или ссылка"></div>
-            <div class="form-group"><div class="form-label">Пожелания <span class="optional">(необязательно)</span></div><textarea class="form-input" id="clientWishes" placeholder="Опиши что интересует..."></textarea></div>
+            <div class="form-group"><div class="form-label">Соцсеть</div><input type="text" class="form-input" id="clientSocial" placeholder="@username или ссылка"></div>
+            <div class="form-group"><div class="form-label">Что интересует?</div><textarea class="form-input" id="clientWishes" placeholder="Опиши что интересует..."></textarea></div>
             <div class="form-group"><div class="form-label">Дата</div><input type="date" class="form-input" id="bookingDate" required onchange="checkDate()"><div class="date-warning" id="dateWarning">⚠️ Эта дата уже занята!</div></div>
             <div class="form-group"><div class="form-label">Время</div><select class="form-input" id="bookingTime" required><option value="">Выбери</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option></select></div>
             <button type="submit" class="action-btn" id="submitBtn">Отправить заявку</button>
@@ -173,7 +172,7 @@
             sb.disabled=true;sb.textContent='Отправляю...';
             bookedDates.push(date);localStorage.setItem('mdates',JSON.stringify(bookedDates));
             const socialText=social?`\n🌐 Соцсеть: ${social}`:'';
-            const wishesText=wishes?`\n💬 Пожелания: ${wishes}`:'';
+            const wishesText=wishes?`\n💬 Что интересует: ${wishes}`:'';
             const token=localStorage.getItem('gh_token');
             if(token){fetch(`https://api.github.com/repos/${REPO}/issues`,{method:'POST',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'},body:JSON.stringify({title:`🎙️ ${name} | 📅 ${date} | ⏰ ${time}`,body:`👤 Имя: ${name}\n📞 Телефон: ${phone}${socialText}${wishesText}\n📅 Дата: ${date}\n⏰ Время: ${time}`,labels:['booking']})}).catch(()=>{})}
             sm.style.display='block';document.getElementById('bookingForm').reset();document.getElementById('dateWarning').classList.remove('show');sb.disabled=false;sb.textContent='Отправить заявку';setTimeout(()=>closeBookingModal(),2000);
