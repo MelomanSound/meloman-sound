@@ -130,12 +130,20 @@
                 }).catch(()=>{document.getElementById('status').textContent='🔴 Ошибка'})
             }
 
-            window.deleteBooking=function(i){
-                if(!confirm('Удалить заявку?'))return;
-                fetch(API_URL).then(r=>r.json()).then(d=>{
-                    d.bookings.splice(i,1);
-                    return fetch(API_URL,{method:'POST',body:JSON.stringify({dates:d.dates,bookings:d.bookings})})
-                }).then(()=>loadBookings()).catch(()=>loadBookings())
+            window.deleteBooking = function(i) {
+                if (!confirm('Удалить заявку?')) return;
+                
+                fetch(API_URL).then(r => r.json()).then(d => {
+                    d.bookings.splice(i, 1);
+                    return fetch(API_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ 
+                            action: 'update',
+                            dates: d.dates, 
+                            bookings: d.bookings 
+                        })
+                    });
+                }).then(() => loadBookings()).catch(() => loadBookings());
             }
 
             setInterval(loadBookings,5000);loadBookings();
