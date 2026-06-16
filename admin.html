@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="1I.jpg">
+    <link rel="manifest" href="/meloman-sound/manifest.json">
     <title>Meloman Sound | Админка</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:-apple-system,sans-serif;background:#F2F2F7;padding:20px;padding-bottom:100px}
-        .login-screen{text-align:center;padding-top:80px}
-        .login-screen h2{margin-bottom:20px}
+        .login-screen{text-align:center;padding-top:80px}.login-screen h2{margin-bottom:20px}
         .login-input{width:100%;max-width:300px;padding:16px;border:1px solid #E5E5EA;border-radius:14px;font-size:17px;text-align:center;margin-bottom:12px;background:#FFF}
         .login-btn{background:#007AFF;color:#FFF;border:none;padding:16px 40px;border-radius:100px;font-weight:700;font-size:17px;cursor:pointer}
         .login-error{color:#FF3B30;font-size:14px;margin-top:8px;display:none}
-        .admin-content{display:none}
-        h1{margin-bottom:8px;color:#1C1C1E}
+        .admin-content{display:none}h1{margin-bottom:8px;color:#1C1C1E}
         .booking-card{background:#FFF;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-        .booking-info strong{color:#007AFF;font-size:16px}
-        .booking-info div{font-size:14px;color:#636366;margin-top:4px}
+        .booking-info strong{color:#007AFF;font-size:16px}.booking-info div{font-size:14px;color:#636366;margin-top:4px}
         .new-badge{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:12px;font-weight:700;margin-left:8px;animation:pulse 1s infinite}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
         .top-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
@@ -65,7 +65,9 @@
 
 <script>
 const PASSWORD='meloman2026';
-const API_URL='https://meloman-sound.vercel.app/api/bookings';
+const PROXY='https://api.allorigins.win/raw?url=';
+const JSONBIN_KEY='$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';
+const JSONBIN_URL='https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
 
 if(localStorage.getItem('admin_logged')==='true'){
     document.getElementById('loginScreen').style.display='none';
@@ -94,15 +96,17 @@ function startAdmin(){
     
     window.toggleSound=function(){soundOn=!soundOn;localStorage.setItem('soundOn',soundOn);updateSb();if(soundOn)beep()}
     window.beep=function(){if(!soundOn)return;try{const c=new(window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator();const g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.value=0.5;o.start();setTimeout(()=>{o.frequency.value=1100},100);setTimeout(()=>{o.frequency.value=660},250);setTimeout(()=>{o.stop();c.close()},450)}catch(e){}}
-    window.requestNotification=function(){if('Notification' in window){Notification.requestPermission().then(p=>{if(p==='granted')new Notification('✅ Готово!',{body:'Уведомления включены!',icon:'🎙️'})})}}
+    window.requestNotification=function(){if('Notification' in window){Notification.requestPermission().then(p=>{if(p==='granted')new Notification('✅ Готово!',{body:'Уведомления включены!',icon:'1I.jpg'})})}}
     window.showPopup=function(n,p,d,t){document.getElementById('popupName').textContent='👤 '+n;document.getElementById('popupPhone').textContent='📞 '+p;document.getElementById('popupDate').textContent='📅 '+d+' | ⏰ '+t;document.getElementById('popupOverlay').classList.add('show');if('vibrate' in navigator)navigator.vibrate([200,100,200])}
     window.closePopup=function(){document.getElementById('popupOverlay').classList.remove('show')}
-    window.updateBadge=function(c){document.title=c>0?'('+c+') Заявки':'Заявки';if('setAppBadge' in navigator)navigator.setAppBadge(c||0).catch(()=>{})}
-    window.sendPush=function(n,p,d,t){if('Notification' in window&&Notification.permission==='granted'){new Notification('Новая заявка!',{body:n+' — '+d+' в '+t,icon:'🎙️',tag:'booking',vibrate:[200,100,200]})}}
+    window.updateBadge=function(c){document.title=c>0?'('+c+') Заявки':'Заявки'}
+    window.sendPush=function(n,p,d,t){if('Notification' in window&&Notification.permission==='granted'){new Notification('Новая заявка!',{body:n+' — '+d+' в '+t,icon:'1I.jpg',tag:'booking',vibrate:[200,100,200]})}}
 
     window.loadBookings=function(){
-        fetch(API_URL).then(r=>r.json()).then(data=>{
-            const bookings=data.bookings||[];const count=bookings.length;
+        fetch(PROXY+encodeURIComponent(JSONBIN_URL+'/latest'),{headers:{'X-Master-Key':JSONBIN_KEY}})
+        .then(r=>r.json()).then(data=>{
+            const rec=(data&&data.record)?data.record:{bookings:[]};
+            const bookings=rec.bookings||[];const count=bookings.length;
             document.getElementById('counter').textContent=count;updateBadge(count);
             if(count>lastCount&&lastCount>0){const b=bookings[count-1];beep();showPopup(b.name,b.phone,b.date,b.time);sendPush(b.name,b.phone,b.date,b.time)}
             lastCount=count;
@@ -110,14 +114,6 @@ function startAdmin(){
             document.getElementById('bookingsList').innerHTML=bookings.map((b,i)=>'<div class="booking-card"><div class="booking-info"><strong>'+b.name+'</strong><div>📞 '+b.phone+'</div><div>📅 '+b.date+' | ⏰ '+b.time+'</div></div><button class="btn delete-btn" onclick="deleteBooking('+i+')">🗑 Удалить</button></div>').reverse().join('');
             document.getElementById('status').textContent='🟢 Отслеживание...';
         }).catch(()=>{document.getElementById('status').textContent='🔴 Ошибка'})
-    }
-
-    window.deleteBooking=function(i){
-        if(!confirm('Удалить заявку?'))return;
-        fetch(API_URL).then(r=>r.json()).then(d=>{
-            d.bookings.splice(i,1);
-            return fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({dates:d.dates,bookings:d.bookings})})
-        }).then(()=>loadBookings()).catch(()=>loadBookings())
     }
 
     setInterval(loadBookings,10000);loadBookings();
