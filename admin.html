@@ -80,17 +80,15 @@
     </div>
 
     <script>
-        // Анимированный фон
         const notes=['🎵','🎶','♪','♫','♬'];const mbg=document.getElementById('musicBg');
         for(let i=0;i<12;i++){const n=document.createElement('span');n.className='note';n.textContent=notes[Math.floor(Math.random()*notes.length)];n.style.left=Math.random()*100+'%';n.style.fontSize=(20+Math.random()*30)+'px';n.style.animationDuration=(8+Math.random()*15)+'s';n.style.animationDelay=Math.random()*10+'s';mbg.appendChild(n)}
 
-        // Тема
         function toggleTheme(){const b=document.body;const btn=document.querySelector('.theme-btn');if(b.classList.contains('dark')){b.classList.remove('dark');btn.textContent='🌙';localStorage.setItem('admin_theme','light')}else{b.classList.add('dark');btn.textContent='☀️';localStorage.setItem('admin_theme','dark')}}
         if(localStorage.getItem('admin_theme')==='dark'){document.body.classList.add('dark');document.querySelector('.theme-btn').textContent='☀️'}
 
         const PASSWORD='meloman2026';
-        // Рабочий URL Google Apps Script
-        const API_URL='https://script.google.com/macros/s/AKfycbyJuz8F6zL0M73F4oSRtWNAyrXuVHR_DKtTO7UaQ_0ktTtdP1nLWw1p-DxkyKZm2E77/exec';
+        // Новый URL скрипта
+        const API_URL='https://script.google.com/macros/s/AKfycbywYd7XxQbTt5EplXPAi58dRtSu2uXwOvrUQ5O61N8HKcJO8oTXf6o-aH2oVTUUBSD4/exec';
 
         let allBookings = [];
 
