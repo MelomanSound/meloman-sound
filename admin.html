@@ -24,8 +24,9 @@
         .login-error{color:#FF3B30;font-size:14px;margin-top:8px;display:none}
         .admin-content{display:none;position:relative;z-index:1}
         h1{margin-bottom:8px;color:var(--text)}
-        .booking-card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+        .booking-card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px}
         .booking-info strong{color:var(--acc);font-size:16px}.booking-info div{font-size:14px;color:var(--sec);margin-top:4px}
+        .wishes-text{background:rgba(0,122,255,0.05);padding:8px 12px;border-radius:10px;margin-top:8px;font-size:14px;color:var(--text);border-left:3px solid var(--acc)}
         .new-badge{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:12px;font-weight:700;margin-left:8px;animation:pulse 1s infinite}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
         .top-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
@@ -145,10 +146,12 @@
                         const name=(b.match(/👤 Имя: (.+)/)||['','-'])[1];
                         const phone=(b.match(/📞 Телефон: (.+)/)||['','-'])[1];
                         const social=(b.match(/🌐 Соцсеть: (.+)/)||['',''])[1];
+                        const wishes=(b.match(/💬 Пожелания: (.+)/)||['',''])[1];
                         const date=(b.match(/📅 Дата: (.+)/)||['','-'])[1];
                         const time=(b.match(/⏰ Время: (.+)/)||['','-'])[1];
                         const socialLine=social?`<div>🌐 ${social}</div>`:'';
-                        return `<div class="booking-card"><div class="booking-info"><strong>${name}</strong><div>📞 ${phone}</div>${socialLine}<div>📅 ${date} | ⏰ ${time}</div></div><button class="btn delete-btn" onclick="deleteBooking(${i.number})">🗑 Удалить</button></div>`;
+                        const wishesLine=wishes?`<div class="wishes-text">💬 ${wishes}</div>`:'';
+                        return `<div class="booking-card"><div class="booking-info"><strong>${name}</strong><div>📞 ${phone}</div>${socialLine}${wishesLine}<div>📅 ${date} | ⏰ ${time}</div></div><button class="btn delete-btn" onclick="deleteBooking(${i.number})">🗑 Удалить</button></div>`;
                     }).reverse().join('');
                 }).catch(()=>{document.getElementById('status').textContent='🔴 Ошибка'})
             }
