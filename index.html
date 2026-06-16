@@ -117,7 +117,7 @@
         const nb=['🎵','🎶','♪','♫','♬'];const mb=document.getElementById('musicBg');for(let i=0;i<20;i++){const n=document.createElement('span');n.className='note';n.textContent=nb[Math.floor(Math.random()*nb.length)];n.style.left=Math.random()*100+'%';n.style.fontSize=(20+Math.random()*30)+'px';n.style.animationDuration=(8+Math.random()*15)+'s';n.style.animationDelay=Math.random()*10+'s';mb.appendChild(n)}
         
         const JSONBIN_KEY='$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';
-        const PROXY='https://api.allorigins.win/raw?url=';
+        const PROXY='https://corsproxy.io/?';
         const JSONBIN_URL='https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
         const today=new Date().toISOString().split('T')[0];document.getElementById('bookingDate').setAttribute('min',today);
         let bookedDates=[];let cm=new Date().getMonth();let cy=new Date().getFullYear();
