@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="apple-touch-icon" href="1I.jpg">
     <link rel="manifest" href="/meloman-sound/manifest.json">
     <title>Meloman Sound | Админка</title>
@@ -65,9 +64,7 @@
 
 <script>
 const PASSWORD='meloman2026';
-const PROXY='https://corsproxy.io/?';
-const JSONBIN_KEY='$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';
-const JSONBIN_URL='https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
+const API_URL='https://script.google.com/macros/s/AKfycbyJuz8F6zL0M73F4oSRtWNAyrXuVHR_DKtTO7UaQ_0ktTtdP1nLWw1p-DxkyKZm2E77/exec';
 
 if(localStorage.getItem('admin_logged')==='true'){
     document.getElementById('loginScreen').style.display='none';
@@ -103,10 +100,8 @@ function startAdmin(){
     window.sendPush=function(n,p,d,t){if('Notification' in window&&Notification.permission==='granted'){new Notification('Новая заявка!',{body:n+' — '+d+' в '+t,icon:'1I.jpg',tag:'booking',vibrate:[200,100,200]})}}
 
     window.loadBookings=function(){
-        fetch(PROXY+encodeURIComponent(JSONBIN_URL+'/latest'),{headers:{'X-Master-Key':JSONBIN_KEY}})
-        .then(r=>r.json()).then(data=>{
-            const rec=(data&&data.record)?data.record:{bookings:[]};
-            const bookings=rec.bookings||[];const count=bookings.length;
+        fetch(API_URL).then(r=>r.json()).then(data=>{
+            const bookings=data.bookings||[];const count=bookings.length;
             document.getElementById('counter').textContent=count;updateBadge(count);
             if(count>lastCount&&lastCount>0){const b=bookings[count-1];beep();showPopup(b.name,b.phone,b.date,b.time);sendPush(b.name,b.phone,b.date,b.time)}
             lastCount=count;
@@ -116,7 +111,15 @@ function startAdmin(){
         }).catch(()=>{document.getElementById('status').textContent='🔴 Ошибка'})
     }
 
-    setInterval(loadBookings,10000);loadBookings();
+    window.deleteBooking=function(i){
+        if(!confirm('Удалить заявку?'))return;
+        fetch(API_URL).then(r=>r.json()).then(d=>{
+            d.bookings.splice(i,1);
+            return fetch(API_URL,{method:'POST',body:JSON.stringify({dates:d.dates,bookings:d.bookings})})
+        }).then(()=>loadBookings()).catch(()=>loadBookings())
+    }
+
+    setInterval(loadBookings,5000);loadBookings();
 }
 </script>
 </body>
