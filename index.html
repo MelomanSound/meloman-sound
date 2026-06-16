@@ -116,19 +116,14 @@
         
         const nb=['🎵','🎶','♪','♫','♬'];const mb=document.getElementById('musicBg');for(let i=0;i<20;i++){const n=document.createElement('span');n.className='note';n.textContent=nb[Math.floor(Math.random()*nb.length)];n.style.left=Math.random()*100+'%';n.style.fontSize=(20+Math.random()*30)+'px';n.style.animationDuration=(8+Math.random()*15)+'s';n.style.animationDelay=Math.random()*10+'s';mb.appendChild(n)}
         
-        const JSONBIN_KEY='$2a$10$/XrDXu7hAa3StIMwkt9aoe0vO57W05iiN.sgCnANHgYyYRBE.MPZm';
-        const PROXY='https://corsproxy.io/?';
-        const JSONBIN_URL='https://api.jsonbin.io/v3/b/6a2f6b9bf5f4af5e29f2bc82';
+        const API_URL='https://script.google.com/macros/s/AKfycbyJuz8F6zL0M73F4oSRtWNAyrXuVHR_DKtTO7UaQ_0ktTtdP1nLWw1p-DxkyKZm2E77/exec';
         const today=new Date().toISOString().split('T')[0];document.getElementById('bookingDate').setAttribute('min',today);
         let bookedDates=[];let cm=new Date().getMonth();let cy=new Date().getFullYear();
         
         function toggleTheme(){const b=document.body;const btn=document.querySelector('.theme-btn');if(b.classList.contains('dark')){b.classList.remove('dark');btn.textContent='🌙';localStorage.setItem('theme','light')}else{b.classList.add('dark');btn.textContent='☀️';localStorage.setItem('theme','dark')}}
         if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');document.querySelector('.theme-btn').textContent='☀️'}
         
-        function loadBookedDates(){
-            fetch(PROXY+encodeURIComponent(JSONBIN_URL+'/latest'),{headers:{'X-Master-Key':JSONBIN_KEY}})
-            .then(r=>r.json()).then(d=>{bookedDates=d.record?d.record.dates||[]:[]}).catch(()=>{bookedDates=JSON.parse(localStorage.getItem('mdates')||'[]')})
-        }
+        function loadBookedDates(){fetch(API_URL).then(r=>r.json()).then(d=>{bookedDates=d.dates||[]}).catch(()=>{bookedDates=JSON.parse(localStorage.getItem('mdates')||'[]')})}
         function renderCalendarModal(){const ml=document.getElementById('calMonthLabel');const dg=document.getElementById('calDaysGrid');const months=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];ml.textContent=months[cm]+' '+cy;dg.innerHTML='';['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].forEach(d=>{const div=document.createElement('div');div.className='day-name';div.textContent=d;dg.appendChild(div)});const fd=new Date(cy,cm,1).getDay();const dim=new Date(cy,cm+1,0).getDate();let sd=fd===0?6:fd-1;for(let i=0;i<sd;i++){const div=document.createElement('div');dg.appendChild(div)}const ts=new Date().toISOString().split('T')[0];for(let d=1;d<=dim;d++){const div=document.createElement('div');div.className='day';div.textContent=d;const ds=cy+'-'+String(cm+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');if(bookedDates.indexOf(ds)!==-1)div.classList.add('booked');else if(ds>=ts)div.classList.add('free');if(ds===ts)div.classList.add('today');dg.appendChild(div)}}
         function changeMonth(dir){cm+=dir;if(cm>11){cm=0;cy++}if(cm<0){cm=11;cy--}renderCalendarModal()}
         function openCalendarModal(){renderCalendarModal();document.getElementById('calendarModal').classList.add('active');document.body.style.overflow='hidden'}
@@ -148,22 +143,19 @@
             if(!name||!phone||!date||!time)return;
             if(bookedDates.indexOf(date)!==-1){di.classList.add('booked-date');w.classList.add('show');return}
             sb.disabled=true;sb.textContent='Отправляю...';
-            bookedDates.push(date);
-            localStorage.setItem('mdates',JSON.stringify(bookedDates));
             
-            // Сохраняем через прокси
-            fetch(PROXY+encodeURIComponent(JSONBIN_URL+'/latest'),{headers:{'X-Master-Key':JSONBIN_KEY}})
+            fetch(API_URL,{method:'POST',body:JSON.stringify({name,phone,date,time})})
             .then(r=>r.json()).then(d=>{
-                const rec=(d&&d.record)?d.record:{dates:[],bookings:[]};
-                if(!rec.dates.includes(date))rec.dates.push(date);
-                rec.bookings.push({name,phone,date,time});
-                return fetch(PROXY+encodeURIComponent(JSONBIN_URL),{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY},body:JSON.stringify(rec)})
-            }).catch(()=>{});
-            
-            sm.style.display='block';document.getElementById('bookingForm').reset();
-            di.classList.remove('booked-date');w.classList.remove('show');
-            sb.disabled=false;sb.textContent='Отправить заявку';
-            setTimeout(()=>closeBookingModal(),2000);
+                bookedDates=d.dates||bookedDates;localStorage.setItem('mdates',JSON.stringify(bookedDates));
+                sm.style.display='block';document.getElementById('bookingForm').reset();
+                di.classList.remove('booked-date');w.classList.remove('show');
+                sb.disabled=false;sb.textContent='Отправить заявку';setTimeout(()=>closeBookingModal(),2000);
+            }).catch(()=>{
+                bookedDates.push(date);localStorage.setItem('mdates',JSON.stringify(bookedDates));
+                sm.style.display='block';document.getElementById('bookingForm').reset();
+                di.classList.remove('booked-date');w.classList.remove('show');
+                sb.disabled=false;sb.textContent='Отправить заявку';setTimeout(()=>closeBookingModal(),2000);
+            });
         }
         loadBookedDates();
     </script>
