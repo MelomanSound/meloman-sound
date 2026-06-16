@@ -4,191 +4,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="apple-touch-icon" href="1I.jpg">
-    <link rel="manifest" href="/meloman-sound/manifest.json">
     <title>Meloman Sound | Админка</title>
     <style>
-        :root { --bg: #F2F2F7; --text: #1C1C1E; --sec: #636366; --acc: #007AFF; --sep: #E5E5EA; --card: #FFFFFF; }
-        body.dark { --bg: #1C1C1E; --text: #FFFFFF; --sec: #AEAEB2; --acc: #0A84FF; --sep: #3A3A3C; --card: #2C2C2E; }
+        :root { --bg: #F2F2F7; --text: #1C1C1E; --sec: #636366; --acc: #007AFF; }
+        body.dark { --bg: #1C1C1E; --text: #FFF; --sec: #AEAEB2; --acc: #0A84FF; }
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text);padding:20px;padding-bottom:100px;transition:0.3s;overflow-x:hidden}
-        .music-bg{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.4}
-        body.dark .music-bg{opacity:0.25}
-        .note{position:absolute;font-size:30px;animation:float linear infinite;color:var(--acc)}
-        @keyframes float{0%{transform:translateY(100vh) rotate(0deg) scale(0);opacity:0}10%{opacity:0.6}90%{opacity:0.15}100%{transform:translateY(-100px) rotate(360deg) scale(1.5);opacity:0}}
-        .login-screen{text-align:center;padding-top:80px;position:relative;z-index:1}
-        .login-screen h2{margin-bottom:20px;color:var(--text)}
-        .login-input{width:100%;max-width:300px;padding:16px;border:1px solid var(--sep);border-radius:14px;font-size:17px;text-align:center;margin-bottom:12px;background:var(--card);color:var(--text)}
+        body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text);padding:20px}
+        .login-screen{text-align:center;padding-top:80px}.login-screen h2{margin-bottom:20px}
+        .login-input{width:100%;max-width:300px;padding:16px;border:1px solid #E5E5EA;border-radius:14px;font-size:17px;text-align:center;margin-bottom:12px;background:#FFF;color:#1C1C1E}
         .login-btn{background:var(--acc);color:#FFF;border:none;padding:16px 40px;border-radius:100px;font-weight:700;font-size:17px;cursor:pointer}
-        .login-error{color:#FF3B30;font-size:14px;margin-top:8px;display:none}
-        .admin-content{display:none;position:relative;z-index:1}
-        h1{margin-bottom:8px;color:var(--text)}
-        .booking-card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.05);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-        .booking-info strong{color:var(--acc);font-size:16px}.booking-info div{font-size:14px;color:var(--sec);margin-top:4px}
-        .new-badge{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:12px;font-weight:700;margin-left:8px;animation:pulse 1s infinite}
-        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-        .top-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-        .btn{color:#FFF;border:none;padding:12px 20px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px}
-        .refresh-btn{background:var(--acc)}.sound-btn{color:#FFF}.sound-on{background:#34C759}.sound-off{background:#8E8E93}
-        .notify-btn{background:#FF9500}.logout-btn{background:#8E8E93}.theme-btn{background:rgba(128,128,128,0.3);color:var(--text)}
-        .delete-btn{background:#FF3B30;padding:8px 14px;font-size:13px;white-space:nowrap}
-        .delete-selected-btn{background:#FF3B30;padding:12px 24px;font-size:15px;margin-left:auto}
-        .select-all-btn{background:#8E8E93;padding:12px 20px;font-size:15px}
-        .empty{text-align:center;color:var(--sec);padding:40px;font-size:16px}
-        .counter{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:13px;font-weight:700;margin-left:8px}
-        .status{font-size:13px;margin-bottom:16px;font-weight:600;color:var(--sec)}
-        .popup-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center}
-        .popup-overlay.show{display:flex}
-        .popup-box{background:var(--card);border-radius:24px;padding:30px 24px;text-align:center;max-width:350px;width:90%;animation:popIn .4s ease}
-        @keyframes popIn{0%{transform:scale(.5);opacity:0}70%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
-        .popup-icon{font-size:60px;margin-bottom:12px}.popup-title{font-size:22px;font-weight:800;margin-bottom:6px;color:var(--text)}
-        .popup-name{font-size:18px;color:var(--acc);font-weight:700}.popup-detail{font-size:14px;color:var(--sec);margin-bottom:2px}
-        .popup-close{background:var(--acc);color:#FFF;border:none;padding:14px 40px;border-radius:100px;font-weight:700;font-size:16px;cursor:pointer;margin-top:16px}
-        .checkbox-cell{flex-shrink:0}
-        .checkbox{width:20px;height:20px;accent-color:var(--acc)}
+        .login-error{color:#FF3B30;display:none;margin-top:8px}
+        .admin-content{display:none}
+        h1{margin-bottom:20px}
+        .booking-card{background:#FFF;border-radius:16px;padding:16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+        body.dark .booking-card{background:#2C2C2E}
+        .booking-info strong{color:var(--acc);font-size:16px}
+        .booking-info div{font-size:14px;color:var(--sec);margin-top:4px}
+        .delete-btn{background:#FF3B30;color:#FFF;border:none;padding:10px 18px;border-radius:100px;font-weight:600;cursor:pointer;font-size:14px}
+        .refresh-btn{background:var(--acc);color:#FFF;border:none;padding:12px 24px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px;margin-bottom:20px}
+        .logout-btn{background:#8E8E93;color:#FFF;border:none;padding:12px 24px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px;margin-left:10px}
+        .empty{text-align:center;color:var(--sec);padding:40px}
+        .counter{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:13px;margin-left:8px}
+        .status{font-size:13px;margin-bottom:16px;color:var(--sec)}
     </style>
 </head>
 <body>
-    <div class="music-bg" id="musicBg"></div>
 
-    <div class="login-screen" id="loginScreen">
-        <h2>🔐 Вход в админку</h2>
-        <input type="password" class="login-input" id="passwordInput" placeholder="Введите пароль">
-        <br><button class="login-btn" onclick="login()">Войти</button>
-        <p class="login-error" id="loginError">❌ Неверный пароль</p>
-    </div>
+<div class="login-screen" id="loginScreen">
+    <h2>🔐 Вход в админку</h2>
+    <input type="password" class="login-input" id="passwordInput" placeholder="Введите пароль">
+    <br><button class="login-btn" onclick="login()">Войти</button>
+    <p class="login-error" id="loginError">❌ Неверный пароль</p>
+</div>
 
-    <div class="admin-content" id="adminContent">
-        <h1>🎙️ Заявки <span class="counter" id="counter">0</span></h1>
-        <p class="status" id="status">🟢 Отслеживание...</p>
-        <div class="top-bar">
-            <button class="btn refresh-btn" onclick="loadBookings()">🔄 Обновить</button>
-            <button class="btn sound-btn sound-on" id="soundBtn" onclick="toggleSound()">🔊 Звук ВКЛ</button>
-            <button class="btn notify-btn" onclick="requestNotification()">🔔 Уведомления</button>
-            <button class="btn theme-btn" onclick="toggleTheme()">🌙</button>
-            <button class="btn logout-btn" onclick="logout()">🚪 Выйти</button>
-            <button class="btn select-all-btn" onclick="toggleSelectAll()">☑️ Выбрать все</button>
-            <button class="btn delete-selected-btn" onclick="deleteSelected()">🗑 Удалить выбранные</button>
-        </div>
-        <div id="bookingsList"></div>
-        <div class="popup-overlay" id="popupOverlay">
-            <div class="popup-box"><div class="popup-icon">🔔</div><div class="popup-title">Новая заявка!</div>
-            <div class="popup-name" id="popupName"></div><div class="popup-detail" id="popupPhone"></div><div class="popup-detail" id="popupDate"></div>
-            <button class="popup-close" onclick="closePopup()">OK</button></div>
-        </div>
-    </div>
+<div class="admin-content" id="adminContent">
+    <h1>🎙️ Заявки <span class="counter" id="counter">0</span></h1>
+    <p class="status" id="status">🟢 Отслеживание...</p>
+    <button class="refresh-btn" onclick="loadBookings()">🔄 Обновить</button>
+    <button class="logout-btn" onclick="logout()">🚪 Выйти</button>
+    <div id="bookingsList"></div>
+</div>
 
-    <script>
-        const notes=['🎵','🎶','♪','♫','♬'];const mbg=document.getElementById('musicBg');
-        for(let i=0;i<12;i++){const n=document.createElement('span');n.className='note';n.textContent=notes[Math.floor(Math.random()*notes.length)];n.style.left=Math.random()*100+'%';n.style.fontSize=(20+Math.random()*30)+'px';n.style.animationDuration=(8+Math.random()*15)+'s';n.style.animationDelay=Math.random()*10+'s';mbg.appendChild(n)}
+<script>
+const PASSWORD='meloman2026';
+const API_URL='https://script.google.com/macros/s/AKfycbywYd7XxQbTt5EplXPAi58dRtSu2uXwOvrUQ5O61N8HKcJO8oTXf6o-aH2oVTUUBSD4/exec';
 
-        function toggleTheme(){const b=document.body;const btn=document.querySelector('.theme-btn');if(b.classList.contains('dark')){b.classList.remove('dark');btn.textContent='🌙';localStorage.setItem('admin_theme','light')}else{b.classList.add('dark');btn.textContent='☀️';localStorage.setItem('admin_theme','dark')}}
-        if(localStorage.getItem('admin_theme')==='dark'){document.body.classList.add('dark');document.querySelector('.theme-btn').textContent='☀️'}
+if(localStorage.getItem('admin_logged')==='true'){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('adminContent').style.display='block';
+    startAdmin();
+}
 
-        const PASSWORD='meloman2026';
-        // Новый URL скрипта
-        const API_URL='https://script.google.com/macros/s/AKfycbywYd7XxQbTt5EplXPAi58dRtSu2uXwOvrUQ5O61N8HKcJO8oTXf6o-aH2oVTUUBSD4/exec';
+function login(){
+    if(document.getElementById('passwordInput').value===PASSWORD){
+        localStorage.setItem('admin_logged','true');
+        document.getElementById('loginScreen').style.display='none';
+        document.getElementById('adminContent').style.display='block';
+        startAdmin();
+    }else{document.getElementById('loginError').style.display='block'}
+}
 
-        let allBookings = [];
+function logout(){localStorage.removeItem('admin_logged');location.reload()}
+document.getElementById('passwordInput').addEventListener('keydown',function(e){if(e.key==='Enter')login()});
 
-        if(localStorage.getItem('admin_logged')==='true'){
-            document.getElementById('loginScreen').style.display='none';
-            document.getElementById('adminContent').style.display='block';
-            startAdmin();
-        }
+function startAdmin(){
+    let lastCount=0;
+    let allBookings=[];
 
-        function login(){
-            if(document.getElementById('passwordInput').value===PASSWORD){
-                localStorage.setItem('admin_logged','true');
-                document.getElementById('loginScreen').style.display='none';
-                document.getElementById('adminContent').style.display='block';
-                startAdmin();
-            }else{document.getElementById('loginError').style.display='block'}
-        }
-
-        function logout(){localStorage.removeItem('admin_logged');location.reload()}
-        document.getElementById('passwordInput').addEventListener('keydown',function(e){if(e.key==='Enter')login()});
-
-        function startAdmin(){
-            let lastCount=0;
-            let soundOn=localStorage.getItem('soundOn')!=='false';
-            const sb=document.getElementById('soundBtn');
-            function updateSb(){if(soundOn){sb.textContent='🔊 Звук ВКЛ';sb.className='btn sound-btn sound-on'}else{sb.textContent='🔇 Звук ВЫКЛ';sb.className='btn sound-btn sound-off'}}
-            updateSb();
-            
-            window.toggleSound=function(){soundOn=!soundOn;localStorage.setItem('soundOn',soundOn);updateSb();if(soundOn)beep()}
-            window.beep=function(){if(!soundOn)return;try{const c=new(window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator();const g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.value=0.5;o.start();setTimeout(()=>{o.frequency.value=1100},100);setTimeout(()=>{o.frequency.value=660},250);setTimeout(()=>{o.stop();c.close()},450)}catch(e){}}
-            window.requestNotification=function(){if('Notification' in window){Notification.requestPermission().then(p=>{if(p==='granted')new Notification('✅ Готово!',{body:'Уведомления включены!',icon:'1I.jpg'})})}}
-            window.showPopup=function(n,p,d,t){document.getElementById('popupName').textContent='👤 '+n;document.getElementById('popupPhone').textContent='📞 '+p;document.getElementById('popupDate').textContent='📅 '+d+' | ⏰ '+t;document.getElementById('popupOverlay').classList.add('show');if('vibrate' in navigator)navigator.vibrate([200,100,200])}
-            window.closePopup=function(){document.getElementById('popupOverlay').classList.remove('show')}
-            window.updateBadge=function(c){document.title=c>0?'('+c+') Заявки':'Заявки'}
-            window.sendPush=function(n,p,d,t){if('Notification' in window&&Notification.permission==='granted'){new Notification('Новая заявка!',{body:n+' — '+d+' в '+t,icon:'1I.jpg',tag:'booking',vibrate:[200,100,200]})}}
-
-            window.loadBookings=function(){
-                fetch(API_URL).then(r=>r.json()).then(data=>{
-                    allBookings = data.bookings || [];
-                    const count = allBookings.length;
-                    document.getElementById('counter').textContent=count;updateBadge(count);
-                    if(count>lastCount&&lastCount>0){const b=allBookings[count-1];beep();showPopup(b.name,b.phone,b.date,b.time);sendPush(b.name,b.phone,b.date,b.time)}
-                    lastCount=count;
-                    if(!count){document.getElementById('bookingsList').innerHTML='<div class="empty">📭 Пока нет заявок</div>';document.getElementById('status').textContent='🟢 Ожидание...';return}
-                    renderBookings(allBookings);
-                    document.getElementById('status').textContent='🟢 Отслеживание...';
-                }).catch(()=>{document.getElementById('status').textContent='🔴 Ошибка'})
+    window.loadBookings=function(){
+        fetch(API_URL).then(r=>r.json()).then(data=>{
+            allBookings=data.bookings||[];
+            const count=allBookings.length;
+            document.getElementById('counter').textContent=count;
+            if(count>lastCount&&lastCount>0){
+                try{new(window.AudioContext||window.webkitAudioContext)()}catch(e){}
             }
-
-            function renderBookings(bookings) {
-                document.getElementById('bookingsList').innerHTML = bookings.map((b,i)=>
-                    `<div class="booking-card">
-                        <div class="checkbox-cell"><input type="checkbox" class="checkbox" data-index="${i}"></div>
-                        <div class="booking-info"><strong>${b.name}</strong><div>📞 ${b.phone}</div><div>📅 ${b.date} | ⏰ ${b.time}</div></div>
-                        <button class="btn delete-btn" onclick="deleteSingle(${i})">🗑 Удалить</button>
-                    </div>`
-                ).reverse().join('');
+            lastCount=count;
+            if(!count){
+                document.getElementById('bookingsList').innerHTML='<div class="empty">📭 Пока нет заявок</div>';
+                document.getElementById('status').textContent='🟢 Ожидание...';
+                return;
             }
+            document.getElementById('bookingsList').innerHTML=allBookings.map((b,i)=>
+                `<div class="booking-card">
+                    <div class="booking-info">
+                        <strong>${b.name}</strong>
+                        <div>📞 ${b.phone}</div>
+                        <div>📅 ${b.date} | ⏰ ${b.time}</div>
+                    </div>
+                    <button class="delete-btn" onclick="deleteBooking(${i})">🗑 Удалить</button>
+                </div>`
+            ).reverse().join('');
+            document.getElementById('status').textContent='🟢 Отслеживание...';
+        }).catch(()=>{document.getElementById('status').textContent='🔴 Ошибка'})
+    }
 
-            window.deleteSingle = function(i) {
-                if (!confirm('Удалить заявку?')) return;
-                allBookings.splice(i, 1);
-                updateStore();
-            }
+    window.deleteBooking=function(index){
+        if(!confirm('Удалить заявку?'))return;
+        
+        fetch(API_URL,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({action:'delete',index:index})
+        })
+        .then(()=>loadBookings())
+        .catch(()=>alert('Ошибка удаления'));
+    }
 
-            window.toggleSelectAll = function() {
-                const checkboxes = document.querySelectorAll('.checkbox');
-                const allChecked = [...checkboxes].every(cb => cb.checked);
-                checkboxes.forEach(cb => cb.checked = !allChecked);
-            }
-
-            window.deleteSelected = function() {
-                const checkboxes = document.querySelectorAll('.checkbox:checked');
-                if (checkboxes.length === 0) { alert('Выберите заявки'); return; }
-                if (!confirm(`Удалить ${checkboxes.length} заявок?`)) return;
-                
-                const indexes = [...checkboxes].map(cb => parseInt(cb.dataset.index));
-                const sorted = indexes.sort((a,b) => b - a);
-                for (const idx of sorted) {
-                    if (idx >= 0 && idx < allBookings.length) allBookings.splice(idx, 1);
-                }
-                updateStore();
-            }
-
-            function updateStore() {
-                const payload = {
-                    action: 'update',
-                    dates: [...new Set(allBookings.map(b => b.date))],
-                    bookings: allBookings
-                };
-                
-                fetch(API_URL, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                }).then(() => loadBookings()).catch(() => loadBookings());
-            }
-
-            setInterval(loadBookings,5000);loadBookings();
-        }
-    </script>
+    setInterval(loadBookings,5000);
+    loadBookings();
+}
+</script>
 </body>
 </html>
