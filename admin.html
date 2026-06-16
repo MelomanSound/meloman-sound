@@ -89,9 +89,10 @@
         if(localStorage.getItem('admin_theme')==='dark'){document.body.classList.add('dark');document.querySelector('.theme-btn').textContent='☀️'}
 
         const PASSWORD='meloman2026';
+        // Рабочий URL Google Apps Script
         const API_URL='https://script.google.com/macros/s/AKfycbyJuz8F6zL0M73F4oSRtWNAyrXuVHR_DKtTO7UaQ_0ktTtdP1nLWw1p-DxkyKZm2E77/exec';
 
-        let allBookings = []; // храним текущие заявки
+        let allBookings = [];
 
         if(localStorage.getItem('admin_logged')==='true'){
             document.getElementById('loginScreen').style.display='none';
@@ -128,14 +129,13 @@
 
             window.loadBookings=function(){
                 fetch(API_URL).then(r=>r.json()).then(data=>{
-                    const bookings=data.bookings||[];
-                    allBookings = bookings;
-                    const count=bookings.length;
+                    allBookings = data.bookings || [];
+                    const count = allBookings.length;
                     document.getElementById('counter').textContent=count;updateBadge(count);
-                    if(count>lastCount&&lastCount>0){const b=bookings[count-1];beep();showPopup(b.name,b.phone,b.date,b.time);sendPush(b.name,b.phone,b.date,b.time)}
+                    if(count>lastCount&&lastCount>0){const b=allBookings[count-1];beep();showPopup(b.name,b.phone,b.date,b.time);sendPush(b.name,b.phone,b.date,b.time)}
                     lastCount=count;
                     if(!count){document.getElementById('bookingsList').innerHTML='<div class="empty">📭 Пока нет заявок</div>';document.getElementById('status').textContent='🟢 Ожидание...';return}
-                    renderBookings(bookings);
+                    renderBookings(allBookings);
                     document.getElementById('status').textContent='🟢 Отслеживание...';
                 }).catch(()=>{document.getElementById('status').textContent='🔴 Ошибка'})
             }
@@ -168,7 +168,6 @@
                 if (!confirm(`Удалить ${checkboxes.length} заявок?`)) return;
                 
                 const indexes = [...checkboxes].map(cb => parseInt(cb.dataset.index));
-                // Удаляем с конца, чтобы индексы не сбились
                 const sorted = indexes.sort((a,b) => b - a);
                 for (const idx of sorted) {
                     if (idx >= 0 && idx < allBookings.length) allBookings.splice(idx, 1);
@@ -177,14 +176,16 @@
             }
 
             function updateStore() {
+                const payload = {
+                    action: 'update',
+                    dates: [...new Set(allBookings.map(b => b.date))],
+                    bookings: allBookings
+                };
+                
                 fetch(API_URL, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ 
-                        action: 'update',
-                        dates: [...new Set(allBookings.map(b => b.date))],
-                        bookings: allBookings 
-                    })
+                    body: JSON.stringify(payload)
                 }).then(() => loadBookings()).catch(() => loadBookings());
             }
 
