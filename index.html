@@ -132,7 +132,7 @@
         const nb=['🎵','🎶','♪','♫','♬'];const mb=document.getElementById('musicBg');for(let i=0;i<20;i++){const n=document.createElement('span');n.className='note';n.textContent=nb[Math.floor(Math.random()*nb.length)];n.style.left=Math.random()*100+'%';n.style.fontSize=(20+Math.random()*30)+'px';n.style.animationDuration=(8+Math.random()*15)+'s';n.style.animationDelay=Math.random()*10+'s';mb.appendChild(n)}
         
         const REPO='melomansound/meloman-sound';
-        const GH_TOKEN='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';
+        const GH_TOKEN='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';
         const today=new Date().toISOString().split('T')[0];document.getElementById('bookingDate').setAttribute('min',today);
         let bookedDates=JSON.parse(localStorage.getItem('mdates')||'[]');
         let cm=new Date().getMonth();let cy=new Date().getFullYear();
