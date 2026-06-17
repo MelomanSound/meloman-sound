@@ -1,0 +1,20 @@
+name: Create Issue
+on:
+  repository_dispatch:
+    types: [new_booking]
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
+          script: |
+            const d = context.payload.client_payload;
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🎙️ ${d.name} | 📅 ${d.date} | ⏰ ${d.time}`,
+              body: `👤 Имя: ${d.name}\n📞 Телефон: ${d.phone}${d.social?'\n🌐 Соцсеть: '+d.social:''}${d.wishes?'\n💬 Что интересует: '+d.wishes:''}\n📅 Дата: ${d.date}\n⏰ Время: ${d.time}`,
+              labels: ['booking']
+            });
