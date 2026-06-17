@@ -73,9 +73,6 @@
         .music-toggle.playing { background: #34C759; animation: musicPulse 2s infinite; }
         @keyframes musicPulse { 0%,100%{box-shadow:0 4px 12px rgba(52,199,89,0.3)} 50%{box-shadow:0 4px 25px rgba(52,199,89,0.6)} }
         .music-label { font-size: 10px; color: var(--sec); text-align: right; line-height: 1.2; max-width: 80px; }
-        .admin-token-bar { background: rgba(255,149,0,0.1); padding: 8px 12px; border-radius: 12px; margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-        .admin-token-bar input { flex: 1; min-width: 150px; padding: 10px; border: 1px solid var(--sep); border-radius: 10px; font-size: 14px; background: rgba(255,255,255,0.5); color: var(--text); }
-        .admin-token-bar button { background: var(--acc); color: #FFF; border: none; padding: 10px 16px; border-radius: 100px; font-weight: 600; font-size: 13px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -83,11 +80,6 @@
     <nav><div class="logo">MELOMAN<span>sound</span></div><div><button class="theme-btn" onclick="toggleTheme()">🌙</button><button class="header-btn" onclick="scrollToBooking()">Запись</button></div></nav>
     <div class="container">
         <div class="hero"><img src="1I.jpg" alt="Meloman Sound" class="hero-logo"><h1>Твой звук <span class="accent">рождается здесь</span></h1><p>Профессиональная студия звукозаписи в Иркутске — запись, сведение, мастеринг.</p></div>
-        
-        <div class="admin-token-bar" id="adminBar">
-            <input type="password" id="siteTokenInput" placeholder="GitHub токен (только для админа)">
-            <button onclick="saveSiteToken()">💾 Сохранить</button>
-        </div>
         
         <div class="section-header">Услуги</div>
         <div class="card">
@@ -140,14 +132,12 @@
         const nb=['🎵','🎶','♪','♫','♬'];const mb=document.getElementById('musicBg');for(let i=0;i<20;i++){const n=document.createElement('span');n.className='note';n.textContent=nb[Math.floor(Math.random()*nb.length)];n.style.left=Math.random()*100+'%';n.style.fontSize=(20+Math.random()*30)+'px';n.style.animationDuration=(8+Math.random()*15)+'s';n.style.animationDelay=Math.random()*10+'s';mb.appendChild(n)}
         
         const REPO='melomansound/meloman-sound';
+        const GH_TOKEN='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';
         const today=new Date().toISOString().split('T')[0];document.getElementById('bookingDate').setAttribute('min',today);
         let bookedDates=JSON.parse(localStorage.getItem('mdates')||'[]');
         let cm=new Date().getMonth();let cy=new Date().getFullYear();
         
-        if(!localStorage.getItem('gh_token')){document.getElementById('adminBar').style.display='flex'}else{document.getElementById('adminBar').style.display='none'}
-        function saveSiteToken(){const t=document.getElementById('siteTokenInput').value.trim();if(t){localStorage.setItem('gh_token',t);document.getElementById('adminBar').style.display='none';alert('✅ Токен сохранён!')}}
         function scrollToBooking(){document.getElementById('bookingSection').scrollIntoView({behavior:'smooth'})}
-        
         function toggleTheme(){const b=document.body;const btn=document.querySelector('.theme-btn');if(b.classList.contains('dark')){b.classList.remove('dark');btn.textContent='🌙'}else{b.classList.add('dark');btn.textContent='☀️'}}
         if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');document.querySelector('.theme-btn').textContent='☀️'}
         
@@ -175,8 +165,7 @@
             bookedDates.push(date);localStorage.setItem('mdates',JSON.stringify(bookedDates));
             const socialText=social?`\n🌐 Соцсеть: ${social}`:'';
             const wishesText=wishes?`\n💬 Что интересует: ${wishes}`:'';
-            const token=localStorage.getItem('gh_token');
-            if(token){fetch(`https://api.github.com/repos/${REPO}/issues`,{method:'POST',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'},body:JSON.stringify({title:`🎙️ ${name} | 📅 ${date} | ⏰ ${time}`,body:`👤 Имя: ${name}\n📞 Телефон: ${phone}${socialText}${wishesText}\n📅 Дата: ${date}\n⏰ Время: ${time}`,labels:['booking']})}).catch(()=>{})}
+            fetch(`https://api.github.com/repos/${REPO}/issues`,{method:'POST',headers:{'Authorization':`token ${GH_TOKEN}`,'Content-Type':'application/json'},body:JSON.stringify({title:`🎙️ ${name} | 📅 ${date} | ⏰ ${time}`,body:`👤 Имя: ${name}\n📞 Телефон: ${phone}${socialText}${wishesText}\n📅 Дата: ${date}\n⏰ Время: ${time}`,labels:['booking']})}).catch(()=>{});
             sm.style.display='block';document.getElementById('bookingForm').reset();document.getElementById('dateWarning').classList.remove('show');sb.disabled=false;sb.textContent='Отправить заявку';setTimeout(()=>closeBookingModal(),2000);
         }
         loadBookedDates();
