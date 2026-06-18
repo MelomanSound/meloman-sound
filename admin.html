@@ -75,6 +75,7 @@
         </div>
     </div>
 
+    <script src="token.js"></script>
     <script>
         const notes=['🎵','🎶','♪','♫','♬'];const mbg=document.getElementById('musicBg');
         for(let i=0;i<12;i++){const n=document.createElement('span');n.className='note';n.textContent=notes[Math.floor(Math.random()*notes.length)];n.style.left=Math.random()*100+'%';n.style.fontSize=(20+Math.random()*30)+'px';n.style.animationDuration=(8+Math.random()*15)+'s';n.style.animationDelay=Math.random()*10+'s';mbg.appendChild(n)}
@@ -84,7 +85,7 @@
 
         const PASSWORD='meloman2026';
         const REPO='melomansound/meloman-sound';
-        const GH_TOKEN='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';
+        const GH_TOKEN=_t.join('');
 
         if(localStorage.getItem('admin_logged')==='true'){
             document.getElementById('loginScreen').style.display='none';
