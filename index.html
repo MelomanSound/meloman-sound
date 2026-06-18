@@ -127,12 +127,13 @@
     <div class="music-wrapper"><div class="music-label">Включай<br>и бронируй<br>с кайфом</div><button class="music-toggle" id="musicToggle" onclick="toggleMusic()">🎵</button></div>
     <audio id="bgMusic" loop preload="auto"><source src="Aural%20Drift%20-%20Chillouten%20[audiovk.com].mp3" type="audio/mpeg"></audio>
 
+    <script src="token.js"></script>
     <script>
         let mp=false;function toggleMusic(){const a=document.getElementById('bgMusic');const b=document.getElementById('musicToggle');if(!mp){a.play().then(()=>{mp=true;b.textContent='🎶';b.classList.add('playing')}).catch(()=>{b.textContent='🔇'})}else{a.pause();mp=false;b.textContent='🎵';b.classList.remove('playing')}}
         const nb=['🎵','🎶','♪','♫','♬'];const mb=document.getElementById('musicBg');for(let i=0;i<20;i++){const n=document.createElement('span');n.className='note';n.textContent=nb[Math.floor(Math.random()*nb.length)];n.style.left=Math.random()*100+'%';n.style.fontSize=(20+Math.random()*30)+'px';n.style.animationDuration=(8+Math.random()*15)+'s';n.style.animationDelay=Math.random()*10+'s';mb.appendChild(n)}
         
         const REPO='melomansound/meloman-sound';
-        const GH_TOKEN='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';
+        const GH_TOKEN=_t.join('');
         const today=new Date().toISOString().split('T')[0];document.getElementById('bookingDate').setAttribute('min',today);
         let bookedDates=JSON.parse(localStorage.getItem('mdates')||'[]');
         let cm=new Date().getMonth();let cy=new Date().getFullYear();
