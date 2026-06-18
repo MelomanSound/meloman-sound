@@ -6,7 +6,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="apple-touch-icon" href="1I.jpg">
-    <link rel="manifest" href="/meloman-sound/manifest.json">
     <title>Meloman Sound | Админка</title>
     <style>
         :root { --bg: #F2F2F7; --text: #1C1C1E; --sec: #636366; --acc: #007AFF; --sep: #E5E5EA; --card: #FFFFFF; }
@@ -27,13 +26,11 @@
         .booking-card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px}
         .booking-info strong{color:var(--acc);font-size:16px}.booking-info div{font-size:14px;color:var(--sec);margin-top:4px}
         .wishes-text{background:rgba(0,122,255,0.05);padding:8px 12px;border-radius:10px;margin-top:8px;font-size:14px;color:var(--text);border-left:3px solid var(--acc)}
-        .new-badge{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:12px;font-weight:700;margin-left:8px;animation:pulse 1s infinite}
-        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
         .top-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
         .btn{color:#FFF;border:none;padding:12px 20px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px}
         .refresh-btn{background:var(--acc)}.sound-btn{color:#FFF}.sound-on{background:#34C759}.sound-off{background:#8E8E93}
         .notify-btn{background:#FF9500}.logout-btn{background:#8E8E93}.theme-btn{background:rgba(128,128,128,0.3);color:var(--text)}
-        .delete-btn{background:#FF3B30;padding:8px 14px;font-size:13px;white-space:nowrap}
+        .sync-btn{background:#FF9500}.delete-btn{background:#FF3B30;padding:8px 14px;font-size:13px;white-space:nowrap}
         .empty{text-align:center;color:var(--sec);padding:40px;font-size:16px}
         .counter{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:13px;font-weight:700;margin-left:8px}
         .status{font-size:13px;margin-bottom:16px;font-weight:600;color:var(--sec)}
@@ -44,6 +41,9 @@
         .popup-icon{font-size:60px;margin-bottom:12px}.popup-title{font-size:22px;font-weight:800;margin-bottom:6px;color:var(--text)}
         .popup-name{font-size:18px;color:var(--acc);font-weight:700}.popup-detail{font-size:14px;color:var(--sec);margin-bottom:2px}
         .popup-close{background:var(--acc);color:#FFF;border:none;padding:14px 40px;border-radius:100px;font-weight:700;font-size:16px;cursor:pointer;margin-top:16px}
+        .token-bar{background:rgba(255,149,0,0.1);padding:10px;border-radius:12px;margin-bottom:16px;display:flex;gap:8px;flex-wrap:wrap}
+        .token-bar input{flex:1;padding:10px;border:1px solid var(--sep);border-radius:10px;font-size:14px;background:var(--card);color:var(--text)}
+        .token-bar button{background:var(--acc);color:#FFF;border:none;padding:10px 16px;border-radius:100px;font-weight:600;font-size:13px;cursor:pointer}
     </style>
 </head>
 <body>
@@ -60,8 +60,14 @@
         <h1>🎙️ Заявки <span class="counter" id="counter">0</span></h1>
         <p class="status" id="status">🟢 Отслеживание...</p>
         
+        <div class="token-bar">
+            <input type="password" id="tokenInput" placeholder="GitHub токен">
+            <button onclick="saveToken()">💾 Сохранить</button>
+        </div>
+        
         <div class="top-bar">
             <button class="btn refresh-btn" onclick="loadBookings()">🔄 Обновить</button>
+            <button class="btn sync-btn" onclick="syncLocal()">📥 Загрузить с сайта</button>
             <button class="btn sound-btn sound-on" id="soundBtn" onclick="toggleSound()">🔊 Звук ВКЛ</button>
             <button class="btn notify-btn" onclick="requestNotification()">🔔 Уведомления</button>
             <button class="btn theme-btn" onclick="toggleTheme()">🌙</button>
@@ -75,7 +81,6 @@
         </div>
     </div>
 
-    <script src="token.js"></script>
     <script>
         const notes=['🎵','🎶','♪','♫','♬'];const mbg=document.getElementById('musicBg');
         for(let i=0;i<12;i++){const n=document.createElement('span');n.className='note';n.textContent=notes[Math.floor(Math.random()*notes.length)];n.style.left=Math.random()*100+'%';n.style.fontSize=(20+Math.random()*30)+'px';n.style.animationDuration=(8+Math.random()*15)+'s';n.style.animationDelay=Math.random()*10+'s';mbg.appendChild(n)}
@@ -85,19 +90,22 @@
 
         const PASSWORD='meloman2026';
         const REPO='melomansound/meloman-sound';
-        const GH_TOKEN=_t.join('');
 
         if(localStorage.getItem('admin_logged')==='true'){
             document.getElementById('loginScreen').style.display='none';
             document.getElementById('adminContent').style.display='block';
+            document.getElementById('tokenInput').value=localStorage.getItem('gh_token')||'';
             startAdmin();
         }
+
+        function saveToken(){const t=document.getElementById('tokenInput').value.trim();if(t){localStorage.setItem('gh_token',t);alert('✅ Токен сохранён!')}}
 
         function login(){
             if(document.getElementById('passwordInput').value===PASSWORD){
                 localStorage.setItem('admin_logged','true');
                 document.getElementById('loginScreen').style.display='none';
                 document.getElementById('adminContent').style.display='block';
+                document.getElementById('tokenInput').value=localStorage.getItem('gh_token')||'';
                 startAdmin();
             }else{document.getElementById('loginError').style.display='block'}
         }
@@ -120,8 +128,31 @@
             window.updateBadge=function(c){document.title=c>0?'('+c+') Заявки':'Заявки';if('setAppBadge' in navigator){navigator.setAppBadge(c||0).catch(()=>{})}}
             window.sendPush=function(n,p,d,t){if('Notification' in window&&Notification.permission==='granted'){new Notification('Новая заявка!',{body:n+' — '+d+' в '+t,icon:'1I.jpg',tag:'booking',vibrate:[200,100,200]})}}
 
+            // Автосинхронизация при входе
+            setTimeout(()=>syncLocal(true), 1000);
+            // Автосинхронизация каждые 30 секунд
+            setInterval(()=>syncLocal(true), 30000);
+
+            window.syncLocal=function(silent){
+                const token=localStorage.getItem('gh_token');
+                if(!token)return;
+                const dates=JSON.parse(localStorage.getItem('mdates')||'[]');
+                if(!dates.length)return;
+                let done=0;
+                dates.forEach(date=>{
+                    fetch(`https://api.github.com/repos/${REPO}/issues`,{
+                        method:'POST',
+                        headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'},
+                        body:JSON.stringify({title:`📅 ${date}`,body:`📅 Дата: ${date}`,labels:['booking']})
+                    }).then(()=>{done++;if(done===dates.length){localStorage.removeItem('mdates');if(!silent)alert('✅ Синхронизировано: '+done);loadBookings();}}).catch(()=>{});
+                });
+            }
+
             window.loadBookings=function(){
-                fetch(`https://api.github.com/repos/${REPO}/issues?state=open&labels=booking`,{headers:{'Authorization':`token ${GH_TOKEN}`}})
+                const token=localStorage.getItem('gh_token');
+                if(!token){document.getElementById('bookingsList').innerHTML='<div class="empty">⚠️ Введи и сохрани токен GitHub</div>';return}
+                
+                fetch(`https://api.github.com/repos/${REPO}/issues?state=open&labels=booking`,{headers:{'Authorization':`token ${token}`}})
                 .then(r=>r.json()).then(issues=>{
                     const count=issues.length;
                     document.getElementById('counter').textContent=count;updateBadge(count);
@@ -145,7 +176,8 @@
 
             window.deleteBooking=function(n){
                 if(!confirm('Удалить заявку?'))return;
-                fetch(`https://api.github.com/repos/${REPO}/issues/${n}`,{method:'PATCH',headers:{'Authorization':`token ${GH_TOKEN}`,'Content-Type':'application/json'},body:JSON.stringify({state:'closed'})}).then(()=>loadBookings()).catch(()=>alert('Ошибка'));
+                const token=localStorage.getItem('gh_token');
+                fetch(`https://api.github.com/repos/${REPO}/issues/${n}`,{method:'PATCH',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'},body:JSON.stringify({state:'closed'})}).then(()=>loadBookings()).catch(()=>alert('Ошибка'));
             }
 
             setInterval(loadBookings,5000);loadBookings();
