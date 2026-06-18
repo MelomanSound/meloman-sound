@@ -39,9 +39,9 @@
         .contact-link { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 0.5px solid var(--sep); text-decoration: none; color: var(--acc); font-size: 17px; }
         .contact-link:last-child { border-bottom: none; } .contact-label { color: var(--text); font-weight: 500; }
         .map-link { display: flex; align-items: center; justify-content: center; background: rgba(229,229,234,0.3); border-radius: 12px; height: 150px; color: var(--acc); font-size: 15px; font-weight: 600; margin-top: 16px; text-decoration: none; }
-        .action-btn { display: block; background: var(--acc); color: #FFF; text-align: center; padding: 16px; border-radius: 16px; font-weight: 700; font-size: 17px; margin: 24px 0 40px; border: none; width: 100%; cursor: pointer; }
+        .action-btn { display: block; background: var(--acc); color: #FFF; text-align: center; padding: 16px; border-radius: 16px; font-weight: 700; font-size: 17px; margin: 12px 0; border: none; width: 100%; cursor: pointer; }
         .calendar-hint { text-align: center; color: #FF3B30; font-weight: 600; margin-bottom: 12px; font-size: 15px; }
-        .calendar-btn { display: block; background: rgba(255,255,255,0.2); backdrop-filter: blur(6px); color: var(--acc); text-align: center; padding: 14px; border-radius: 16px; font-weight: 600; font-size: 15px; margin: 0 0 24px; border: 0.5px solid rgba(0,0,0,0.04); width: 100%; cursor: pointer; }
+        .calendar-btn { display: block; background: rgba(255,255,255,0.2); backdrop-filter: blur(6px); color: var(--acc); text-align: center; padding: 14px; border-radius: 16px; font-weight: 600; font-size: 15px; margin: 0 0 12px; border: 0.5px solid rgba(0,0,0,0.04); width: 100%; cursor: pointer; }
         footer { text-align: center; padding: 24px 16px 40px; color: #8E8E93; font-size: 13px; }
         .form-group { margin-bottom: 16px; }
         .form-label { font-size: 13px; color: var(--sec); text-transform: uppercase; font-weight: 600; }
@@ -112,8 +112,22 @@
         <button class="action-btn" id="bookingSection" onclick="openBookingModal()">Забронировать запись</button>
         <footer>Meloman Sound. Иркутск, Румянцева 5/1. 2026</footer>
     </div>
-    <div class="modal-overlay" id="calendarModal"><div class="modal calendar-modal"><button class="close-modal" onclick="closeCalendarModal()">✕</button><h2>📅 Занятые даты</h2><p>🔴 Занято | 🟢 Свободно</p><div class="month-nav"><button onclick="changeMonth(-1)">◀</button><span id="calMonthLabel">Июнь 2026</span><button onclick="changeMonth(1)">▶</button></div><div class="days" id="calDaysGrid"></div></div></div>
-    <div class="modal-overlay" id="bookingModal"><div class="modal"><button class="close-modal" onclick="closeBookingModal()">✕</button><h2>Записаться</h2><p>Выбери дату и время — я свяжусь с тобой</p>
+    
+    <!-- Модалка календаря -->
+    <div class="modal-overlay" id="calendarModal"><div class="modal calendar-modal">
+        <button class="close-modal" onclick="closeCalendarModal()">✕</button>
+        <h2>📅 Занятые даты</h2>
+        <p>🔴 Занято | 🟢 Свободно</p>
+        <div class="month-nav"><button onclick="changeMonth(-1)">◀</button><span id="calMonthLabel">Июнь 2026</span><button onclick="changeMonth(1)">▶</button></div>
+        <div class="days" id="calDaysGrid"></div>
+        <button class="action-btn" onclick="closeCalendarModal();openBookingModal();">Отправить заявку</button>
+    </div></div>
+    
+    <!-- Модалка бронирования -->
+    <div class="modal-overlay" id="bookingModal"><div class="modal">
+        <button class="close-modal" onclick="closeBookingModal()">✕</button>
+        <h2>Записаться</h2>
+        <p>Выбери дату и время — я свяжусь с тобой</p>
         <div class="success-msg" id="successMsg">✅ Заявка отправлена!</div>
         <form id="bookingForm" onsubmit="sendBooking(event)">
             <div class="form-group"><div class="form-label">Имя</div><input type="text" class="form-input" id="clientName" placeholder="Иван" required></div>
@@ -123,7 +137,9 @@
             <div class="form-group"><div class="form-label">Дата</div><input type="date" class="form-input" id="bookingDate" required onchange="checkDate()"><div class="date-warning" id="dateWarning">⚠️ Эта дата уже занята!</div></div>
             <div class="form-group"><div class="form-label">Время</div><select class="form-input" id="bookingTime" required><option value="">Выбери</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option></select></div>
             <button type="submit" class="action-btn" id="submitBtn">Отправить заявку</button>
-        </form></div></div>
+        </form>
+    </div></div>
+    
     <div class="music-wrapper"><div class="music-label">Включай<br>и бронируй<br>с кайфом</div><button class="music-toggle" id="musicToggle" onclick="toggleMusic()">🎵</button></div>
     <audio id="bgMusic" loop preload="auto"><source src="Aural%20Drift%20-%20Chillouten%20[audiovk.com].mp3" type="audio/mpeg"></audio>
 
