@@ -6,6 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="apple-touch-icon" href="1I.jpg">
+    <link rel="manifest" href="/meloman-sound/manifest.json">
     <title>Meloman Sound | Админка</title>
     <style>
         :root { --bg: #F2F2F7; --text: #1C1C1E; --sec: #636366; --acc: #007AFF; --sep: #E5E5EA; --card: #FFFFFF; }
@@ -30,7 +31,7 @@
         .btn{color:#FFF;border:none;padding:12px 20px;border-radius:100px;font-weight:600;cursor:pointer;font-size:15px}
         .refresh-btn{background:var(--acc)}.sound-btn{color:#FFF}.sound-on{background:#34C759}.sound-off{background:#8E8E93}
         .notify-btn{background:#FF9500}.logout-btn{background:#8E8E93}.theme-btn{background:rgba(128,128,128,0.3);color:var(--text)}
-        .delete-btn{background:#FF3B30;padding:8px 14px;font-size:13px;white-space:nowrap}
+        .sync-btn{background:#FF9500}.delete-btn{background:#FF3B30;padding:8px 14px;font-size:13px;white-space:nowrap}
         .empty{text-align:center;color:var(--sec);padding:40px;font-size:16px}
         .counter{background:#FF3B30;color:#FFF;padding:4px 10px;border-radius:100px;font-size:13px;font-weight:700;margin-left:8px}
         .status{font-size:13px;margin-bottom:16px;font-weight:600;color:var(--sec)}
@@ -41,6 +42,9 @@
         .popup-icon{font-size:60px;margin-bottom:12px}.popup-title{font-size:22px;font-weight:800;margin-bottom:6px;color:var(--text)}
         .popup-name{font-size:18px;color:var(--acc);font-weight:700}.popup-detail{font-size:14px;color:var(--sec);margin-bottom:2px}
         .popup-close{background:var(--acc);color:#FFF;border:none;padding:14px 40px;border-radius:100px;font-weight:700;font-size:16px;cursor:pointer;margin-top:16px}
+        .token-bar{background:rgba(255,149,0,0.1);padding:10px;border-radius:12px;margin-bottom:16px;display:flex;gap:8px;flex-wrap:wrap}
+        .token-bar input{flex:1;padding:10px;border:1px solid var(--sep);border-radius:10px;font-size:14px;background:var(--card);color:var(--text)}
+        .token-bar button{background:var(--acc);color:#FFF;border:none;padding:10px 16px;border-radius:100px;font-weight:600;font-size:13px;cursor:pointer}
     </style>
 </head>
 <body>
@@ -57,8 +61,14 @@
         <h1>🎙️ Заявки <span class="counter" id="counter">0</span></h1>
         <p class="status" id="status">🟢 Отслеживание...</p>
         
+        <div class="token-bar">
+            <input type="password" id="tokenInput" placeholder="GitHub токен">
+            <button onclick="saveToken()">💾 Сохранить</button>
+        </div>
+        
         <div class="top-bar">
             <button class="btn refresh-btn" onclick="loadBookings()">🔄 Обновить</button>
+            <button class="btn sync-btn" onclick="syncLocal()">📥 Загрузить с сайта</button>
             <button class="btn sound-btn sound-on" id="soundBtn" onclick="toggleSound()">🔊 Звук ВКЛ</button>
             <button class="btn notify-btn" onclick="requestNotification()">🔔 Уведомления</button>
             <button class="btn theme-btn" onclick="toggleTheme()">🌙</button>
@@ -80,19 +90,23 @@
         if(localStorage.getItem('admin_theme')==='dark'){document.body.classList.add('dark');document.querySelector('.theme-btn').textContent='☀️'}
 
         const PASSWORD='meloman2026';
-        const API_URL='https://script.google.com/macros/s/AKfycby6f7p6nmZKP-uewVb7PMwT01rzWpDtMV3msiY4zQo6ggLKK2jsza25i9pLKX-FJ8Cx0g/exec';
+        const REPO='melomansound/meloman-sound';
 
         if(localStorage.getItem('admin_logged')==='true'){
             document.getElementById('loginScreen').style.display='none';
             document.getElementById('adminContent').style.display='block';
+            document.getElementById('tokenInput').value=localStorage.getItem('gh_token')||'';
             startAdmin();
         }
+
+        function saveToken(){const t=document.getElementById('tokenInput').value.trim();if(t){localStorage.setItem('gh_token',t);alert('✅ Токен сохранён!')}}
 
         function login(){
             if(document.getElementById('passwordInput').value===PASSWORD){
                 localStorage.setItem('admin_logged','true');
                 document.getElementById('loginScreen').style.display='none';
                 document.getElementById('adminContent').style.display='block';
+                document.getElementById('tokenInput').value=localStorage.getItem('gh_token')||'';
                 startAdmin();
             }else{document.getElementById('loginError').style.display='block'}
         }
@@ -115,28 +129,53 @@
             window.updateBadge=function(c){document.title=c>0?'('+c+') Заявки':'Заявки';if('setAppBadge' in navigator){navigator.setAppBadge(c||0).catch(()=>{})}}
             window.sendPush=function(n,p,d,t){if('Notification' in window&&Notification.permission==='granted'){new Notification('Новая заявка!',{body:n+' — '+d+' в '+t,icon:'1I.jpg',tag:'booking',vibrate:[200,100,200]})}}
 
+            setTimeout(()=>syncLocal(true), 1000);
+            setInterval(()=>syncLocal(true), 30000);
+
+            window.syncLocal=function(silent){
+                const token=localStorage.getItem('gh_token');
+                if(!token)return;
+                const dates=JSON.parse(localStorage.getItem('mdates')||'[]');
+                if(!dates.length)return;
+                let done=0;
+                dates.forEach(date=>{
+                    fetch(`https://api.github.com/repos/${REPO}/issues`,{
+                        method:'POST',
+                        headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'},
+                        body:JSON.stringify({title:`📅 ${date}`,body:`📅 Дата: ${date}`,labels:['booking']})
+                    }).then(()=>{done++;if(done===dates.length){localStorage.removeItem('mdates');if(!silent)alert('✅ Синхронизировано: '+done);loadBookings();}}).catch(()=>{});
+                });
+            }
+
             window.loadBookings=function(){
-                fetch(API_URL).then(r=>r.json()).then(data=>{
-                    const bookings=data.bookings||[];const count=bookings.length;
+                const token=localStorage.getItem('gh_token');
+                if(!token){document.getElementById('bookingsList').innerHTML='<div class="empty">⚠️ Введи и сохрани токен GitHub</div>';return}
+                fetch(`https://api.github.com/repos/${REPO}/issues?state=open&labels=booking`,{headers:{'Authorization':`token ${token}`}})
+                .then(r=>r.json()).then(issues=>{
+                    const count=issues.length;
                     document.getElementById('counter').textContent=count;updateBadge(count);
-                    if(count>lastCount&&lastCount>0){const b=bookings[count-1];beep();showPopup(b.name||'',b.phone||'',b.date||'',b.time||'');sendPush(b.name||'',b.phone||'',b.date||'',b.time||'')}
+                    if(count>lastCount&&lastCount>0){const i=issues[0];const b=i.body||'';beep();showPopup((b.match(/👤 Имя: (.+)/)||['','-'])[1],(b.match(/📞 Телефон: (.+)/)||['','-'])[1],(b.match(/📅 Дата: (.+)/)||['','-'])[1],(b.match(/⏰ Время: (.+)/)||['','-'])[1]);sendPush((b.match(/👤 Имя: (.+)/)||['','-'])[1],(b.match(/📞 Телефон: (.+)/)||['','-'])[1],(b.match(/📅 Дата: (.+)/)||['','-'])[1],(b.match(/⏰ Время: (.+)/)||['','-'])[1])}
                     lastCount=count;
                     if(!count){document.getElementById('bookingsList').innerHTML='<div class="empty">📭 Пока нет заявок</div>';return}
-                    document.getElementById('bookingsList').innerHTML=bookings.map((b,i)=>{
-                        const socialLine=b.social?`<div>🌐 ${b.social}</div>`:'';
-                        const wishesLine=b.wishes?`<div class="wishes-text">💬 ${b.wishes}</div>`:'';
-                        return `<div class="booking-card"><div class="booking-info"><strong>${b.name||'-'}</strong><div>📞 ${b.phone||'-'}</div>${socialLine}${wishesLine}<div>📅 ${b.date||'-'} | ⏰ ${b.time||'-'}</div></div><button class="btn delete-btn" onclick="deleteBooking(${i})">🗑 Удалить</button></div>`;
+                    document.getElementById('bookingsList').innerHTML=issues.map(i=>{
+                        const b=i.body||'';
+                        const name=(b.match(/👤 Имя: (.+)/)||['','-'])[1];
+                        const phone=(b.match(/📞 Телефон: (.+)/)||['','-'])[1];
+                        const social=(b.match(/🌐 Соцсеть: (.+)/)||['',''])[1];
+                        const wishes=(b.match(/💬 Что интересует: (.+)/)||['',''])[1];
+                        const date=(b.match(/📅 Дата: (.+)/)||['','-'])[1];
+                        const time=(b.match(/⏰ Время: (.+)/)||['','-'])[1];
+                        const socialLine=social?`<div>🌐 ${social}</div>`:'';
+                        const wishesLine=wishes?`<div class="wishes-text">💬 ${wishes}</div>`:'';
+                        return `<div class="booking-card"><div class="booking-info"><strong>${name}</strong><div>📞 ${phone}</div>${socialLine}${wishesLine}<div>📅 ${date} | ⏰ ${time}</div></div><button class="btn delete-btn" onclick="deleteBooking(${i.number})">🗑 Удалить</button></div>`;
                     }).reverse().join('');
                 }).catch(()=>{document.getElementById('status').textContent='🔴 Ошибка'})
             }
 
-            window.deleteBooking=function(i){
+            window.deleteBooking=function(n){
                 if(!confirm('Удалить заявку?'))return;
-                fetch(API_URL).then(r=>r.json()).then(d=>{
-                    d.bookings.splice(i,1);
-                    d.dates=d.bookings.map(b=>b.date).filter((v,k,a)=>a.indexOf(v)===k);
-                    return fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',dates:d.dates,bookings:d.bookings})});
-                }).then(()=>loadBookings()).catch(()=>alert('Ошибка'));
+                const token=localStorage.getItem('gh_token');
+                fetch(`https://api.github.com/repos/${REPO}/issues/${n}`,{method:'PATCH',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'},body:JSON.stringify({state:'closed'})}).then(()=>loadBookings()).catch(()=>alert('Ошибка'));
             }
 
             setInterval(loadBookings,5000);loadBookings();
