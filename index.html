@@ -161,7 +161,8 @@
             if(bookedDates.indexOf(date)!==-1){document.getElementById('dateWarning').classList.add('show');return}
             sb.disabled=true;sb.textContent='Отправляю...';
             bookedDates.push(date);localStorage.setItem('mdates',JSON.stringify(bookedDates));
-            fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone,social,wishes,date,time})}).catch(()=>{});
+            const params=`?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&social=${encodeURIComponent(social)}&wishes=${encodeURIComponent(wishes)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`;
+            fetch(API_URL+params).catch(()=>{});
             sm.style.display='block';document.getElementById('bookingForm').reset();document.getElementById('dateWarning').classList.remove('show');sb.disabled=false;sb.textContent='Отправить заявку';setTimeout(()=>closeBookingModal(),2000);
         }
         loadBookedDates();
